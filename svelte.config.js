@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -9,7 +10,8 @@ const config = {
 
 	kit: {
 		adapter: adapter()
-	}
+	},
+	plugins: [VitePWA()]
 };
 
 export default config;
