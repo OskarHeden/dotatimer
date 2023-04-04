@@ -1,11 +1,11 @@
 <script>
 	import './global.css';
-	import Gametimer from '../components/Gametimer.svelte';
+	import GameTimer from '../components/GameTimer.svelte';
 	import StackingTimer from '../components/StackingTimer.svelte';
 </script>
 
 <div class="header">
-	<Gametimer />
+	<GameTimer />
 </div>
 
 <div class="componentGrid">
@@ -23,10 +23,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	h1 {
-		color: white;
 	}
 	.componentGrid {
 		display: grid;
