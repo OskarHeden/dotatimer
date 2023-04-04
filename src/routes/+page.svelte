@@ -1,7 +1,7 @@
 <script>
 	import './global.css';
-	import GameTimer from '../components/GameTimer.svelte';
 	import StackingTimer from '../components/StackingTimer.svelte';
+	import GameTimer from '../components/GameTimer.svelte';
 </script>
 
 <div class="header">
