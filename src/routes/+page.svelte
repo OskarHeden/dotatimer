@@ -20,10 +20,12 @@
 		transform: translate(-50%, 0);
 		height: 8vh;
 		width: 50vh;
-		background-color: black;
+		background-color: rgb(83, 83, 83);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+		box-shadow: 5px 5px 5px black;
 	}
 	.componentGrid {
 		display: grid;
