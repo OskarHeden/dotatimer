@@ -3,6 +3,7 @@
 	import gameTimer from '../stores/gameTimer';
 
 	let editingTime = false;
+	let editingListener;
 	let minutes: string;
 	let seconds: string;
 
@@ -27,9 +28,19 @@
 
 	onMount(() => {
 		gameTimer.start();
+		if (typeof window !== 'undefined') {
+			editingListener = window.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') {
+					editingTime = false;
+				}
+			});
+		}
 	});
 	onDestroy(() => {
 		gameTimer.pause();
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('keydown', editingListener);
+		}
 	});
 	$: time = $gameTimer.time;
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
