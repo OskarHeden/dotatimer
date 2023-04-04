@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import gameTimer from '../stores/gameTimer';
 	import UITimer from './UITimer.svelte';
 
 	let timer: NodeJS.Timer;
@@ -30,5 +31,5 @@
 </script>
 
 <UITimer title="stacking">
-	<p>{formatTime(minutes)}:{formatTime(seconds)}</p>
+	<p>{gameTimer.formatTime()}</p>
 </UITimer>

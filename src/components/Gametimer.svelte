@@ -1,11 +1,17 @@
-<script>
-	let gameTimer = '00:00';
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import gameTimer from '../stores/gameTimer';
+	onMount(() => {
+		gameTimer.start();
+	});
+	$: time = gameTimer.formatTime($gameTimer.time);
+	$: console.log({ time, gameTimer });
 </script>
 
 <div class="gameTimerContainer">
-	<button class="adjustTime">+</button>
-	<div class="gameTimer">{gameTimer}</div>
-	<button class="adjustTime">-</button>
+	<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
+	<div class="gameTimer">{time}</div>
+	<button class="adjustTime" on:click={gameTimer.decrementOneSecond}>-</button>
 </div>
 
 <style>
