@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let title: string;
+	export let flash: boolean;
 </script>
 
-<div class="timerContainer">
-	<span class="title">{title}</span>
+<div class="timerContainer" class:flash>
+	<span class="title" class:flash>{title}</span>
 	<slot />
 </div>
 
@@ -14,7 +15,29 @@
 		border-radius: 5px;
 		position: relative;
 	}
+	.timerContainer.flash {
+		animation: colorSwap 3s infinite;
+	}
 	.title {
 		color: white;
+	}
+	.title.flash {
+		animation: reverseColorSwap 3s infinite;
+	}
+	@keyframes colorSwap {
+		from {
+			background-color: white;
+		}
+		to {
+			background-color: grey;
+		}
+	}
+	@keyframes reverseColorSwap {
+		from {
+			color: grey;
+		}
+		to {
+			color: white;
+		}
 	}
 </style>

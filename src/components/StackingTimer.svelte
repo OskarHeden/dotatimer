@@ -1,5 +1,6 @@
 <script lang="ts">
 	import gameTimer from '../stores/gameTimer';
+	import StackArrow from './icons/StackArrow.svelte';
 	import UITimer from './UITimer.svelte';
 
 	const STACKING_INTERVAL = 60;
@@ -28,10 +29,17 @@
 	$: countdownTimer = getCountdown(gameTime);
 </script>
 
-<UITimer title="Stacking Timer">
+<UITimer title="Stacking Timer" flash={timeToStack}>
 	<p>{countdownTimer}</p>
 	{#if timeToStack}
-		<div class="timeToStack">TIME TO STACK</div>
+		<div class="timeToStack">
+			<div class="content">
+				<span>STACK!</span>
+				<div class="icon bounce">
+					<StackArrow />
+				</div>
+			</div>
+		</div>
 	{/if}
 </UITimer>
 
@@ -40,5 +48,80 @@
 		position: absolute;
 		top: 0;
 		right: 0;
+	}
+	.timeToStack .content {
+		position: relative;
+		display: flex;
+		margin: 1rem;
+	}
+	.icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	.bounce {
+		-moz-animation: bounce 3s infinite;
+		-webkit-animation: bounce 3s infinite;
+		animation: bounce 3s infinite;
+	}
+	@-moz-keyframes bounce {
+		0%,
+		20%,
+		50%,
+		80%,
+		100% {
+			-moz-transform: translateY(0) rotate(80deg);
+			transform: translateY(0) rotate(80deg);
+		}
+		40% {
+			-moz-transform: translateY(-10px) rotate(80deg);
+			transform: translateY(-10px) rotate(80deg);
+		}
+		60% {
+			-moz-transform: translateY(-5px) rotate(80deg);
+			transform: translateY(-5px) rotate(80deg);
+		}
+	}
+	@-webkit-keyframes bounce {
+		0%,
+		20%,
+		50%,
+		80%,
+		100% {
+			-webkit-transform: translateY(0) rotate(80deg);
+			transform: translateY(0) rotate(80deg);
+		}
+		40% {
+			-webkit-transform: translateY(-10px) rotate(80deg);
+			transform: translateY(-10px) rotate(80deg);
+		}
+		60% {
+			-webkit-transform: translateY(-5px) rotate(80deg);
+			transform: translateY(-5px) rotate(80deg);
+		}
+	}
+	@keyframes bounce {
+		0%,
+		20%,
+		50%,
+		80%,
+		100% {
+			-moz-transform: translateY(0) rotate(80deg);
+			-ms-transform: translateY(0) rotate(80deg);
+			-webkit-transform: translateY(0) rotate(80deg);
+			transform: translateY(0) rotate(80deg);
+		}
+		40% {
+			-moz-transform: translateY(-10px) rotate(80deg);
+			-ms-transform: translateY(-10px) rotate(80deg);
+			-webkit-transform: translateY(-10px) rotate(80deg);
+			transform: translateY(-10px) rotate(80deg);
+		}
+		60% {
+			-moz-transform: translateY(-5px) rotate(80deg);
+			-ms-transform: translateY(-5px) rotate(80deg);
+			-webkit-transform: translateY(-5px) rotate(80deg);
+			transform: translateY(-5px) rotate(80deg);
+		}
 	}
 </style>
