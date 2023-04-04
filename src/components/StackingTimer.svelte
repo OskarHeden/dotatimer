@@ -1,35 +1,44 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
 	import gameTimer from '../stores/gameTimer';
 	import UITimer from './UITimer.svelte';
 
-	let timer: NodeJS.Timer;
-	let seconds = 0;
-	let minutes = 0;
+	const STACKING_INTERVAL = 60;
+	const MINUTE_DIVISIBLE = 1;
+	const REMINDER_SECONDS_BEFORE = 15;
 
 	const formatTime = (value: number) => value.toString().padStart(2, '0');
+	let timeToStack = false;
 
-	const updateTime = () => {
-		seconds++;
-		if (seconds === 60) {
-			minutes++;
-			seconds = 0;
-		}
+	const getCountdown = (time: number) => {
+		const gameTimeMinutes = Math.floor(time / 60);
+		const gameTimeSeconds = time % 60;
+
+		const skipMinute = time < 60 && MINUTE_DIVISIBLE === 1;
+
+		const minutesLeft = skipMinute
+			? (gameTimeMinutes % MINUTE_DIVISIBLE) + 1
+			: gameTimeMinutes % MINUTE_DIVISIBLE;
+		const secondsLeft = STACKING_INTERVAL - gameTimeSeconds - REMINDER_SECONDS_BEFORE;
+		timeToStack = secondsLeft < 1;
+
+		return `${formatTime(minutesLeft)}:${formatTime(timeToStack ? 0 : secondsLeft)}`;
 	};
 
-	onMount(() => {
-		timer = setInterval(updateTime, 1000);
-
-		return () => {
-			clearInterval(timer);
-		};
-	});
-
-	onDestroy(() => {
-		clearInterval(timer);
-	});
+	$: gameTime = $gameTimer.time;
+	$: countdownTimer = getCountdown(gameTime);
 </script>
 
-<UITimer title="stacking">
-	<p>{gameTimer.formatTime()}</p>
+<UITimer title="Stacking Timer">
+	<p>{countdownTimer}</p>
+	{#if timeToStack}
+		<div class="timeToStack">TIME TO STACK</div>
+	{/if}
 </UITimer>
+
+<style>
+	.timeToStack {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+</style>
