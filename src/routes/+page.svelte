@@ -16,9 +16,10 @@
 	.header {
 		position: fixed;
 		top: 0px;
-		right: 0px;
+		left: 50%;
+		transform: translate(-50%, 0);
 		height: 8vh;
-		width: 100%;
+		width: 50vh;
 		background-color: black;
 		display: flex;
 		align-items: center;
