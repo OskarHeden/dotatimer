@@ -1,7 +1,12 @@
 // src/lib/timerStore.js
 import { writable } from 'svelte/store';
 
-const initialState = {
+interface TimerState {
+	time: number;
+	isRunning: boolean;
+}
+
+const initialState: TimerState = {
 	time: 0,
 	isRunning: false
 };
@@ -41,7 +46,7 @@ const decrementOneSecond = () => {
 	timerStore.update((state) => ({ ...state, time: state.time - 1 }));
 };
 
-const formatTimeString = (seconds: number, minutes: number) => {
+const formatTimeString = (minutes: number, seconds: number) => {
 	return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
@@ -49,7 +54,7 @@ const formatTime = (time: number) => {
 	const seconds = time % 60;
 	const minutes = Math.floor(time / 60);
 
-	return formatTimeString(seconds, minutes);
+	return formatTimeString(minutes, seconds);
 };
 
 export default {
@@ -61,5 +66,13 @@ export default {
 	reset,
 	incrementOneSecond,
 	decrementOneSecond,
+	setTimer: (time: number) => {
+		timerStore.update((state: TimerState): TimerState => {
+			return {
+				...state,
+				time
+			};
+		});
+	},
 	formatTime
 };
