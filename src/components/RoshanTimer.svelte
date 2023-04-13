@@ -1,0 +1,114 @@
+<script lang="ts">
+	import gameTimer from '../stores/gameTimer';
+	import UITimer from './UITimer.svelte';
+
+	let startingTime: number;
+	let startingTimeString: string;
+	let elapsedTime: number;
+	let interval: NodeJS.Timer;
+
+	const MIN_SPAWN_TIME = 8 * 60;
+	const MAX_SPAWN_TIME = 11 * 60;
+	const AEGIS_RECLAIMED = 6 * 60;
+
+	const startCountDown = () => {
+		const time = $gameTimer.time;
+		const gameTimeMinutes = Math.floor(time / 60);
+		const gameTimeSeconds = time % 60;
+		startingTime = time;
+		startingTimeString = `${formatTime(gameTimeMinutes)}:${formatTime(gameTimeSeconds)}`;
+		if (interval) {
+			clearInterval(interval);
+		}
+		const startTime = $gameTimer.time;
+		elapsedTime = startTime - startingTime;
+		interval = setInterval(() => {
+			const newTime = $gameTimer.time;
+			elapsedTime = newTime - startingTime;
+		}, 1000);
+	};
+
+	const REMINDERS = [60, 30, 15];
+
+	const formatTime = (value: number) => value.toString().padStart(2, '0');
+	let timeToFlash = false;
+
+	const getCountdown = (elapsedTime: number) => {
+		const time = MAX_SPAWN_TIME - elapsedTime;
+		const gameTimeMinutes = Math.floor(time / 60);
+		const gameTimeSeconds = time % 60;
+
+		let aegisReclaimTimer = null;
+		let potentialSpawnTimer = null;
+
+		if (elapsedTime < AEGIS_RECLAIMED) {
+			const aegisTimeRemaining = AEGIS_RECLAIMED - elapsedTime;
+			const aegisReclaimedMinutes = Math.floor(aegisTimeRemaining / 60);
+			const aegisReclaimedSeconds = aegisTimeRemaining % 60;
+			aegisReclaimTimer = `${formatTime(aegisReclaimedMinutes)}:${formatTime(
+				aegisReclaimedSeconds
+			)}`;
+		}
+		if (elapsedTime < MIN_SPAWN_TIME) {
+			const potentialSpawnRemaining = MIN_SPAWN_TIME - elapsedTime;
+			const potentialSpawnMinutes = Math.floor(potentialSpawnRemaining / 60);
+			const potentialSpawnSeconds = potentialSpawnRemaining % 60;
+			potentialSpawnTimer = `${formatTime(potentialSpawnMinutes)}:${formatTime(
+				potentialSpawnSeconds
+			)}`;
+		}
+		timeToFlash = MAX_SPAWN_TIME - elapsedTime < 16 && MAX_SPAWN_TIME - elapsedTime > 0;
+
+		return {
+			countdownTimer: `${formatTime(gameTimeMinutes)}:${formatTime(gameTimeSeconds)}`,
+			aegisReclaimTimer,
+			potentialSpawnTimer
+		};
+	};
+
+	$: countDowns = getCountdown(elapsedTime);
+	$: countdownTimer = countDowns.countdownTimer;
+	$: aegisReclaimTimer = countDowns.aegisReclaimTimer;
+	$: potentialSpawnTimer = countDowns.potentialSpawnTimer;
+</script>
+
+<UITimer title="Roshan Timer" flash={timeToFlash}>
+	{#if startingTime}
+		<div class="startingTime">
+			<span>Start time:</span>
+			<span>{startingTimeString}</span>
+		</div>
+	{/if}
+	<div class="content">
+		{#if elapsedTime !== undefined}
+			<p>Definitive spawn: {countdownTimer}</p>
+		{/if}
+		{#if potentialSpawnTimer}
+			<p>Potential spawn: {potentialSpawnTimer}</p>
+		{/if}
+		{#if aegisReclaimTimer}
+			<p>Aegis reclaimed in: {aegisReclaimTimer}</p>
+		{/if}
+		<button on:click={startCountDown}>START</button>
+	</div>
+</UITimer>
+
+<style>
+	.startingTime {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		display: flex;
+		flex-direction: column;
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	button {
+		max-width: 100px;
+	}
+</style>
