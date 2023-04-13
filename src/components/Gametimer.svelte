@@ -79,7 +79,7 @@
 		display: flex;
 		flex-direction: row;
 		position: absolute;
-		top: 5px;
+		top: 0px;
 		left: 50%;
 		transform: translate(-50%, 0);
 	}
@@ -107,6 +107,7 @@
 		background-color: transparent;
 		font-size: 3em;
 		width: 20vw;
+		max-width: 170px;
 		color: white;
 		border: none;
 		outline: hidden;
@@ -119,8 +120,8 @@
 
 	@media only screen and (max-width: 600px) {
 		.adjustTime {
-			margin-left: 3rem;
-			margin-right: 3rem;
+			margin-left: 2rem;
+			margin-right: 2rem;
 		}
 	}
 </style>

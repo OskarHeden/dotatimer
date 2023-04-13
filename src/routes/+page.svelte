@@ -45,6 +45,9 @@
 		left: 50%;
 		transform: translate(-50%, 0);
 	}
+	img {
+		max-width: 100vw;
+	}
 	.componentGrid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
