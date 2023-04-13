@@ -20,6 +20,13 @@
 		editingTime = false;
 	};
 
+	const closeAndSave = () => {
+		const secondsFromMinutes: number = parseInt(minutes) * 60;
+		const totalSeconds = +(secondsFromMinutes + parseInt(seconds));
+		gameTimer.setTimer(totalSeconds);
+		closeEditTime();
+	};
+
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (event.key === 'Enter') {
 			const secondsFromMinutes: number = parseInt(minutes) * 60;
@@ -51,10 +58,7 @@
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
 </script>
 
-<div
-	class="gameTimerContainer"
-	use:clickOutside={{ callback: closeEditTime, enabled: editingTime }}
->
+<div class="gameTimerContainer" use:clickOutside={{ callback: closeAndSave, enabled: editingTime }}>
 	<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
 	<div class="gameTimer" class:editingTime on:click={editTime} on:keydown={handleKeyDown}>
 		{#if editingTime}
