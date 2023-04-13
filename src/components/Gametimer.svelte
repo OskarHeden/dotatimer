@@ -66,17 +66,18 @@
 		color: white;
 		display: flex;
 		flex-direction: row;
+		position: absolute;
+		top: 5px;
+		left: 50%;
+		transform: translate(-50%, 0);
 	}
 	.gameTimer {
-		width: 150px;
-		height: 8vh;
-		background-color: black;
 		color: wheat;
 		text-align: center;
-		clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		font-size: 2rem;
 	}
 	.editTimeInputs {
 		display: flex;
@@ -91,10 +92,23 @@
 	}
 
 	.adjustTime {
-		background-color: rgb(83, 83, 83);
+		background-color: transparent;
 		font-size: 3em;
-		width: 10vw;
+		width: 20vw;
+		color: white;
 		border: none;
 		outline: hidden;
+		margin-left: 0rem;
+		margin-right: 0rem;
+	}
+	button:active {
+		color: black;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.adjustTime {
+			margin-left: 3rem;
+			margin-right: 3rem;
+		}
 	}
 </style>
