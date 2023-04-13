@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import gameTimer from '../stores/gameTimer';
+	import { clickOutside } from '../helpers/clickOutside';
 
 	let editingTime = false;
 	let editingListener;
@@ -15,14 +16,18 @@
 		}
 	};
 
+	const closeEditTime = () => {
+		editingTime = false;
+	};
+
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (event.key === 'Enter') {
 			const secondsFromMinutes: number = parseInt(minutes) * 60;
 			const totalSeconds = +(secondsFromMinutes + parseInt(seconds));
 			gameTimer.setTimer(totalSeconds);
-			editingTime = false;
+			closeEditTime();
 		} else if (event.key === 'Escape') {
-			editingTime = false;
+			closeEditTime();
 		}
 	};
 
@@ -31,7 +36,7 @@
 		if (typeof window !== 'undefined') {
 			editingListener = window.addEventListener('keydown', (event) => {
 				if (event.key === 'Escape') {
-					editingTime = false;
+					closeEditTime();
 				}
 			});
 		}
@@ -46,7 +51,10 @@
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
 </script>
 
-<div class="gameTimerContainer">
+<div
+	class="gameTimerContainer"
+	use:clickOutside={{ callback: closeEditTime, enabled: editingTime }}
+>
 	<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
 	<div class="gameTimer" class:editingTime on:click={editTime} on:keydown={handleKeyDown}>
 		{#if editingTime}
