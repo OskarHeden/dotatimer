@@ -4,7 +4,6 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
-	import StackingTimer from '../components/StackingTimer.svelte';
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 		console.log('mupp');
