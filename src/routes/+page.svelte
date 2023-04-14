@@ -54,7 +54,7 @@
 		<CountdownTimer
 			title="Bounty Rune Timer"
 			audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
-			iconSrc={undefined}
+			iconSrc={'Bountyrune.png'}
 			spawnMultiplier={3}
 		/>
 		<div class="roshanContainer">
