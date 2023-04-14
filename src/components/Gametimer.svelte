@@ -2,6 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import gameTimer from '../stores/gameTimer';
 	import { clickOutside } from '../helpers/clickOutside';
+	import '@fontsource/orbitron';
 
 	let editingTime = false;
 	let editingListener;
@@ -84,12 +85,13 @@
 		transform: translate(-50%, 0);
 	}
 	.gameTimer {
-		color: wheat;
+		color: white;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		font-size: 2rem;
+		font-size: 1.7rem;
+		font-family: 'Orbitron', sans-serif;
 	}
 	.editTimeInputs {
 		display: flex;

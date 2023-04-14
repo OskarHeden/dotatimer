@@ -36,8 +36,13 @@
 </div>
 
 <div class="componentGrid">
-	<StackingTimer>hej</StackingTimer>
-	<RoshanTimer />
+	<StackingTimer />
+	<StackingTimer />
+	<div class="roshanContainer">
+		<RoshanTimer />
+	</div>
+	<StackingTimer />
+	<StackingTimer />
 </div>
 
 <style>
@@ -53,8 +58,14 @@
 	.componentGrid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		margin: 20vh 2rem 0;
+		margin: 20vh 10vw 0;
 		justify-content: center;
 		text-align: center;
+		grid-gap: 10px;
+	}
+	.roshanContainer {
+		grid-row: 2;
+		grid-column: 1/3;
+		width: 100%;
 	}
 </style>

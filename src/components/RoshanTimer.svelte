@@ -1,6 +1,7 @@
 <script lang="ts">
 	import gameTimer from '../stores/gameTimer';
 	import UITimer from './UITimer.svelte';
+	import '@fontsource/orbitron';
 
 	let startingTime: number;
 	let startingTimeString: string;
@@ -76,21 +77,27 @@
 	{#if startingTime}
 		<div class="startingTime">
 			<span>Start time:</span>
-			<span>{startingTimeString}</span>
+			<span class="countDowns">{startingTimeString}</span>
 		</div>
 	{/if}
 	<div class="content">
 		{#if elapsedTime !== undefined}
-			<p>Definitive spawn: {countdownTimer}</p>
+			<p>Definitive spawn:</p>
+			<p class="countDowns">{countdownTimer}</p>
 		{/if}
 		{#if potentialSpawnTimer}
-			<p>Potential spawn: {potentialSpawnTimer}</p>
+			<p>Potential spawn:</p>
+			<p class="countDowns">{potentialSpawnTimer}</p>
 		{/if}
 		{#if aegisReclaimTimer}
-			<p>Aegis reclaimed in: {aegisReclaimTimer}</p>
+			<p>Aegis reclaimed in:</p>
+			<p class="countDowns">{aegisReclaimTimer}</p>
 		{/if}
-		<button on:click={startCountDown}>START</button>
+		{#if elapsedTime === undefined}
+			<button on:click={startCountDown}>START</button>
+		{/if}
 	</div>
+	<img class="roshanPic" src="../roshan.webp" alt="roshan" />
 </UITimer>
 
 <style>
@@ -98,7 +105,6 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-
 		display: flex;
 		flex-direction: column;
 	}
@@ -107,8 +113,35 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		min-height: 30vh;
+		overflow: hidden;
 	}
 	button {
 		max-width: 100px;
+	}
+
+	.countDowns {
+		font-family: 'Orbitron', sans-serif;
+		margin-top: 0px;
+	}
+	p {
+		margin-bottom: 3px;
+	}
+	.roshanPic {
+		position: absolute;
+		top: 40px;
+		right: 0%;
+		max-width: 200px;
+		filter: brightness(0);
+		pointer-events: none;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.roshanPic {
+			top: unset;
+			bottom: 0%;
+			right: 0%;
+			max-width: 100px;
+		}
 	}
 </style>

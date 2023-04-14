@@ -30,7 +30,7 @@
 </script>
 
 <UITimer title="Stacking Timer" flash={timeToStack}>
-	<p>{countdownTimer}</p>
+	<p class="countDowns">{countdownTimer}</p>
 	{#if timeToStack}
 		<div class="timeToStack">
 			<div class="content">
@@ -63,6 +63,9 @@
 		-moz-animation: bounce 3s infinite;
 		-webkit-animation: bounce 3s infinite;
 		animation: bounce 3s infinite;
+	}
+	.countDowns {
+		font-family: 'Orbitron', sans-serif;
 	}
 	@-moz-keyframes bounce {
 		0%,

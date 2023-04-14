@@ -14,6 +14,7 @@
 		box-shadow: 5px 5px 5px black;
 		border-radius: 5px;
 		position: relative;
+		overflow: hidden;
 	}
 	.timerContainer.flash {
 		animation: colorSwap 3s infinite;

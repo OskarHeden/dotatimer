@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource/orbitron": "^4.5.11",
 		"@sveltejs/adapter-static": "^2.0.1"
 	}
 }
