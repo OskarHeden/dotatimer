@@ -41,6 +41,7 @@
 			</div>
 		</div>
 	{/if}
+	<img class="creepImg" src="Centaurcreep.webp" alt="creep" />
 </UITimer>
 
 <style>
@@ -66,6 +67,14 @@
 	}
 	.countDowns {
 		font-family: 'Orbitron', sans-serif;
+	}
+
+	.creepImg {
+		max-width: 75px;
+		filter: brightness(0);
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
 	}
 	@-moz-keyframes bounce {
 		0%,
