@@ -64,8 +64,14 @@
 	<div class="gameTimer" class:editingTime on:click={editTime} on:keydown={handleKeyDown}>
 		{#if editingTime}
 			<div class="editTimeInputs">
-				<input bind:value={minutes} type="number" on:keydown={handleKeyDown} autofocus />
-				<input bind:value={seconds} type="number" on:keydown={handleKeyDown} />
+				<input
+					bind:value={minutes}
+					pattern="[0-9]*"
+					type="number"
+					on:keydown={handleKeyDown}
+					autofocus
+				/>
+				<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
 			</div>
 		{:else}
 			{formattedTime}
