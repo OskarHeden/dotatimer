@@ -15,6 +15,7 @@
 		border-radius: 5px;
 		position: relative;
 		overflow: hidden;
+		min-height: 20vh;
 	}
 	.timerContainer.flash {
 		animation: colorSwap 3s infinite;
