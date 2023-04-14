@@ -3,10 +3,7 @@ export const playSoundEffect = (src: string) => {
 	soundEffect.play();
 };
 
-export async function enableAudio() {
-	const AudioContext = window.AudioContext || window.webkitAudioContext;
-	const audioContext = new AudioContext();
-
+export async function enableAudio(audioContext: any) {
 	if (audioContext.state === 'suspended') {
 		try {
 			await audioContext.resume();
@@ -15,5 +12,6 @@ export async function enableAudio() {
 		} catch (error) {
 			console.error('Failed to unlock audio context:', error);
 		}
+		document.removeEventListener('touchend', () => enableAudio(audioContext));
 	}
 }

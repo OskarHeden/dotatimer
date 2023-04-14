@@ -5,6 +5,17 @@
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
 	import { enableAudio } from '../helpers/sound';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		const audioContext = new AudioContext();
+		const AudioContext = window.AudioContext || window.webkitAudioContext;
+		// iOS bullshit
+		document.addEventListener('touchend', () => enableAudio(audioContext), { once: true });
+
+		// Android fallback
+		enableAudio(audioContext);
+	});
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 		console.log('mupp');
@@ -33,7 +44,6 @@
 	let started = false;
 	const startTimer = () => {
 		started = true;
-		enableAudio();
 		gameTimer.start();
 	};
 </script>
