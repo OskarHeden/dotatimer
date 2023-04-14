@@ -6,7 +6,7 @@
 	export let spawnMultiplier: number;
 	export let title: string;
 	export let iconSrc: string | undefined;
-	export let audioSrc: string;
+	export let audioSrc: string | undefined = undefined;
 	export let skipFirst = false;
 
 	let enabled = true;
@@ -30,7 +30,7 @@
 		const secondsLeft = nextTimer % 60;
 
 		if (reminderTime === 0) {
-			if (enabled) {
+			if (enabled && audioSrc) {
 				playSoundEffect(audioSrc);
 			}
 		}

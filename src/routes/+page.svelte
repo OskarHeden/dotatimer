@@ -67,12 +67,7 @@
 			skipFirst
 			iconSrc="Centaurcreep.webp"
 		/>
-		<CountdownTimer
-			title="Catapult Wave"
-			audioSrc="./sound/Joey/catapultWave.mp3"
-			spawnMultiplier={5}
-			iconSrc={undefined}
-		/>
+		<CountdownTimer title="Catapult Wave" spawnMultiplier={5} iconSrc={undefined} />
 	</div>
 {:else}
 	<div class="notStarted">
