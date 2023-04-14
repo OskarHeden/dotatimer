@@ -1,12 +1,18 @@
 <script lang="ts">
 	export let title: string;
 	export let flash: boolean;
+	export let onToggle: () => void;
+	export let enabled = true;
+
+	const toggleTimer = () => {
+		onToggle();
+	};
 </script>
 
-<div class="timerContainer" class:flash>
+<button class="timerContainer" class:flash class:disabled={!enabled} on:click={toggleTimer}>
 	<span class="title" class:flash>{title}</span>
 	<slot />
-</div>
+</button>
 
 <style>
 	.timerContainer {
@@ -16,6 +22,10 @@
 		position: relative;
 		overflow: hidden;
 		min-height: 20vh;
+		width: 100%;
+	}
+	.disabled {
+		opacity: 0.2;
 	}
 	.timerContainer.flash {
 		animation: colorSwap 3s infinite;

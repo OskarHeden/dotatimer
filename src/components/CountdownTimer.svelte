@@ -9,6 +9,11 @@
 	export let audioSrc: string;
 	export let skipFirst = false;
 
+	let enabled = true;
+	const toggleTimer = () => {
+		enabled = !enabled;
+	};
+
 	const SPAWN_INTERVAL = 60 * spawnMultiplier;
 	const REMINDER_SECONDS_BEFORE = 15;
 
@@ -24,7 +29,9 @@
 		const secondsLeft = timeToReact ? 0 : nextTimer % 60;
 
 		if (nextTimer === 0) {
-			playSoundEffect(audioSrc);
+			if (enabled) {
+				playSoundEffect(audioSrc);
+			}
 		}
 
 		return `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
@@ -34,7 +41,7 @@
 	$: countdownTimer = getCountdown(gameTime);
 </script>
 
-<UITimer {title} flash={timeToReact}>
+<UITimer {title} flash={timeToReact} onToggle={toggleTimer} {enabled}>
 	<p class="countDowns">{countdownTimer}</p>
 	{#if timeToReact}
 		<div class="timeToReact">
