@@ -4,6 +4,7 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
+	import StackingTimer from '../components/StackingTimer.svelte';
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 		console.log('mupp');
@@ -58,13 +59,14 @@
 		<div class="roshanContainer">
 			<RoshanTimer />
 		</div>
-		<CountdownTimer
+		<StackingTimer />
+		<!-- <CountdownTimer
 			title="Stacking Timer"
 			audioSrc="./sound/Joey/timeToStack.mp3"
 			spawnMultiplier={1}
 			skipFirst
 			iconSrc="aeee"
-		/>
+		/> -->
 		<CountdownTimer
 			title="Catapult Wave"
 			audioSrc="./sound/Joey/catapultWave.mp3"

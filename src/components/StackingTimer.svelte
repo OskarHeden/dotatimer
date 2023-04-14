@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { playSoundEffect } from '../helpers/sound';
 	import gameTimer from '../stores/gameTimer';
 	import StackArrow from './icons/StackArrow.svelte';
 	import UITimer from './UITimer.svelte';
@@ -21,6 +22,10 @@
 			: gameTimeMinutes % MINUTE_DIVISIBLE;
 		const secondsLeft = STACKING_INTERVAL - gameTimeSeconds - REMINDER_SECONDS_BEFORE;
 		timeToStack = secondsLeft < 1;
+
+		if (secondsLeft === 0) {
+			playSoundEffect('./sound/Joey/timeToStack.mp3');
+		}
 
 		return `${formatTime(minutesLeft)}:${formatTime(timeToStack ? 0 : secondsLeft)}`;
 	};

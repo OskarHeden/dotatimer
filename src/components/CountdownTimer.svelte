@@ -9,10 +9,6 @@
 	export let audioSrc: string;
 	export let skipFirst = false;
 
-	const playSound = () => {
-		playSoundEffect(audioSrc);
-	};
-
 	const SPAWN_INTERVAL = 60 * spawnMultiplier;
 	const REMINDER_SECONDS_BEFORE = 15;
 
@@ -27,7 +23,7 @@
 		const secondsLeft = timeToReact ? 0 : nextTimer % 60;
 
 		if (nextTimer === 0) {
-			playSound();
+			playSoundEffect(audioSrc);
 		}
 
 		return `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
