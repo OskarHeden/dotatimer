@@ -24,10 +24,13 @@
 		min-height: 20vh;
 		width: 100%;
 		cursor: pointer;
+		border: none;
+		color: black;
 	}
 	.disabled {
 		opacity: 0.2;
 	}
+
 	.timerContainer.flash {
 		animation: colorSwap 3s infinite;
 	}
