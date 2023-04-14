@@ -54,6 +54,7 @@
 			window.removeEventListener('keydown', editingListener);
 		}
 	});
+
 	$: time = $gameTimer.time;
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
 </script>
@@ -73,7 +74,7 @@
 				<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
 			</div>
 		{:else}
-			{formattedTime}
+            <span class="minutes">{formattedTime.minutes.toString().padStart(2, '0')}</span>:<span class="seconds">{formattedTime.seconds.toString().padStart(2, '0')}</span>
 		{/if}
 	</div>
 	<button class="adjustTime" on:click={gameTimer.decrementOneSecond}>-</button>
@@ -81,23 +82,33 @@
 
 <style>
 	.gameTimerContainer {
-		color: white;
-		display: flex;
-		flex-direction: row;
-		position: absolute;
-		top: 0px;
-		left: 50%;
-		transform: translate(-50%, 0);
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+		color: white;;
+		width: 100%;
+        z-index: 10;
 	}
 	.gameTimer {
+        flex: 1;
 		color: white;
 		text-align: center;
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		font-size: 1.7rem;
+		flex-direction: row;
+		align-items: center;
+		font-size: 1.75rem;
 		font-family: 'Orbitron', sans-serif;
 	}
+    .minutes,
+    .seconds {
+        flex: 1;
+    }
+    .minutes {
+        text-align: right;
+    }
+    .seconds {
+        text-align: left;
+    }
 	.editTimeInputs {
 		display: flex;
 		flex-direction: row;
@@ -112,7 +123,7 @@
 
 	.adjustTime {
 		background-color: transparent;
-		font-size: 3em;
+		font-size: 3rem;
 		width: 20vw;
 		max-width: 170px;
 		color: white;
@@ -126,9 +137,17 @@
 	}
 
 	@media only screen and (max-width: 600px) {
+        .gameTimer {
+            font-size: 1.25rem;
+        }
 		.adjustTime {
-			margin-left: 2rem;
-			margin-right: 2rem;
-		}
+            font-size: 2rem;
+        }
+        .adjustTime:first-of-type {
+            padding-left: 3rem;
+        }
+        .adjustTime:last-of-type {
+            padding-right: 3rem;
+        }
 	}
 </style>

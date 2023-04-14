@@ -25,8 +25,8 @@
 		border-radius: 5px;
 		position: relative;
 		overflow: hidden;
-		min-height: 20vh;
 		width: 100%;
+		height: 100%;
 		cursor: pointer;
 		border: none;
 		color: black;
