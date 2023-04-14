@@ -38,25 +38,26 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event
 self.addEventListener('fetch', (event) => {
-	event.respondWith(
-		caches.match(event.request).then((response) => {
-			if (response) {
-				return response;
-			} else {
-				return fetch(event.request)
-					.then((res) => {
-						return caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
-							cache.put(event.request.url, res.clone());
-							return res;
-						});
-					})
-					.catch(() => {
-						console.log('Fetch failed');
-						return null;
-					});
-			}
-		})
-	);
+	return fetch(event.request);
+	// event.respondWith(
+	// 	caches.match(event.request).then((response) => {
+	// 		if (response) {
+	// 			return response;
+	// 		} else {
+	// 			return fetch(event.request)
+	// 				.then((res) => {
+	// 					return caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
+	// 						cache.put(event.request.url, res.clone());
+	// 						return res;
+	// 					});
+	// 				})
+	// 				.catch(() => {
+	// 					console.log('Fetch failed');
+	// 					return null;
+	// 				});
+	// 		}
+	// 	})
+	// );
 });
 
 // Check for updates
