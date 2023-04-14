@@ -48,7 +48,7 @@
 			title="Power Rune Timer"
 			audioSrc="./sound/Joey/powerRuneSpawn.mp3"
 			spawnMultiplier={2}
-			iconSrc={undefined}
+			iconSrc={'powerRune.webp'}
 			skipFirst
 		/>
 		<CountdownTimer
@@ -67,7 +67,12 @@
 			skipFirst
 			iconSrc="Centaurcreep.webp"
 		/>
-		<CountdownTimer title="Catapult Wave" spawnMultiplier={5} iconSrc={undefined} />
+		<CountdownTimer
+			title="Catapult Wave"
+			audioSrc="./sound/Joey/catapultWave.mp3"
+			spawnMultiplier={5}
+			iconSrc={'Catapult.webp'}
+		/>
 	</div>
 {:else}
 	<div class="notStarted">
