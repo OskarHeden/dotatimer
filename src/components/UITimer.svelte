@@ -23,6 +23,7 @@
 		overflow: hidden;
 		min-height: 20vh;
 		width: 100%;
+		cursor: pointer;
 	}
 	.disabled {
 		opacity: 0.2;
