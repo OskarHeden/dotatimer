@@ -48,31 +48,30 @@
 			title="Power Rune Timer"
 			audioSrc="./sound/Joey/powerRuneSpawn.mp3"
 			spawnMultiplier={2}
+			iconSrc={undefined}
 			skipFirst
-			iconSrc="aeee"
 		/>
 		<CountdownTimer
 			title="Bounty Rune Timer"
 			audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
+			iconSrc={undefined}
 			spawnMultiplier={3}
-			iconSrc="aeee"
 		/>
 		<div class="roshanContainer">
 			<RoshanTimer />
 		</div>
-		<StackingTimer />
-		<!-- <CountdownTimer
+		<CountdownTimer
 			title="Stacking Timer"
 			audioSrc="./sound/Joey/timeToStack.mp3"
 			spawnMultiplier={1}
 			skipFirst
-			iconSrc="aeee"
-		/> -->
+			iconSrc="Centaurcreep.webp"
+		/>
 		<CountdownTimer
 			title="Catapult Wave"
 			audioSrc="./sound/Joey/catapultWave.mp3"
 			spawnMultiplier={5}
-			iconSrc="aeee"
+			iconSrc={undefined}
 		/>
 	</div>
 {:else}

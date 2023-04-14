@@ -5,7 +5,7 @@
 
 	export let spawnMultiplier: number;
 	export let title: string;
-	export let iconSrc: string;
+	export let iconSrc: string | undefined;
 	export let audioSrc: string;
 	export let skipFirst = false;
 
@@ -21,14 +21,15 @@
 	let timeToReact = false;
 
 	const getCountdown = (time: number) => {
-		const timeLeft = SPAWN_INTERVAL - (time % SPAWN_INTERVAL) - REMINDER_SECONDS_BEFORE;
+		const timeLeft = SPAWN_INTERVAL - (time % SPAWN_INTERVAL);
 		const nextTimer =
 			skipFirst && $gameTimer.time < SPAWN_INTERVAL ? timeLeft + SPAWN_INTERVAL : timeLeft;
-		timeToReact = nextTimer < 1;
-		const minutesLeft = timeToReact ? 0 : Math.floor(nextTimer / 60);
-		const secondsLeft = timeToReact ? 0 : nextTimer % 60;
+		const reminderTime = nextTimer - REMINDER_SECONDS_BEFORE;
+		timeToReact = reminderTime < 1;
+		const minutesLeft = Math.floor(nextTimer / 60);
+		const secondsLeft = nextTimer % 60;
 
-		if (nextTimer === 0) {
+		if (reminderTime === 0) {
 			if (enabled) {
 				playSoundEffect(audioSrc);
 			}
@@ -51,6 +52,9 @@
 				</div>
 			</div>
 		</div>
+	{/if}
+	{#if iconSrc}
+		<img class="iconImage" src={iconSrc} alt="icon" />
 	{/if}
 </UITimer>
 
@@ -137,5 +141,13 @@
 			-webkit-transform: translateY(-5px) rotate(80deg);
 			transform: translateY(-5px) rotate(80deg);
 		}
+	}
+
+	.iconImage {
+		max-width: 75px;
+		filter: brightness(0);
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
 	}
 </style>
