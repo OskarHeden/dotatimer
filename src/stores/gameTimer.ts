@@ -2,12 +2,14 @@
 import { writable } from 'svelte/store';
 
 interface TimerState {
+	start: number;
 	time: number;
 	isRunning: boolean;
 }
 
 const initialState: TimerState = {
 	time: 0,
+	start: 0,
 	isRunning: false
 };
 
@@ -15,21 +17,20 @@ const timerStore = writable(initialState);
 
 let interval: ReturnType<typeof setInterval>;
 
+const getElapsedTime = (from: number) => Math.round((new Date().getTime() - from) / 1000);
+
 const start = () => {
 	timerStore.update((state) => {
 		if (!state.isRunning) {
 			interval = setInterval(() => {
-				timerStore.update((state) => ({ ...state, time: state.time + 1 }));
+				timerStore.update((state) => ({ ...state, time: getElapsedTime(state.start) }));
 			}, 1000);
 		}
-		return { ...state, isRunning: true };
-	});
-};
-
-const pause = () => {
-	timerStore.update((state) => {
-		clearInterval(interval);
-		return { ...state, isRunning: false };
+		return {
+			...state,
+			start: new Date().getTime(),
+			isRunning: true
+		};
 	});
 };
 
@@ -39,11 +40,19 @@ const reset = () => {
 };
 
 const incrementOneSecond = () => {
-	timerStore.update((state) => ({ ...state, time: state.time + 1 }));
+	timerStore.update((state) => ({ 
+		...state,
+		start: state.start - 1000,
+		time: getElapsedTime(state.start - 1000)
+	}));
 };
 
 const decrementOneSecond = () => {
-	timerStore.update((state) => ({ ...state, time: state.time - 1 }));
+	timerStore.update((state) => ({
+		...state,
+		start: state.start + 1000,
+		time: getElapsedTime(state.start - 1000)
+	}));
 };
 
 const formatTimeString = (minutes: number, seconds: number) => {
@@ -62,15 +71,17 @@ export default {
 	set: timerStore.set,
 	update: timerStore.update,
 	start,
-	pause,
 	reset,
 	incrementOneSecond,
 	decrementOneSecond,
 	setTimer: (time: number) => {
 		timerStore.update((state: TimerState): TimerState => {
+			const newStart = new Date().getTime() - (time * 1000);
+
 			return {
 				...state,
-				time
+				start: newStart,
+				time: getElapsedTime(newStart)
 			};
 		});
 	},
