@@ -1,6 +1,6 @@
 <script>
 	import './global.css';
-	import GameTimer from '../components/Gametimer.svelte';
+	import GameTimer from '../components/GameTimer.svelte';
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';

@@ -49,7 +49,7 @@
 		}
 	});
 	onDestroy(() => {
-		gameTimer.pause();
+		gameTimer.reset();
 		if (typeof window !== 'undefined') {
 			window.removeEventListener('keydown', editingListener);
 		}
