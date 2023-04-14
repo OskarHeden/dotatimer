@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let title: string;
+	export let subtitle: string = '';
 	export let flash: boolean;
 	export let onToggle: () => void;
 	export let enabled = true;
@@ -11,6 +12,9 @@
 
 <button class="timerContainer" class:flash class:disabled={!enabled} on:click={toggleTimer}>
 	<span class="title" class:flash>{title}</span>
+	{#if subtitle}
+		<span class="subtitle" class:flash>{subtitle}</span>
+	{/if}
 	<slot />
 </button>
 
@@ -26,6 +30,11 @@
 		cursor: pointer;
 		border: none;
 		color: black;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 	.disabled {
 		opacity: 0.2;

@@ -71,9 +71,11 @@
 	$: countdownTimer = countDowns.countdownTimer;
 	$: aegisReclaimTimer = countDowns.aegisReclaimTimer;
 	$: potentialSpawnTimer = countDowns.potentialSpawnTimer;
+
+	$: subtitle = `Click to ${startingTime ? 'Restart' : 'Start'}`;
 </script>
 
-<UITimer title="Roshan Timer" flash={timeToFlash}>
+<UITimer title="Roshan Timer" {subtitle} flash={timeToFlash} onToggle={startCountDown}>
 	{#if startingTime}
 		<div class="startingTime">
 			<span>Start time:</span>
@@ -92,9 +94,6 @@
 		{#if aegisReclaimTimer}
 			<p>Aegis reclaimed in:</p>
 			<p class="countDowns">{aegisReclaimTimer}</p>
-		{/if}
-		{#if elapsedTime === undefined}
-			<button on:click={startCountDown}>START</button>
 		{/if}
 	</div>
 	<img class="roshanPic" src="../roshan.webp" alt="roshan" />
