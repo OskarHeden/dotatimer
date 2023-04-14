@@ -4,6 +4,7 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
+	import AudioPrompt from '../components/AudioPrompt.svelte';
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 		console.log('mupp');
@@ -75,6 +76,7 @@
 	</div>
 {:else}
 	<div class="notStarted">
+		<AudioPrompt />
 		<button on:click={startTimer}>START TIMERS</button>
 	</div>
 {/if}
