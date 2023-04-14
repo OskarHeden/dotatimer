@@ -47,7 +47,8 @@
 		<CountdownTimer
 			title="Power Rune Timer"
 			audioSrc="./sound/Joey/powerRuneSpawn.mp3"
-			spawnMultiplier={3}
+			spawnMultiplier={2}
+			skipFirst
 			iconSrc="aeee"
 		/>
 		<CountdownTimer

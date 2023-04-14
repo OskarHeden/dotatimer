@@ -17,7 +17,8 @@
 
 	const getCountdown = (time: number) => {
 		const timeLeft = SPAWN_INTERVAL - (time % SPAWN_INTERVAL) - REMINDER_SECONDS_BEFORE;
-		const nextTimer = skipFirst && $gameTimer.time < 60 ? timeLeft + 60 : timeLeft;
+		const nextTimer =
+			skipFirst && $gameTimer.time < SPAWN_INTERVAL ? timeLeft + SPAWN_INTERVAL : timeLeft;
 		timeToReact = nextTimer < 1;
 		const minutesLeft = timeToReact ? 0 : Math.floor(nextTimer / 60);
 		const secondsLeft = timeToReact ? 0 : nextTimer % 60;
