@@ -16,10 +16,12 @@ const timerStore = writable(initialState);
 let interval: ReturnType<typeof setInterval>;
 
 const start = () => {
+	const startTimestamp = new Date().getTime();
+
 	timerStore.update((state) => {
 		if (!state.isRunning) {
 			interval = setInterval(() => {
-				timerStore.update((state) => ({ ...state, time: state.time + 1 }));
+				timerStore.update((state) => ({ ...state, time: Math.round((new Date().getTime() - startTimestamp) / 1000) }));
 			}, 1000);
 		}
 		return { ...state, isRunning: true };
