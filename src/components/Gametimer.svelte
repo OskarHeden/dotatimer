@@ -40,7 +40,6 @@
 	};
 
 	onMount(() => {
-		gameTimer.start();
 		if (typeof window !== 'undefined') {
 			editingListener = window.addEventListener('keydown', (event) => {
 				if (event.key === 'Escape') {

@@ -1,8 +1,9 @@
 <script>
 	import './global.css';
-	import StackingTimer from '../components/StackingTimer.svelte';
 	import GameTimer from '../components/Gametimer.svelte';
 	import RoshanTimer from '../components/RoshanTimer.svelte';
+	import CountdownTimer from '../components/CountdownTimer.svelte';
+	import gameTimer from '../stores/gameTimer';
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 		console.log('mupp');
@@ -28,22 +29,54 @@
 		// 		console.log('Service Worker registration failed:', error);
 		// 	});
 	}
+	let started = false;
+	const startTimer = () => {
+		started = true;
+		gameTimer.start();
+	};
 </script>
 
 <div class="header">
-	<img src="clockUI.png" />
+	<img src="clockUI.png" alt="timer" />
 	<GameTimer />
 </div>
 
-<div class="componentGrid">
-	<StackingTimer />
-	<StackingTimer />
-	<div class="roshanContainer">
-		<RoshanTimer />
+{#if started}
+	<div class="componentGrid">
+		<CountdownTimer
+			title="Power Rune Timer"
+			audioSrc="./sound/Joey/powerRuneSpawn.mp3"
+			spawnMultiplier={3}
+			iconSrc="aeee"
+		/>
+		<CountdownTimer
+			title="Bounty Rune Timer"
+			audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
+			spawnMultiplier={3}
+			iconSrc="aeee"
+		/>
+		<div class="roshanContainer">
+			<RoshanTimer />
+		</div>
+		<CountdownTimer
+			title="Stacking Timer"
+			audioSrc="./sound/Joey/timeToStack.mp3"
+			spawnMultiplier={1}
+			skipFirst
+			iconSrc="aeee"
+		/>
+		<CountdownTimer
+			title="Catapult Wave"
+			audioSrc="./sound/Joey/catapultWave.mp3"
+			spawnMultiplier={5}
+			iconSrc="aeee"
+		/>
 	</div>
-	<StackingTimer />
-	<StackingTimer />
-</div>
+{:else}
+	<div class="notStarted">
+		<button on:click={startTimer}>START TIMERS</button>
+	</div>
+{/if}
 
 <style>
 	.header {
@@ -67,5 +100,11 @@
 		grid-row: 2;
 		grid-column: 1/3;
 		width: 100%;
+	}
+	.notStarted {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 15vh;
 	}
 </style>
