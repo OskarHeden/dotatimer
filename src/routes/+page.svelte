@@ -4,6 +4,7 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
+	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -23,6 +24,7 @@
 	};
 </script>
 
+<Menu />
 <div class="header">
 	<img src="clockUI.png" alt="timer" />
 	<GameTimer />
