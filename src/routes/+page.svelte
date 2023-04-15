@@ -5,7 +5,7 @@
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
 	import { enableAudio } from '../helpers/sound';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	let audioContext;
 	onMount(() => {
@@ -13,6 +13,10 @@
 		audioContext = new AudioContext();
 		// iOS bullshit
 		document.addEventListener('touchend', () => enableAudio(audioContext), { once: true });
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('touchend', () => enableAudio(audioContext));
 	});
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {

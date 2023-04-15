@@ -12,6 +12,5 @@ export async function enableAudio(audioContext: any) {
 		} catch (error) {
 			console.error('Failed to unlock audio context:', error);
 		}
-		document.removeEventListener('touchend', () => enableAudio(audioContext));
 	}
 }
