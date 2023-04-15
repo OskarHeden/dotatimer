@@ -7,14 +7,12 @@
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 
+	let audioContext;
 	onMount(() => {
-		const audioContext = new AudioContext();
 		const AudioContext = window.AudioContext || window.webkitAudioContext;
+		audioContext = new AudioContext();
 		// iOS bullshit
 		document.addEventListener('touchend', () => enableAudio(audioContext), { once: true });
-
-		// Android fallback
-		enableAudio(audioContext);
 	});
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
@@ -45,6 +43,9 @@
 	const startTimer = () => {
 		started = true;
 		gameTimer.start();
+
+		// Android fallback
+		enableAudio(audioContext);
 	};
 </script>
 
