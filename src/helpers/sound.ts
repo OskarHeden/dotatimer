@@ -3,14 +3,15 @@ export const playSoundEffect = (src: string) => {
 	soundEffect.play();
 };
 
-export async function enableAudio(audioContext: any) {
-	if (audioContext.state === 'suspended') {
-		try {
-			await audioContext.resume();
-			console.log('Audio context unlocked and ready for use.');
-			// Your audio playback logic goes here
-		} catch (error) {
-			console.error('Failed to unlock audio context:', error);
-		}
+export async function enableAudio(audioCtx: any) {
+	if (audioCtx.state !== 'suspended') return;
+	const b = document.body;
+	const events = ['touchstart', 'touchend', 'mousedown', 'keydown'];
+	events.forEach((e) => b.addEventListener(e, unlock, false));
+	function unlock() {
+		audioCtx.resume().then(clean);
+	}
+	function clean() {
+		events.forEach((e) => b.removeEventListener(e, unlock));
 	}
 }
