@@ -9,14 +9,18 @@
 
 	let audioContext;
 	onMount(() => {
-		const AudioContext = window.AudioContext || window.webkitAudioContext;
-		audioContext = new AudioContext();
-		// iOS bullshit
-		document.addEventListener('touchend', () => enableAudio(audioContext), { once: true });
+		if (typeof document !== 'undefined') {
+			const AudioContext = window.AudioContext || window.webkitAudioContext;
+			audioContext = new AudioContext();
+			// iOS bullshit
+			document.addEventListener('touchend', () => enableAudio(audioContext), { once: true });
+		}
 	});
 
 	onDestroy(() => {
-		document.removeEventListener('touchend', () => enableAudio(audioContext));
+		if (typeof document !== 'undefined') {
+			document.removeEventListener('touchend', () => enableAudio(audioContext));
+		}
 	});
 
 	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
