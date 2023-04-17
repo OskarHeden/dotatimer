@@ -1,19 +1,26 @@
-<script>
+<script lang="ts">
+	interface Window {
+		AudioContext: typeof AudioContext;
+		webkitAudioContext: typeof AudioContext;
+	}
+
 	import './global.css';
 	import GameTimer from '../components/GameTimer.svelte';
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
 	import Menu from '../components/Menu.svelte';
-	import { enableAudio } from '../helpers/sound';
-	import { onDestroy, onMount } from 'svelte';
+	import { enableAudio, unlockSounds } from '../helpers/sound';
+	import { onMount } from 'svelte';
 
 	onMount(() => {
-		if (typeof document !== 'undefined') {
-			const AudioContext = window.AudioContext || window.webkitAudioContext;
+		if (typeof window !== 'undefined') {
+			const w: Window = window;
+			const AudioContext = w.AudioContext || w.webkitAudioContext;
 			const audioContext = new AudioContext();
 
 			enableAudio(audioContext);
+			unlockSounds();
 		}
 	});
 
