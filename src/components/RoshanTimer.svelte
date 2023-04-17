@@ -130,11 +130,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		min-height: 30vh;
 		overflow: hidden;
-	}
-	button {
-		max-width: 100px;
 	}
 
 	.countDowns {
