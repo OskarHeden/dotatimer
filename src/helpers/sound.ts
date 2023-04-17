@@ -1,6 +1,5 @@
-export const playSoundEffect = (src: string) => {
-	const soundEffect = new Audio(src);
-	soundEffect.play();
+export const playSoundEffect = (audio: any) => {
+	audio.play();
 };
 
 export async function enableAudio(audioCtx: any) {
@@ -22,8 +21,8 @@ export function unlockSounds() {
 			for (let audio of audiosWeWantToUnlock) {
 				console.log('Playing', audio);
 				audio.play();
-				// audio.pause();
-				// audio.currentTime = 0;
+				audio.pause();
+				audio.currentTime = 0;
 			}
 			audiosWeWantToUnlock = null;
 			console.log('removing eventlistener for audio unlock');

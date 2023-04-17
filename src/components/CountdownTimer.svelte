@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { playSoundEffect } from '../helpers/sound';
 	import gameTimer from '../stores/gameTimer';
 	import UITimer from './UITimer.svelte';
@@ -9,7 +10,7 @@
 	export let audioSrc: string | undefined = undefined;
 	export let skipFirst = false;
 
-	let enabled = true;
+	let enabled = false;
 	const toggleTimer = () => {
 		enabled = !enabled;
 	};
@@ -30,13 +31,20 @@
 		const secondsLeft = nextTimer % 60;
 
 		if (reminderTime === 0) {
-			if (enabled && audioSrc) {
-				playSoundEffect(audioSrc);
+			if (enabled && audio) {
+				playSoundEffect(audio);
 			}
 		}
 
 		return `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
 	};
+
+	let audio;
+	onMount(() => {
+		if (typeof window !== 'undefined') {
+			audio = new Audio(audioSrc);
+		}
+	});
 
 	$: gameTime = $gameTimer.time;
 	$: countdownTimer = getCountdown(gameTime);
