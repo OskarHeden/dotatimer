@@ -20,40 +20,59 @@
 				><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg
 			>
 		</div>
-		<h2>Timer settings</h2>
-		<h3>Sound</h3>
-		<label class="switch">
-			<input type="checkbox" />
-			<span class="slider round" />
-		</label>
-		<h3>Reminder time</h3>
-		<input type="number" />
-		<h2>Visable Timers</h2>
-		<h3>Roshan</h3>
-		<label class="switch">
-			<input type="checkbox" />
-			<span class="slider round" />
-		</label>
-		<h3>Stacking</h3>
-		<label class="switch">
-			<input type="checkbox" />
-			<span class="slider round" />
-		</label>
-		<h3>Bounty runes</h3>
-		<label class="switch">
-			<input type="checkbox" />
-			<span class="slider round" />
-		</label>
-		<h3>Power runes</h3>
-		<label class="switch">
-			<input type="checkbox" />
-			<span class="slider round" />
-		</label>
-		<h3>Catapult wave</h3>
-		<label class="switch">
-			<input type="checkbox" />
-			<span class="slider round" />
-		</label>
+		<h2 class="menuHeading">Timer settings</h2>
+		<div class="menuItem">
+			<h3>Sound</h3>
+			<label class="switch">
+				<input type="checkbox" />
+				<span class="slider round" />
+			</label>
+		</div>
+		<div class="menuItem">
+			<h3>Reminder time</h3>
+			<input class="timerSetting" type="number" placeholder="15" />
+		</div>
+		<h2 class="menuHeading">Visable Timers</h2>
+		<div class="menuItem">
+			<h3>Roshan</h3>
+			<input class="timerSetting" type="number" placeholder="15" />
+			<label class="switch">
+				<input type="checkbox" />
+				<span class="slider round" />
+			</label>
+		</div>
+		<div class="menuItem">
+			<h3>Stacking</h3>
+			<input class="timerSetting" type="number" placeholder="15" />
+			<label class="switch">
+				<input type="checkbox" />
+				<span class="slider round" />
+			</label>
+		</div>
+		<div class="menuItem">
+			<h3>Bounty runes</h3>
+			<input class="timerSetting" type="number" placeholder="15" />
+			<label class="switch">
+				<input type="checkbox" />
+				<span class="slider round" />
+			</label>
+		</div>
+		<div class="menuItem">
+			<h3>Power runes</h3>
+			<input class="timerSetting" type="number" placeholder="15" />
+			<label class="switch">
+				<input type="checkbox" />
+				<span class="slider round" />
+			</label>
+		</div>
+		<div class="menuItem">
+			<h3>Catapult wave</h3>
+			<input class="timerSetting" type="number" placeholder="15" />
+			<label class="switch">
+				<input type="checkbox" />
+				<span class="slider round" />
+			</label>
+		</div>
 	</div>
 {/if}
 
@@ -85,18 +104,27 @@
 		left: 90%;
 	}
 	.menuContainer {
-		width: 95vw;
-		height: 100vh;
-		position: absolute;
-		bottom: 0%;
+		width: 85vw;
+		height: 100dvh;
+		position: fixed;
+		top: 0%;
 		z-index: 99;
 		background-color: rgba(0, 0, 0, 0.904);
+		display: grid;
+		grid-template-columns: 50% 50%;
+	}
+	.menuHeading {
+		grid-column: 1/3;
 	}
 	h2 {
 		color: white;
 	}
 	h3 {
 		color: white;
+	}
+	.menuItem {
+		display: flex;
+		flex-direction: column;
 	}
 	.container {
 		position: absolute;
@@ -156,11 +184,11 @@
 	}
 
 	input:checked + .slider {
-		background-color: #2196f3;
+		background-color: #f32121;
 	}
 
 	input:focus + .slider {
-		box-shadow: 0 0 1px #2196f3;
+		box-shadow: 0 0 1px #f32121;
 	}
 
 	input:checked + .slider:before {
@@ -176,5 +204,8 @@
 
 	.slider.round:before {
 		border-radius: 50%;
+	}
+	.timerSetting {
+		max-width: 3rem;
 	}
 </style>
