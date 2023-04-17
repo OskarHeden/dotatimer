@@ -1,4 +1,3 @@
-// derivedTimersStore.ts
 import { derived } from 'svelte/store';
 import type { Readable } from 'svelte/store';
 import { timerConfig, type TimerConfig } from './timerConfig';
@@ -41,9 +40,12 @@ export const timerEngine: Readable<Timer[]> = derived(
 			const secondsLeft = remainingSeconds % 60;
 			const remainingFormatted = `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
 
-			const flash = remainingSeconds < FLASH_WHEN_LESS_THAN;
-
-			if (remainingSeconds === 1) playSoundEffect(new Audio(`/sound/Joey/${timer.audio}`));
+			let flash = false;
+			
+			if(timer.enabled) {
+				flash = remainingSeconds < FLASH_WHEN_LESS_THAN;
+				if (remainingSeconds === 1) playSoundEffect(new Audio(`/sound/Joey/${timer.audio}`));
+			}
 
 			return {
 				...timer,
