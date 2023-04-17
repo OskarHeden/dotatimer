@@ -63,10 +63,10 @@
 	}
 
 	.iconImage {
-		max-width: 75px;
+		max-width: 40px;
 		filter: brightness(0);
 		position: absolute;
-		bottom: 0px;
+		bottom: 50;
 		right: 0px;
 	}
 	.iconImage.timeToReact {

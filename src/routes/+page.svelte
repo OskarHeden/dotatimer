@@ -37,35 +37,67 @@
 <main>
 	{#if started}
 		<div class="componentGrid">
-			<CountdownTimer
-				title="Power Rune Timer"
-				audioSrc="./sound/Joey/powerRuneSpawn.mp3"
-				spawnMultiplier={2}
-				iconSrc={'powerRune.webp'}
-				skipFirst
-			/>
-			<CountdownTimer
-				title="Bounty Rune Timer"
-				audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
-				iconSrc={'Bountyrune.png'}
-				spawnMultiplier={3}
-			/>
+			<div class="big">
+				<CountdownTimer
+					title="Power Rune Timer"
+					audioSrc="./sound/Joey/powerRuneSpawn.mp3"
+					spawnMultiplier={2}
+					iconSrc={'powerRune.webp'}
+					skipFirst
+				/>
+			</div>
+			<div class="big">
+				<CountdownTimer
+					title="Bounty Rune Timer"
+					audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
+					iconSrc={'Bountyrune.png'}
+					spawnMultiplier={3}
+				/>
+			</div>
+			<div class="big">
+				<CountdownTimer
+					title="Bounty Rune Timer"
+					audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
+					iconSrc={'Bountyrune.png'}
+					spawnMultiplier={3}
+				/>
+			</div>
 			<div class="roshanContainer">
 				<RoshanTimer />
 			</div>
-			<CountdownTimer
-				title="Stacking Timer"
-				audioSrc="./sound/Joey/timeToStack.mp3"
-				spawnMultiplier={1}
-				skipFirst
-				iconSrc="Centaurcreep.webp"
-			/>
-			<CountdownTimer
-				title="Catapult Wave"
-				audioSrc="./sound/Joey/catapultWave.mp3"
-				spawnMultiplier={5}
-				iconSrc={'Catapult.webp'}
-			/>
+			<div class="small">
+				<CountdownTimer
+					title="Stacking Timer"
+					audioSrc="./sound/Joey/timeToStack.mp3"
+					spawnMultiplier={1}
+					skipFirst
+					iconSrc="Centaurcreep.webp"
+				/>
+			</div>
+			<div class="small">
+				<CountdownTimer
+					title="Catapult Wave"
+					audioSrc="./sound/Joey/catapultWave.mp3"
+					spawnMultiplier={5}
+					iconSrc={'Catapult.webp'}
+				/>
+			</div>
+			<div class="small">
+				<CountdownTimer
+					title="Catapult Wave"
+					audioSrc="./sound/Joey/catapultWave.mp3"
+					spawnMultiplier={5}
+					iconSrc={'Catapult.webp'}
+				/>
+			</div>
+			<div class="small">
+				<CountdownTimer
+					title="Catapult Wave"
+					audioSrc="./sound/Joey/catapultWave.mp3"
+					spawnMultiplier={5}
+					iconSrc={'Catapult.webp'}
+				/>
+			</div>
 		</div>
 	{:else}
 		<button class="start" on:click={startTimer}>START TIMERS</button>
@@ -82,8 +114,6 @@
 	.componentGrid {
 		flex: 1;
 		display: grid;
-		height: 100%;
-		max-height: 60rem;
 		grid-template-columns: 1fr 1fr;
 		margin: 1rem 10vw 0;
 		justify-content: center;
@@ -91,8 +121,15 @@
 		grid-gap: 10px;
 	}
 	.roshanContainer {
-		grid-row: 2;
+		grid-row: 4;
 		grid-column: 1/3;
 		width: 100%;
+	}
+	.small {
+		max-height: 5rem;
+	}
+	.big {
+		max-height: 5rem;
+		grid-column: 1/3;
 	}
 </style>

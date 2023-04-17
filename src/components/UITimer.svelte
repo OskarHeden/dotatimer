@@ -30,10 +30,9 @@
 		cursor: pointer;
 		border: none;
 		color: black;
-
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: start;
 		justify-content: center;
 	}
 	.disabled {
