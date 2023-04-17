@@ -53,14 +53,7 @@
 					spawnMultiplier={3}
 				/>
 			</div>
-			<div class="big">
-				<CountdownTimer
-					title="Bounty Rune Timer"
-					audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
-					iconSrc={'Bountyrune.png'}
-					spawnMultiplier={3}
-				/>
-			</div>
+
 			<div class="roshanContainer">
 				<RoshanTimer />
 			</div>
@@ -120,7 +113,7 @@
 		grid-gap: 10px;
 	}
 	.roshanContainer {
-		grid-row: 4;
+		grid-row: 3;
 		grid-column: 1/3;
 		width: 100%;
 	}

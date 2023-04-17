@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { playSoundEffect } from '../helpers/sound';
 	import gameTimer from '../stores/gameTimer';
-	import UITimer from './UITimer.svelte';
 
 	export let spawnMultiplier: number;
 	export let title: string;
@@ -19,14 +18,14 @@
 	const REMINDER_SECONDS_BEFORE = 15;
 
 	const formatTime = (value: number) => value.toString().padStart(2, '0');
-	let timeToReact = false;
+	let flash = false;
 
 	const getCountdown = (time: number) => {
 		const timeLeft = SPAWN_INTERVAL - (time % SPAWN_INTERVAL);
 		const nextTimer =
 			skipFirst && $gameTimer.time < SPAWN_INTERVAL ? timeLeft + SPAWN_INTERVAL : timeLeft;
 		const reminderTime = nextTimer - REMINDER_SECONDS_BEFORE;
-		timeToReact = reminderTime < 1;
+		flash = reminderTime < 1;
 		const minutesLeft = Math.floor(nextTimer / 60);
 		const secondsLeft = nextTimer % 60;
 
@@ -50,16 +49,21 @@
 	$: countdownTimer = getCountdown(gameTime);
 </script>
 
-<UITimer {title} flash={timeToReact} onToggle={toggleTimer} {enabled}>
+<!-- <UITimer {title} flash={flash} onToggle={toggleTimer} {enabled}>
+
+</UITimer> -->
+<button class="timerContainer" class:flash class:disabled={!enabled} on:click={toggleTimer}>
 	<p class="countdown">{countdownTimer}</p>
 	{#if iconSrc}
-		<img class="iconImage" src={iconSrc} alt="icon" class:timeToReact />
+		<img class="iconImage" src={iconSrc} alt="icon" class:flash />
 	{/if}
-</UITimer>
+	<span class="title" class:flash>{title}</span>
+</button>
 
 <style>
 	.countdown {
 		font-family: 'Orbitron', sans-serif;
+		font-size: 1.3rem;
 	}
 
 	.iconImage {
@@ -69,8 +73,53 @@
 		bottom: 50;
 		right: 0px;
 	}
-	.iconImage.timeToReact {
+	.iconImage.flash {
 		animation: blink 3s infinite;
+	}
+	.timerContainer {
+		background-color: grey;
+		box-shadow: 5px 5px 5px black;
+		border-radius: 5px;
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+		border: none;
+		color: black;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: start;
+	}
+	.disabled {
+		opacity: 0.2;
+	}
+
+	.timerContainer.flash {
+		animation: colorSwap 3s infinite;
+	}
+	.title {
+		color: white;
+	}
+	.title.flash {
+		animation: reverseColorSwap 3s infinite;
+	}
+	@keyframes colorSwap {
+		from {
+			background-color: white;
+		}
+		to {
+			background-color: grey;
+		}
+	}
+	@keyframes reverseColorSwap {
+		from {
+			color: grey;
+		}
+		to {
+			color: white;
+		}
 	}
 
 	@keyframes blink {
