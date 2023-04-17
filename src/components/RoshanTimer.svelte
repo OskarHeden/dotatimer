@@ -155,7 +155,13 @@
 		pointer-events: none;
 	}
 	.timerContainer {
-		background-color: grey;
+		background: rgb(133, 133, 133);
+		background: linear-gradient(
+			324deg,
+			rgba(133, 133, 133, 1) 0%,
+			rgba(71, 71, 71, 1) 34%,
+			rgba(110, 111, 110, 1) 100%
+		);
 		box-shadow: 5px 5px 5px black;
 		border-radius: 5px;
 		position: relative;
