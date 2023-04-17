@@ -9,7 +9,6 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
-	import { timerConfig } from '../stores/timerConfig';
 	import { timerEngine } from '../stores/timerEngine';
 	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
@@ -36,64 +35,23 @@
 <Header />
 
 <main>
-	<p>{JSON.stringify($timerConfig)}</p>
-	<p>{JSON.stringify($timerEngine)}</p>
 	{#if started}
 		<div class="componentGrid">
-			<div class="big">
-				<CountdownTimer
-					title="Power Rune Timer"
-					audioSrc="./sound/Joey/powerRuneSpawn.mp3"
-					spawnMultiplier={2}
-					iconSrc={'powerRune.webp'}
-					skipFirst
-				/>
-			</div>
-			<div class="big">
-				<CountdownTimer
-					title="Bounty Rune Timer"
-					audioSrc="./sound/Joey/bountyRuneSpawn.mp3"
-					iconSrc={'Bountyrune.png'}
-					spawnMultiplier={3}
-				/>
-			</div>
+			{#each $timerEngine.slice(0, 2) as timer}
+				<div class="big">
+					<CountdownTimer {timer} />
+				</div>
+			{/each}
 
 			<div class="roshanContainer">
 				<RoshanTimer />
 			</div>
-			<div class="small">
-				<CountdownTimer
-					title="Stacking Timer"
-					audioSrc="./sound/Joey/timeToStack.mp3"
-					spawnMultiplier={1}
-					skipFirst
-					iconSrc="Centaurcreep.webp"
-				/>
-			</div>
-			<div class="small">
-				<CountdownTimer
-					title="Catapult Wave"
-					audioSrc="./sound/Joey/catapultWave.mp3"
-					spawnMultiplier={5}
-					iconSrc={'Catapult.webp'}
-				/>
-			</div>
-			<div class="small">
-				<CountdownTimer
-					title="Catapult Wave"
-					audioSrc="./sound/Joey/catapultWave.mp3"
-					spawnMultiplier={5}
-					iconSrc={'Catapult.webp'}
-				/>
-			</div>
-			<div class="small">
-				<CountdownTimer
-					title="Catapult Wave"
-					audioSrc="./sound/Joey/catapultWave.mp3"
-					spawnMultiplier={5}
-					iconSrc={'Catapult.webp'}
-				/>
-			</div>
+
+			{#each $timerEngine.slice(2) as timer}
+				<div class="small">
+					<CountdownTimer {timer} />
+				</div>
+			{/each}
 		</div>
 	{:else}
 		<button class="start" on:click={startTimer}>START TIMERS</button>

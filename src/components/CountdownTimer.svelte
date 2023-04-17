@@ -1,63 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { playSoundEffect } from '../helpers/sound';
-	import gameTimer from '../stores/gameTimer';
+	import type { Timer } from '../stores/timerEngine';
+	import { timerConfig } from '../stores/timerConfig';
 
-	export let spawnMultiplier: number;
-	export let title: string;
-	export let iconSrc: string | undefined;
-	export let audioSrc: string | undefined = undefined;
-	export let skipFirst = false;
+	export let timer: Timer;
 
-	let enabled = false;
-	const toggleTimer = () => {
-		enabled = !enabled;
-	};
-
-	const SPAWN_INTERVAL = 60 * spawnMultiplier;
-	const REMINDER_SECONDS_BEFORE = 15;
-
-	const formatTime = (value: number) => value.toString().padStart(2, '0');
-	let flash = false;
-
-	const getCountdown = (time: number) => {
-		const timeLeft = SPAWN_INTERVAL - (time % SPAWN_INTERVAL);
-		const nextTimer =
-			skipFirst && $gameTimer.time < SPAWN_INTERVAL ? timeLeft + SPAWN_INTERVAL : timeLeft;
-		const reminderTime = nextTimer - REMINDER_SECONDS_BEFORE;
-		flash = reminderTime < 1;
-		const minutesLeft = Math.floor(nextTimer / 60);
-		const secondsLeft = nextTimer % 60;
-
-		if (reminderTime === 0) {
-			if (enabled && audio) {
-				playSoundEffect(audio);
-			}
-		}
-
-		return `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
-	};
-
-	let audio;
-	onMount(() => {
-		if (typeof window !== 'undefined') {
-			audio = new Audio(audioSrc);
-		}
-	});
-
-	$: gameTime = $gameTimer.time;
-	$: countdownTimer = getCountdown(gameTime);
+	const toggleTimer = () => $timerConfig[timer.index].enabled = !timer.enabled;
 </script>
 
-<!-- <UITimer {title} flash={flash} onToggle={toggleTimer} {enabled}>
-
-</UITimer> -->
-<button class="timerContainer" class:flash class:disabled={!enabled} on:click={toggleTimer}>
-	<p class="countdown">{countdownTimer}</p>
-	{#if iconSrc}
-		<img class="iconImage" src={iconSrc} alt="icon" class:flash />
+<button class="timerContainer" class:flash={timer.flash} class:disabled={!timer.enabled} on:click={toggleTimer}>
+	<p class="countdown">{timer.remainingFormatted}</p>
+	{#if timer.icon}
+		<img class="iconImage" src={timer.icon} alt="icon" />
 	{/if}
-	<span class="title" class:flash>{title}</span>
+	<span class="title">{timer.title}</span>
 </button>
 
 <style>
@@ -73,7 +28,7 @@
 		bottom: 50;
 		right: 0px;
 	}
-	.iconImage.flash {
+	.flash .iconImage {
 		animation: blink 3s infinite;
 	}
 	.timerContainer {
@@ -108,7 +63,7 @@
 	.title {
 		color: white;
 	}
-	.title.flash {
+	.flash .title {
 		animation: reverseColorSwap 3s infinite;
 	}
 	@keyframes colorSwap {
