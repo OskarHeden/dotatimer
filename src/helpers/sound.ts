@@ -20,14 +20,17 @@ export function unlockSounds() {
 	function unlockAll() {
 		if (audiosWeWantToUnlock) {
 			for (let audio of audiosWeWantToUnlock) {
+				console.log('Playing', audio);
 				audio.play();
-				audio.pause();
-				audio.currentTime = 0;
+				// audio.pause();
+				// audio.currentTime = 0;
 			}
 			audiosWeWantToUnlock = null;
+			console.log('removing eventlistener for audio unlock');
 			document.body.removeEventListener('touchstart', unlockAll);
 		}
 	}
+	console.log('Adding eventlistener for audio unlock');
 	document.body.addEventListener('touchstart', unlockAll, false);
 
 	const aegisRecalimed = new Audio('../../static/sound/Joey/aegisReclaimed.mp3');
