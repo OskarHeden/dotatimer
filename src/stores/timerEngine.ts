@@ -54,6 +54,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 				remainingFormatted,
 				flash
 			};
-		});
+		})
+		.sort((a, b) => a.remainingSeconds > b.remainingSeconds ? 1 : -1);
 	}
 );
