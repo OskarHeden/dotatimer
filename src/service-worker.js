@@ -1,7 +1,11 @@
-// sw.js - Service Worker File
+// service-worker.js - Service Worker File
+
+// Import pre-build environment variables
+import { process } from './swenv.js';
 
 // Cache version - change this value when you want to force an update
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = process.env.VERCEL_GIT_COMMIT_SHA;
+console.log(CACHE_VERSION);
 
 // Cache names
 const CACHE_STATIC_NAME = `static-${CACHE_VERSION}`;
@@ -24,8 +28,10 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
 	event.waitUntil(
 		caches.keys().then((cacheNames) => {
+			console.log({ cacheNames });
 			return Promise.all(
 				cacheNames.map((cacheName) => {
+					console.log({ cacheName });
 					if (cacheName !== CACHE_STATIC_NAME && cacheName !== CACHE_DYNAMIC_NAME) {
 						console.log('Removing old cache:', cacheName);
 						return caches.delete(cacheName);

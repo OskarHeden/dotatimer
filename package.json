@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"dev": "node src/swEnvBuild.js && vite dev",
+		"build": "vite build && node src/swEnvBuild.js",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -34,6 +34,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource/orbitron": "^4.5.11",
-		"@sveltejs/adapter-static": "^2.0.1"
+		"@sveltejs/adapter-static": "^2.0.1",
+		"dotenv": "^16.0.3"
 	}
 }
