@@ -1,43 +1,37 @@
-<script>
+<script lang="ts">
+	interface Window {
+		AudioContext: typeof AudioContext;
+		webkitAudioContext: typeof AudioContext;
+	}
+
 	import './global.css';
 	import Header from '../components/Header.svelte';
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
-	import { enableAudio } from '../helpers/sound';
+	import Menu from '../components/Menu.svelte';
+	import { enableAudio, unlockSounds } from '../helpers/sound';
+	import { onMount } from 'svelte';
 
-	$: if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
-		console.log('mupp');
-		// navigator.serviceWorker
-		// 	.register('/service-worker.ts')
-		// 	.then((registration) => {
-		// 		console.log('Service Worker registered:', registration);
+	onMount(() => {
+		if (typeof window !== 'undefined') {
+			const w: Window = window;
+			const AudioContext = w.AudioContext || w.webkitAudioContext;
+			const audioContext = new AudioContext();
 
-		// 		// Listen for updates from the service worker
-		// 		registration.active?.addEventListener('message', (event) => {
-		// 			if (event.data.action === 'updateAvailable') {
-		// 				console.log('Update available! Refresh the page to get the latest version.');
-		// 				// Notify the user or refresh the page to update the app
-		// 			}
-		// 		});
+			enableAudio(audioContext);
+			unlockSounds();
+		}
+	});
 
-		// 		// Check for updates every minute (60,000 milliseconds)
-		// 		setInterval(() => {
-		// 			registration.active?.postMessage({ action: 'checkForUpdate' });
-		// 		}, 60000);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log('Service Worker registration failed:', error);
-		// 	});
-	}
 	let started = false;
 	const startTimer = () => {
 		started = true;
-		enableAudio();
 		gameTimer.start();
 	};
 </script>
 
+<Menu />
 <Header />
 
 <main>
