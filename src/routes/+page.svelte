@@ -80,7 +80,7 @@
 
 <style>
 	main {
-		height: calc(100vh - 7.5rem);
+		height: calc(100svh - 7.5rem);
 		display: flex;
 		align-items: center;
 		justify-content: center;
