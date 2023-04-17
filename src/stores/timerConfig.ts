@@ -1,8 +1,9 @@
 // timersStore.ts
 import { writable, type Writable } from "svelte/store";
 
-interface TimerConfig {
-  name: string;
+export interface TimerConfig {
+  enabled: boolean;
+  title: string;
   interval: number; // in minutes
   initialSkip: number;
   icon: string;
@@ -11,42 +12,48 @@ interface TimerConfig {
 
 const initialTimers: TimerConfig[] = [
   {
-    name: "Power Rune Timer",
+    enabled: false,
+    title: "Power Rune Timer",
     interval: 2, // in minutes
     initialSkip: 1,
     icon: "powerRune.webp",
     audio: "powerRuneSpawn.mp3"
   },
   {
-    name: "Bounty Rune Timer",
+    enabled: false,
+    title: "Bounty Rune Timer",
     interval: 2, // in minutes
     initialSkip: 0,
-    icon: "Bountyrune.webp",
+    icon: "Bountyrune.png",
     audio: "bountyRuneSpawn.mp3"
   },
   {
-    name: "Stacking Timer",
+    enabled: false,
+    title: "Stacking Timer",
     interval: 2, // in minutes
     initialSkip: 1,
     icon: "Centaurcreep.webp",
     audio: "timeToStack.mp3"
   },
   {
-    name: "Catapult Wave",
+    enabled: false,
+    title: "Catapult Wave",
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
     audio: "catapultWave.mp3"
   },
   {
-    name: "Catapult Wave",
+    enabled: false,
+    title: "Catapult Wave",
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
     audio: "catapultWave.mp3"
   },
   {
-    name: "Catapult Wave",
+    enabled: false,
+    title: "Catapult Wave",
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
