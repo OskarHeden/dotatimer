@@ -2,7 +2,7 @@
 import { derived } from 'svelte/store';
 import type { Readable } from 'svelte/store';
 import { timerConfig, type TimerConfig } from './timerConfig';
-import gameTimer from './gameTimer'; // Assuming this store already exists
+import { gameTimer } from './gameTimer'; // Assuming this store already exists
 import { playSoundEffect } from '../helpers/sound';
 
 const FLASH_WHEN_LESS_THAN = 15;

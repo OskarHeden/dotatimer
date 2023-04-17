@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import gameTimer from '../stores/gameTimer';
+	import { gameTimer } from '../stores/gameTimer';
 	import { clickOutside } from '../helpers/clickOutside';
 	import '@fontsource/orbitron';
 

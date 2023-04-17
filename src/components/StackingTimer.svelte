@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { playSoundEffect } from '../helpers/sound';
-	import gameTimer from '../stores/gameTimer';
+	import { gameTimer } from '../stores/gameTimer';
 	import StackArrow from './icons/StackArrow.svelte';
 	import UITimer from './UITimer.svelte';
 

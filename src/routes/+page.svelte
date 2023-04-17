@@ -8,7 +8,7 @@
 	import Header from '../components/Header.svelte';
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
-	import gameTimer from '../stores/gameTimer';
+	import { gameTimer } from '../stores/gameTimer';
 	import { timerEngine } from '../stores/timerEngine';
 	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { playSoundEffect } from '../helpers/sound';
-	import gameTimer from '../stores/gameTimer';
+	import { gameTimer } from '../stores/gameTimer';
 	import '@fontsource/orbitron';
 
 	let startingTime: number | undefined;
