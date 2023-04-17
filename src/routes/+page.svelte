@@ -9,6 +9,8 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
+	import { timerConfig } from '../stores/timerConfig';
+	import { timerEngine } from '../stores/timerEngine';
 	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
@@ -34,6 +36,8 @@
 <Header />
 
 <main>
+	<p>{JSON.stringify($timerConfig)}</p>
+	<p>{JSON.stringify($timerEngine)}</p>
 	{#if started}
 		<div class="componentGrid">
 			<div class="big">
