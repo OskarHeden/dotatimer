@@ -10,7 +10,7 @@
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import gameTimer from '../stores/gameTimer';
 	import Menu from '../components/Menu.svelte';
-	import { enableAudio, unlockSounds } from '../helpers/sound';
+	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
@@ -20,7 +20,6 @@
 			const audioContext = new AudioContext();
 
 			enableAudio(audioContext);
-			unlockSounds();
 		}
 	});
 
