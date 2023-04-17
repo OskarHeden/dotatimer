@@ -1,16 +1,25 @@
 <script lang="ts">
+	import { playSoundEffect } from '../helpers/sound';
 	import gameTimer from '../stores/gameTimer';
 	import UITimer from './UITimer.svelte';
 	import '@fontsource/orbitron';
 
-	let startingTime: number;
+	let startingTime: number | undefined;
 	let startingTimeString: string;
-	let elapsedTime: number;
+	let elapsedTime: number | undefined;
 	let interval: NodeJS.Timer;
 
 	const MIN_SPAWN_TIME = 8 * 60;
 	const MAX_SPAWN_TIME = 11 * 60;
 	const AEGIS_RECLAIMED = 6 * 60;
+
+	const reset = () => {
+		clearInterval(interval);
+		setTimeout(() => {
+			elapsedTime = undefined;
+			startingTime = undefined;
+		}, 2000);
+	};
 
 	const startCountDown = () => {
 		const time = $gameTimer.time;
@@ -59,6 +68,15 @@
 			)}`;
 		}
 		timeToFlash = MAX_SPAWN_TIME - elapsedTime < 16 && MAX_SPAWN_TIME - elapsedTime > 0;
+
+		if (elapsedTime === MAX_SPAWN_TIME) {
+			playSoundEffect('./sound/Joey/roshanHasSpawned.mp3');
+			reset();
+		} else if (elapsedTime === AEGIS_RECLAIMED) {
+			playSoundEffect('./sound/Joey/aegisReclaimed.mp3');
+		} else if (elapsedTime === MIN_SPAWN_TIME) {
+			playSoundEffect('./sound/Joey/roshanPotentialSpawn.mp3');
+		}
 
 		return {
 			countdownTimer: `${formatTime(gameTimeMinutes)}:${formatTime(gameTimeSeconds)}`,
