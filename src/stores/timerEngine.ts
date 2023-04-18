@@ -4,8 +4,6 @@ import { timerConfig, type TimerConfig } from './timerConfig';
 import { gameTimer } from './gameTimer'; // Assuming this store already exists
 import { playSoundEffect } from '../helpers/sound';
 
-const FLASH_WHEN_LESS_THAN = 15;
-
 export interface Timer extends TimerConfig {
 	index: number;
 	remainingSeconds: number;
@@ -44,8 +42,8 @@ export const timerEngine: Readable<Timer[]> = derived(
 				let flash = false;
 
 				if (timer.enabled) {
-					flash = remainingSeconds < FLASH_WHEN_LESS_THAN;
-					if (remainingSeconds === 1) playSoundEffect(timer.audio);
+					flash = remainingSeconds <= timer.notifySecondsBefore;
+					if (remainingSeconds === timer.notifySecondsBefore) playSoundEffect(timer.audio);
 				}
 
 				return {
