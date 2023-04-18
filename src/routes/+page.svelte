@@ -1,10 +1,6 @@
 <script lang="ts">
-	interface Window {
-		AudioContext: typeof AudioContext;
-		webkitAudioContext: typeof AudioContext;
-	}
-
 	import './global.css';
+	import { flip } from 'svelte/animate';
 	import Header from '../components/Header.svelte';
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
@@ -13,6 +9,11 @@
 	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
+
+	interface Window {
+		AudioContext: typeof AudioContext;
+		webkitAudioContext: typeof AudioContext;
+	}
 
 	onMount(() => {
 		if (typeof window !== 'undefined') {
@@ -41,8 +42,8 @@
 <main>
 	{#if started}
 		<div class="componentGrid">
-			{#each $timerEngine.slice(0, 2) as timer}
-				<div class="big">
+			{#each $timerEngine as timer(timer.index)}
+				<div animate:flip={{ duration: 300 }} class="timer" class:big={timer.order < 2}>
 					<CountdownTimer {timer} />
 				</div>
 			{/each}
@@ -50,12 +51,6 @@
 			<div class="roshanContainer">
 				<RoshanTimer />
 			</div>
-
-			{#each $timerEngine.slice(2) as timer}
-				<div class="small">
-					<CountdownTimer {timer} />
-				</div>
-			{/each}
 		</div>
 	{:else}
 		<button class="start" on:click={startTimer}>START TIMERS</button>
@@ -83,11 +78,10 @@
 		grid-column: 1/3;
 		width: 100%;
 	}
-	.small {
+	.timer {
 		max-height: 5rem;
 	}
-	.big {
-		max-height: 5rem;
+	.timer.big {
 		grid-column: 1/3;
 	}
 </style>
