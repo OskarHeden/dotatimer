@@ -7,6 +7,7 @@ import { config } from './config';
 
 export interface Timer extends TimerConfig {
 	index: number;
+	order: number;
 	remainingSeconds: number;
 	remainingFormatted: string;
 	flash: boolean;
@@ -67,6 +68,9 @@ export const timerEngine: Readable<Timer[]> = derived(
 					: a.remainingSeconds > b.remainingSeconds
 						? 1
 						: -1
-			);
+			).map((timer, index) => ({
+				...timer,
+				order: index
+			}));
 	}
 );
