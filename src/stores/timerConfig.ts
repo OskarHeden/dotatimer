@@ -7,7 +7,8 @@ export interface TimerConfig {
   interval: number; // in minutes
   initialSkip: number;
   icon: string;
-  audio: HTMLAudioElement;
+  audioSrc: string;
+  audio?: HTMLAudioElement;
   notifySecondsBefore: number;
 }
 
@@ -18,7 +19,7 @@ const initialTimers: TimerConfig[] = [
     interval: 2, // in minutes
     initialSkip: 1,
     icon: "powerRune.webp",
-    audio: new Audio("/sound/Joey/powerRuneSpawn.mp3"),
+    audioSrc: "powerRuneSpawn.mp3",
     notifySecondsBefore: 15
   },
   {
@@ -27,7 +28,7 @@ const initialTimers: TimerConfig[] = [
     interval: 2, // in minutes
     initialSkip: 0,
     icon: "Bountyrune.png",
-    audio: new Audio("/sound/Joey/bountyRuneSpawn.mp3"),
+    audioSrc: "bountyRuneSpawn.mp3",
     notifySecondsBefore: 15
   },
   {
@@ -36,7 +37,7 @@ const initialTimers: TimerConfig[] = [
     interval: 2, // in minutes
     initialSkip: 1,
     icon: "Centaurcreep.webp",
-    audio: new Audio("/sound/Joey/timeToStack.mp3"),
+    audioSrc: "timeToStack.mp3",
     notifySecondsBefore: 15
   },
   {
@@ -45,7 +46,7 @@ const initialTimers: TimerConfig[] = [
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
-    audio: new Audio("/sound/Joey/catapultWave.mp3"),
+    audioSrc: "catapultWave.mp3",
     notifySecondsBefore: 15
   },
   {
@@ -54,7 +55,7 @@ const initialTimers: TimerConfig[] = [
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
-    audio: new Audio("/sound/Joey/catapultWave.mp3"),
+    audioSrc: "catapultWave.mp3",
     notifySecondsBefore: 15
   },
   {
@@ -63,9 +64,14 @@ const initialTimers: TimerConfig[] = [
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
-    audio: new Audio("/sound/Joey/catapultWave.mp3"),
+    audioSrc: "catapultWave.mp3",
     notifySecondsBefore: 15
   }
-];
+].map(timer => typeof window === "undefined"
+  ? timer
+  : {
+    ...timer,
+    audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
+  });
 
 export const timerConfig: Writable<TimerConfig[]> = writable(initialTimers);

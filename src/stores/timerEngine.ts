@@ -44,7 +44,11 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				if (timer.enabled) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
-					if ($config.soundEnabled && remainingSeconds === timer.notifySecondsBefore) playSoundEffect(timer.audio);
+					if (
+						$config.soundEnabled &&
+						remainingSeconds === timer.notifySecondsBefore &&
+						timer.audio
+					) playSoundEffect(timer.audio);
 				}
 
 				return {
