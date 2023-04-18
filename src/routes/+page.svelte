@@ -13,6 +13,7 @@
 	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
+	import { timerConfig } from '../stores/timerConfig';
 
 	onMount(() => {
 		if (typeof window !== 'undefined') {
@@ -27,6 +28,10 @@
 	let started = false;
 	const startTimer = () => {
 		started = true;
+		$timerConfig.forEach(timer => {
+			timer.audio?.load();
+			timer.audio?.pause();
+		});
 		gameTimer.start();
 	};
 </script>
