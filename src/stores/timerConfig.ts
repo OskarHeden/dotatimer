@@ -10,6 +10,7 @@ export interface TimerConfig {
   audioSrc: string;
   audio?: HTMLAudioElement;
   notifySecondsBefore: number;
+  flashColor: string;
 }
 
 const initialTimers: TimerConfig[] = [
@@ -20,7 +21,8 @@ const initialTimers: TimerConfig[] = [
     initialSkip: 2,
     icon: "powerRune.webp",
     audioSrc: "powerRuneSpawn.mp3",
-    notifySecondsBefore: 15
+    notifySecondsBefore: 15,
+    flashColor: "#7149C6"
   },
   {
     enabled: false,
@@ -29,7 +31,8 @@ const initialTimers: TimerConfig[] = [
     initialSkip: 0,
     icon: "Bountyrune.png",
     audioSrc: "bountyRuneSpawn.mp3",
-    notifySecondsBefore: 15
+    notifySecondsBefore: 15,
+    flashColor: "#FC2947"
   },
   {
     enabled: false,
@@ -38,7 +41,8 @@ const initialTimers: TimerConfig[] = [
     initialSkip: 1,
     icon: "Centaurcreep.webp",
     audioSrc: "timeToStack.mp3",
-    notifySecondsBefore: 15
+    notifySecondsBefore: 15,
+    flashColor: "#FE6244"
   },
   {
     enabled: false,
@@ -47,7 +51,8 @@ const initialTimers: TimerConfig[] = [
     initialSkip: 0,
     icon: "Catapult.webp",
     audioSrc: "catapultWave.mp3",
-    notifySecondsBefore: 15
+    notifySecondsBefore: 15,
+    flashColor: "#FFDEB9"
   },
   {
     enabled: false,
@@ -56,7 +61,8 @@ const initialTimers: TimerConfig[] = [
     initialSkip: 0,
     icon: "Catapult.webp",
     audioSrc: "catapultWave.mp3",
-    notifySecondsBefore: 15
+    notifySecondsBefore: 15,
+    flashColor: "hotpink"
   },
   {
     enabled: false,
@@ -65,7 +71,8 @@ const initialTimers: TimerConfig[] = [
     initialSkip: 0,
     icon: "Catapult.webp",
     audioSrc: "catapultWave.mp3",
-    notifySecondsBefore: 15
+    notifySecondsBefore: 15,
+    flashColor: "gold"
   }
 ].map(timer => typeof window === "undefined"
   ? timer
