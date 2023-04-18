@@ -7,7 +7,7 @@
 	const toggleTimer = () => $timerConfig[timer.index].enabled = !timer.enabled;
 </script>
 
-<button class="timerContainer" class:flash={timer.flash} class:disabled={!timer.enabled} on:click={toggleTimer}>
+<button class="timerContainer" class:flash={timer.flash} class:disabled={!timer.enabled} on:click={toggleTimer} style="--flash-color: {timer.flashColor}">
 	<p class="countdown">{timer.remainingFormatted}</p>
 	{#if timer.icon}
 		<img class="iconImage" src={timer.icon} alt="icon" />
@@ -29,7 +29,7 @@
 		right: 0px;
 	}
 	.flash .iconImage {
-		animation: blink 3s infinite;
+		animation: blink 0.5s ease alternate infinite;
 	}
 	.timerContainer {
 		background: rgb(133, 133, 133);
@@ -58,7 +58,7 @@
 	}
 
 	.timerContainer.flash {
-		animation: colorSwap 3s infinite;
+		animation: colorSwap 0.5s ease alternate infinite;
 	}
 	.title {
 		color: white;
@@ -69,9 +69,11 @@
 	@keyframes colorSwap {
 		from {
 			background-color: white;
+			box-shadow: inset 0 0 0px 0px var(--flash-color);
 		}
 		to {
 			background-color: grey;
+			box-shadow: inset 0 0 8px 2px var(--flash-color);
 		}
 	}
 	@keyframes reverseColorSwap {
