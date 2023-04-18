@@ -65,7 +65,7 @@ const formatTime = (time: number) => {
 	}
 };
 
-export default {
+export const gameTimer = {
 	subscribe: timerStore.subscribe,
 	set: timerStore.set,
 	update: timerStore.update,

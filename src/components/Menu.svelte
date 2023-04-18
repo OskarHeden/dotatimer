@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { clickOutside } from '../helpers/clickOutside';
-	import config from '../stores/config';
+	import { config } from '../stores/config';
 
 	let buttonRef: HTMLElement;
 	let buttonIconRef: SVGSVGElement;

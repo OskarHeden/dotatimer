@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import gameTimer from '../stores/gameTimer';
+	import { gameTimer } from '../stores/gameTimer';
 	import { clickOutside } from '../helpers/clickOutside';
 	import '@fontsource/orbitron';
 
@@ -61,22 +61,23 @@
 
 <div class="gameTimerContainer" use:clickOutside={{ callback: closeAndSave, enabled: editingTime }}>
 	<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
-	<div class="gameTimer" class:editingTime on:click={editTime} on:keydown={handleKeyDown}>
-		{#if editingTime}
-			<div class="editTimeInputs">
-				<input
-					bind:value={minutes}
-					pattern="[0-9]*"
-					type="number"
-					on:keydown={handleKeyDown}
-					autofocus
-				/>
-				<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
-			</div>
-		{:else}
-            <span class="minutes">{formattedTime.minutes.toString().padStart(2, '0')}</span>:<span class="seconds">{formattedTime.seconds.toString().padStart(2, '0')}</span>
-		{/if}
-	</div>
+
+	{#if !editingTime}
+		<button class="gameTimer" class:editingTime on:click|stopPropagation={editTime}>
+			<span class="minutes">{formattedTime.minutes.toString().padStart(2, '0')}</span>:<span class="seconds">{formattedTime.seconds.toString().padStart(2, '0')}</span>
+		</button>
+	{:else}
+		<div class="editTimeInputs">
+			<input
+				bind:value={minutes}
+				pattern="[0-9]*"
+				type="number"
+				on:keydown={handleKeyDown}
+				autofocus
+			/>
+			<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
+		</div>
+	{/if}
 	<button class="adjustTime" on:click={gameTimer.decrementOneSecond}>-</button>
 </div>
 
@@ -119,18 +120,26 @@
 	.editTimeInputs input {
 		width: 2rem;
 		text-align: center;
+		font-size: 1.5rem;
+		background-color: #111;
+		color: #fff;
+		border: none;
+		margin: 0.25rem;
+		padding: 0.25rem;
 	}
 
 	.adjustTime {
-		background-color: transparent;
 		font-size: 3rem;
 		width: 20vw;
 		max-width: 170px;
 		color: white;
-		border: none;
-		outline: hidden;
 		margin-left: 0rem;
 		margin-right: 0rem;
+	}
+	button {
+		background-color: transparent;
+		border: none;
+		outline: hidden;
 	}
 	button:active {
 		color: black;
@@ -140,6 +149,10 @@
         .gameTimer {
             font-size: 1.25rem;
         }
+		.editTimeInputs input {
+			width: 2.5rem;
+			font-size: 1rem;
+		}
 		.adjustTime {
             font-size: 2rem;
         }
