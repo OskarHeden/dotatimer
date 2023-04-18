@@ -17,7 +17,7 @@ const initialTimers: TimerConfig[] = [
     enabled: false,
     title: "Power Rune Timer",
     interval: 2, // in minutes
-    initialSkip: 1,
+    initialSkip: 2,
     icon: "powerRune.webp",
     audioSrc: "powerRuneSpawn.mp3",
     notifySecondsBefore: 15
@@ -25,7 +25,7 @@ const initialTimers: TimerConfig[] = [
   {
     enabled: false,
     title: "Bounty Rune Timer",
-    interval: 2, // in minutes
+    interval: 3, // in minutes
     initialSkip: 0,
     icon: "Bountyrune.png",
     audioSrc: "bountyRuneSpawn.mp3",
@@ -34,7 +34,7 @@ const initialTimers: TimerConfig[] = [
   {
     enabled: false,
     title: "Stacking Timer",
-    interval: 2, // in minutes
+    interval: 1, // in minutes
     initialSkip: 1,
     icon: "Centaurcreep.webp",
     audioSrc: "timeToStack.mp3",
