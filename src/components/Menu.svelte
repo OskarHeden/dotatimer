@@ -1,11 +1,32 @@
-<script>
-	import { fly } from 'svelte/transition';
+<script lang="ts">
+	import { clickOutside } from '../helpers/clickOutside';
+	import config from '../stores/config';
+
+	let buttonRef: HTMLElement;
+	let buttonIconRef: SVGSVGElement;
+
 	let visible = false;
+	const closeMenu = () => {
+		visible = false;
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			closeMenu();
+		}
+	};
 </script>
 
 {#if visible}
-	<div class="menuContainer">
-		<div class="close" on:click={() => (visible = !visible)}>
+	<div
+		class="menuContainer"
+		use:clickOutside={{
+			enabled: visible,
+			callback: closeMenu,
+			exceptions: [buttonRef, buttonIconRef]
+		}}
+	>
+		<div class="close" on:click={() => (visible = false)} on:keydown={handleKeyDown}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -24,13 +45,13 @@
 		<div class="menuItem">
 			<h3>Sound</h3>
 			<label class="switch">
-				<input type="checkbox" />
+				<input type="checkbox" bind:checked={$config.soundEnabled} />
 				<span class="slider round" />
 			</label>
 		</div>
 		<div class="menuItem">
 			<h3>Reminder time</h3>
-			<input class="timerSetting" type="number" placeholder="15" />
+			<input class="timerSetting" type="number" bind:value={$config.defaultReminder} />
 		</div>
 		<h2 class="menuHeading">Visable Timers</h2>
 		<div class="menuItem">
@@ -76,9 +97,16 @@
 	</div>
 {/if}
 
-<div class="container" on:click={() => (visible = !visible)} />
+<div
+	class="container"
+	on:click={() => (visible = !visible)}
+	bind:this={buttonRef}
+	on:keydown={handleKeyDown}
+/>
 <div class="iconContainer">
 	<svg
+		on:keydown={handleKeyDown}
+		bind:this={buttonIconRef}
 		on:click={() => (visible = !visible)}
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
