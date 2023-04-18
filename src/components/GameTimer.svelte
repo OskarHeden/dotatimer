@@ -59,39 +59,54 @@
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
 </script>
 
-<div class="gameTimerContainer" use:clickOutside={{ callback: closeAndSave, enabled: editingTime }}>
-	<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
-
-	{#if !editingTime}
-		<button class="gameTimer" class:editingTime on:click|stopPropagation={editTime}>
-			<span class="minutes">{formattedTime.minutes.toString().padStart(2, '0')}</span>:<span class="seconds">{formattedTime.seconds.toString().padStart(2, '0')}</span>
-		</button>
+<div
+	class="gameTimerContainer"
+	use:clickOutside={{ callback: closeAndSave, enabled: editingTime }}
+	class:idle={!$gameTimer.isRunning}
+>
+	{#if !$gameTimer.isRunning}
+		<img src="/icons/192.png" width={56} height={56} alt="Logo" />
 	{:else}
-		<div class="editTimeInputs">
-			<input
-				bind:value={minutes}
-				pattern="[0-9]*"
-				type="number"
-				on:keydown={handleKeyDown}
-				autofocus
-			/>
-			<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
-		</div>
+		<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
+
+		{#if !editingTime}
+			<button class="gameTimer" class:editingTime on:click|stopPropagation={editTime}>
+				<span class="minutes">{formattedTime.minutes.toString().padStart(2, '0')}</span>:<span
+					class="seconds">{formattedTime.seconds.toString().padStart(2, '0')}</span
+				>
+			</button>
+		{:else}
+			<div class="editTimeInputs">
+				<input
+					bind:value={minutes}
+					pattern="[0-9]*"
+					type="number"
+					on:keydown={handleKeyDown}
+					autofocus
+				/>
+				<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
+			</div>
+		{/if}
+		<button class="adjustTime" on:click={gameTimer.decrementOneSecond}>-</button>
 	{/if}
-	<button class="adjustTime" on:click={gameTimer.decrementOneSecond}>-</button>
 </div>
 
 <style>
 	.gameTimerContainer {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-		color: white;;
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		color: white;
 		width: 100%;
-        z-index: 10;
+		z-index: 10;
+	}
+	.gameTimerContainer.idle {
+		justify-content: center;
+		align-items: center;
+		padding-top: 0.4rem;
 	}
 	.gameTimer {
-        flex: 1;
+		flex: 1;
 		color: white;
 		text-align: center;
 		display: flex;
@@ -100,16 +115,16 @@
 		font-size: 1.75rem;
 		font-family: 'Orbitron', sans-serif;
 	}
-    .minutes,
-    .seconds {
-        flex: 1;
-    }
-    .minutes {
-        text-align: right;
-    }
-    .seconds {
-        text-align: left;
-    }
+	.minutes,
+	.seconds {
+		flex: 1;
+	}
+	.minutes {
+		text-align: right;
+	}
+	.seconds {
+		text-align: left;
+	}
 	.editTimeInputs {
 		display: flex;
 		flex-direction: row;
@@ -146,21 +161,21 @@
 	}
 
 	@media only screen and (max-width: 600px) {
-        .gameTimer {
-            font-size: 1.25rem;
-        }
+		.gameTimer {
+			font-size: 1.25rem;
+		}
 		.editTimeInputs input {
 			width: 2.5rem;
 			font-size: 1rem;
 		}
 		.adjustTime {
-            font-size: 2rem;
-        }
-        .adjustTime:first-of-type {
-            padding-left: 3rem;
-        }
-        .adjustTime:last-of-type {
-            padding-right: 3rem;
-        }
+			font-size: 2rem;
+		}
+		.adjustTime:first-of-type {
+			padding-left: 3rem;
+		}
+		.adjustTime:last-of-type {
+			padding-right: 3rem;
+		}
 	}
 </style>
