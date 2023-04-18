@@ -45,7 +45,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				if (timer.enabled) {
 					flash = remainingSeconds < FLASH_WHEN_LESS_THAN;
-					if (remainingSeconds === 1) playSoundEffect(new Audio(`/sound/Joey/${timer.audio}`));
+					if (remainingSeconds === 1) playSoundEffect(timer.audio);
 				}
 
 				return {

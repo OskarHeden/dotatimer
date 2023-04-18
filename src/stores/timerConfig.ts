@@ -7,7 +7,7 @@ export interface TimerConfig {
   interval: number; // in minutes
   initialSkip: number;
   icon: string;
-  audio: string;
+  audio: HTMLAudioElement;
 }
 
 const initialTimers: TimerConfig[] = [
@@ -17,7 +17,7 @@ const initialTimers: TimerConfig[] = [
     interval: 2, // in minutes
     initialSkip: 1,
     icon: "powerRune.webp",
-    audio: "powerRuneSpawn.mp3"
+    audio: new Audio("/sound/Joey/powerRuneSpawn.mp3")
   },
   {
     enabled: false,
@@ -25,7 +25,7 @@ const initialTimers: TimerConfig[] = [
     interval: 2, // in minutes
     initialSkip: 0,
     icon: "Bountyrune.png",
-    audio: "bountyRuneSpawn.mp3"
+    audio: new Audio("/sound/Joey/bountyRuneSpawn.mp3")
   },
   {
     enabled: false,
@@ -33,7 +33,7 @@ const initialTimers: TimerConfig[] = [
     interval: 2, // in minutes
     initialSkip: 1,
     icon: "Centaurcreep.webp",
-    audio: "timeToStack.mp3"
+    audio: new Audio("/sound/Joey/timeToStack.mp3")
   },
   {
     enabled: false,
@@ -41,7 +41,7 @@ const initialTimers: TimerConfig[] = [
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
-    audio: "catapultWave.mp3"
+    audio: new Audio("/sound/Joey/catapultWave.mp3")
   },
   {
     enabled: false,
@@ -49,7 +49,7 @@ const initialTimers: TimerConfig[] = [
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
-    audio: "catapultWave.mp3"
+    audio: new Audio("/sound/Joey/catapultWave.mp3")
   },
   {
     enabled: false,
@@ -57,7 +57,7 @@ const initialTimers: TimerConfig[] = [
     interval: 5, // in minutes
     initialSkip: 0,
     icon: "Catapult.webp",
-    audio: "catapultWave.mp3"
+    audio: new Audio("/sound/Joey/catapultWave.mp3")
   }
 ];
 
