@@ -49,10 +49,6 @@
 				<span class="slider round" />
 			</label>
 		</div>
-		<div class="menuItem">
-			<h3>Reminder time</h3>
-			<input class="timerSetting" type="number" bind:value={$config.defaultReminder} />
-		</div>
 		<h2 class="menuHeading">Visable Timers</h2>
 		<div class="menuItem">
 			<h3>Roshan</h3>
