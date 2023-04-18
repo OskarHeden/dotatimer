@@ -3,6 +3,7 @@ import type { Readable } from 'svelte/store';
 import { timerConfig, type TimerConfig } from './timerConfig';
 import { gameTimer } from './gameTimer'; // Assuming this store already exists
 import { playSoundEffect } from '../helpers/sound';
+import { config } from './config';
 
 export interface Timer extends TimerConfig {
 	index: number;
@@ -14,8 +15,8 @@ export interface Timer extends TimerConfig {
 const formatTime = (value: number) => value.toString().padStart(2, '0');
 
 export const timerEngine: Readable<Timer[]> = derived(
-	[timerConfig, gameTimer],
-	([$timerConfigs, $gameTimer]): Timer[] => {
+	[timerConfig, gameTimer, config],
+	([$timerConfigs, $gameTimer, $config]): Timer[] => {
 		return $timerConfigs
 			.map((timer, index) => {
 				let remainingSeconds: number;
@@ -43,7 +44,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				if (timer.enabled) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
-					if (remainingSeconds === timer.notifySecondsBefore) playSoundEffect(timer.audio);
+					if ($config.soundEnabled && remainingSeconds === timer.notifySecondsBefore) playSoundEffect(timer.audio);
 				}
 
 				return {
