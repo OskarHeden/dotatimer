@@ -9,6 +9,7 @@
 	import Menu from '../components/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
+	import StartTimersModal from '../components/StartTimersModal.svelte';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -28,7 +29,7 @@
 	let started = false;
 	const startTimer = () => {
 		started = true;
-		$timerEngine.forEach(timer => {
+		$timerEngine.forEach((timer) => {
 			timer.audio?.load();
 			timer.audio?.pause();
 		});
@@ -42,7 +43,7 @@
 <main>
 	{#if started}
 		<div class="componentGrid">
-			{#each $timerEngine as timer(timer.index)}
+			{#each $timerEngine as timer (timer.index)}
 				<div animate:flip={{ duration: 300 }} class="timer" class:big={timer.order < 2}>
 					<CountdownTimer {timer} />
 				</div>
@@ -53,7 +54,7 @@
 			</div>
 		</div>
 	{:else}
-		<button class="start" on:click={startTimer}>START TIMERS</button>
+		<StartTimersModal onStartTimer={startTimer} />
 	{/if}
 </main>
 

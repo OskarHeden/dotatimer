@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { clickOutside } from '../helpers/clickOutside';
 	import { config } from '../stores/config';
+	import Slider from './Slider.svelte';
 
 	let buttonRef: HTMLElement;
 	let buttonIconRef: SVGSVGElement;
@@ -53,42 +54,27 @@
 		<div class="menuItem">
 			<h3>Roshan</h3>
 			<input class="timerSetting" type="number" placeholder="15" />
-			<label class="switch">
-				<input type="checkbox" />
-				<span class="slider round" />
-			</label>
+			<Slider onChange={() => {}} />
 		</div>
 		<div class="menuItem">
 			<h3>Stacking</h3>
 			<input class="timerSetting" type="number" placeholder="15" />
-			<label class="switch">
-				<input type="checkbox" />
-				<span class="slider round" />
-			</label>
+			<Slider onChange={() => {}} />
 		</div>
 		<div class="menuItem">
 			<h3>Bounty runes</h3>
 			<input class="timerSetting" type="number" placeholder="15" />
-			<label class="switch">
-				<input type="checkbox" />
-				<span class="slider round" />
-			</label>
+			<Slider onChange={() => {}} />
 		</div>
 		<div class="menuItem">
 			<h3>Power runes</h3>
 			<input class="timerSetting" type="number" placeholder="15" />
-			<label class="switch">
-				<input type="checkbox" />
-				<span class="slider round" />
-			</label>
+			<Slider onChange={() => {}} />
 		</div>
 		<div class="menuItem">
 			<h3>Catapult wave</h3>
 			<input class="timerSetting" type="number" placeholder="15" />
-			<label class="switch">
-				<input type="checkbox" />
-				<span class="slider round" />
-			</label>
+			<Slider onChange={() => {}} />
 		</div>
 	</div>
 {/if}

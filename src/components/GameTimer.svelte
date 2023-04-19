@@ -23,17 +23,17 @@
 
 	const closeAndSave = () => {
 		const secondsFromMinutes: number = parseInt(minutes) * 60;
-		const totalSeconds = +(secondsFromMinutes + parseInt(seconds));
+		const totalSeconds =
+			secondsFromMinutes < 0
+				? +(secondsFromMinutes - parseInt(seconds))
+				: +(secondsFromMinutes + parseInt(seconds));
 		gameTimer.setTimer(totalSeconds);
 		closeEditTime();
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (event.key === 'Enter') {
-			const secondsFromMinutes: number = parseInt(minutes) * 60;
-			const totalSeconds = +(secondsFromMinutes + parseInt(seconds));
-			gameTimer.setTimer(totalSeconds);
-			closeEditTime();
+			closeAndSave();
 		} else if (event.key === 'Escape') {
 			closeEditTime();
 		}
