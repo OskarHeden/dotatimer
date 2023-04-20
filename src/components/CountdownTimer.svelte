@@ -1,13 +1,21 @@
 <script lang="ts">
 	import type { Timer } from '../stores/timerEngine';
-	import { timerConfig } from '../stores/timerConfig';
+	import { timerConfig, setLocalStorage } from '../stores/timerConfig';
 
 	export let timer: Timer;
 
-	const toggleTimer = () => $timerConfig[timer.index].enabled = !timer.enabled;
+	const toggleTimer = () => {
+		$timerConfig[timer.index].enabled = !timer.enabled;
+		setLocalStorage();
+	};
 </script>
 
-<button class="timerContainer" class:flash={timer.flash} class:disabled={!timer.enabled} on:click={toggleTimer}>
+<button
+	class="timerContainer"
+	class:flash={timer.flash}
+	class:disabled={!timer.enabled}
+	on:click={toggleTimer}
+>
 	<p class="countdown">{timer.remainingFormatted}</p>
 	{#if timer.icon}
 		<img class="iconImage" src={timer.icon} alt="icon" />

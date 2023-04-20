@@ -10,6 +10,7 @@
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 	import StartTimersModal from '../components/StartTimersModal.svelte';
+	import { restoreTimers } from '../stores/timerConfig';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -23,6 +24,9 @@
 			const audioContext = new AudioContext();
 
 			enableAudio(audioContext);
+
+			// Restore localStorage timers
+			restoreTimers();
 		}
 	});
 
@@ -37,7 +41,9 @@
 	};
 </script>
 
-<Menu />
+{#if started}
+	<Menu />
+{/if}
 <Header />
 
 <main>

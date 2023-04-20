@@ -1,11 +1,11 @@
 <script lang="ts">
 	export let onChange = (evt: Event) => {};
-
-	let checked: boolean;
+	export let checked: boolean;
+	export let disabled: boolean;
 </script>
 
 <label class="switch">
-	<input type="checkbox" on:change={onChange} />
+	<input type="checkbox" on:change={onChange} {checked} {disabled} />
 	<span class="slider round" />
 </label>
 

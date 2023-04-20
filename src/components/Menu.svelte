@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { clickOutside } from '../helpers/clickOutside';
 	import { config } from '../stores/config';
+	import { timerConfig, toggleTimer, setTimerReminder } from '../stores/timerConfig';
 	import Slider from './Slider.svelte';
 
 	let buttonRef: HTMLElement;
@@ -9,6 +10,14 @@
 	let visible = false;
 	const closeMenu = () => {
 		visible = false;
+	};
+
+	const handleSliderOnChange = (index: number) => {
+		toggleTimer(index);
+	};
+
+	const handleOnInput = (evt: Event, index: number) => {
+		setTimerReminder(parseInt(evt?.target?.value), index);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
@@ -53,29 +62,27 @@
 		<h2 class="menuHeading">Visable Timers</h2>
 		<div class="menuItem">
 			<h3>Roshan</h3>
-			<input class="timerSetting" type="number" placeholder="15" />
-			<Slider onChange={() => {}} />
+			<span style="color:white;padding:0 1em 0 0;">One does not simply change the roshan timer</span
+			>
+			<input class="timerSetting" type="number" placeholder="15" disabled />
+			<Slider onChange={() => {}} checked={false} disabled />
 		</div>
-		<div class="menuItem">
-			<h3>Stacking</h3>
-			<input class="timerSetting" type="number" placeholder="15" />
-			<Slider onChange={() => {}} />
-		</div>
-		<div class="menuItem">
-			<h3>Bounty runes</h3>
-			<input class="timerSetting" type="number" placeholder="15" />
-			<Slider onChange={() => {}} />
-		</div>
-		<div class="menuItem">
-			<h3>Power runes</h3>
-			<input class="timerSetting" type="number" placeholder="15" />
-			<Slider onChange={() => {}} />
-		</div>
-		<div class="menuItem">
-			<h3>Catapult wave</h3>
-			<input class="timerSetting" type="number" placeholder="15" />
-			<Slider onChange={() => {}} />
-		</div>
+		{#each $timerConfig as timer, index}
+			<div class="menuItem">
+				<h3>{timer.title}</h3>
+				<input
+					class="timerSetting"
+					type="number"
+					placeholder={timer.notifySecondsBefore.toString()}
+					on:input={(evt) => handleOnInput(evt, index)}
+				/>
+				<Slider
+					onChange={() => handleSliderOnChange(index)}
+					checked={timer.enabled}
+					disabled={false}
+				/>
+			</div>
+		{/each}
 	</div>
 {/if}
 

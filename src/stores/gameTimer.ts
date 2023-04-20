@@ -40,7 +40,7 @@ const reset = () => {
 };
 
 const incrementOneSecond = () => {
-	timerStore.update((state) => ({ 
+	timerStore.update((state) => ({
 		...state,
 		start: state.start - 1000,
 		time: getElapsedTime(state.start - 1000)
@@ -61,8 +61,8 @@ const formatTime = (time: number) => {
 
 	return {
 		minutes: minutes.toString().padStart(2, '0'),
-		seconds: seconds.toString().padStart(2, '0'),
-	}
+		seconds: seconds.toString().padStart(2, '0')
+	};
 };
 
 export const gameTimer = {
@@ -75,7 +75,7 @@ export const gameTimer = {
 	decrementOneSecond,
 	setTimer: (time: number) => {
 		timerStore.update((state: TimerState): TimerState => {
-			const newStart = new Date().getTime() - (time * 1000);
+			const newStart = new Date().getTime() - time * 1000;
 
 			return {
 				...state,

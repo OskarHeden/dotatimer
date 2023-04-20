@@ -1,10 +1,6 @@
 <script lang="ts">
-	import { timerConfig } from '../stores/timerConfig';
+	import { timerConfig, setTimerReminder, toggleTimer } from '../stores/timerConfig';
 	import Slider from './Slider.svelte';
-
-	const toggleTimer = (evt: Event, index: number) => {
-		$timerConfig[index].enabled = evt?.target?.checked;
-	};
 
 	export let onStartTimer = () => {};
 
@@ -34,7 +30,14 @@
 					<span>{timer.title}</span>
 					<div style="display:flex;align-items:center;">
 						<span style="margin-right:0.5em;">Enabled:</span>
-						<Slider onChange={(evt) => toggleTimer(evt, index)} />
+						<Slider onChange={() => toggleTimer(index)} disabled={false} checked={timer.enabled} />
+					</div>
+					<div class="reminder">
+						<span style="margin-right:0.5em;">Reminder:</span>
+						<input
+							on:input={(evt) => setTimerReminder(parseInt(evt?.target?.value), index)}
+							placeholder={timer.notifySecondsBefore.toString()}
+						/>
 					</div>
 				</div>
 			{/each}
@@ -92,5 +95,14 @@
 	.timer {
 		display: flex;
 		flex-direction: column;
+	}
+	.reminder {
+		display: flex;
+		align-items: center;
+		margin: 0.5em 0;
+	}
+	.reminder input {
+		width: 20px;
+		text-align: center;
 	}
 </style>
