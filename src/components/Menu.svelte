@@ -61,25 +61,23 @@
 		</div>
 		<h2 class="menuHeading">Visable Timers</h2>
 		<div class="menuItem">
-			<h3>Roshan</h3>
-			<span style="color:white;padding:0 1em 0 0;">One does not simply change the roshan timer</span
-			>
-			<input class="timerSetting" type="number" placeholder="15" disabled />
-			<Slider onChange={() => {}} checked={false} disabled />
+			<h3>Name:</h3>
+			<h3>On/Off</h3>
+			<h3>Reminder</h3>
 		</div>
 		{#each $timerConfig as timer, index}
 			<div class="menuItem">
 				<h3>{timer.title}</h3>
+				<Slider
+					onChange={() => handleSliderOnChange(index)}
+					checked={timer.enabled}
+					disabled={false}
+				/>
 				<input
 					class="timerSetting"
 					type="number"
 					placeholder={timer.notifySecondsBefore.toString()}
 					on:input={(evt) => handleOnInput(evt, index)}
-				/>
-				<Slider
-					onChange={() => handleSliderOnChange(index)}
-					checked={timer.enabled}
-					disabled={false}
 				/>
 			</div>
 		{/each}
@@ -106,7 +104,6 @@
 		stroke-width="2"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		class="feather feather-settings"
 		><circle cx="12" cy="12" r="3" /><path
 			d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
 		/></svg
@@ -120,34 +117,41 @@
 		top: 2%;
 		left: 90%;
 	}
+	.iconContainer :hover {
+		stroke: red;
+	}
 	.menuContainer {
+		padding: 1rem;
+		margin-bottom: 30px;
 		width: 85vw;
-		height: 100dvh;
+		max-width: 600px;
+		height: 100vh;
 		position: fixed;
 		top: 0%;
 		z-index: 99;
 		background-color: rgba(0, 0, 0, 0.904);
 		display: grid;
-		grid-template-columns: 50% 50%;
+		grid-template-columns: 100%;
+		overflow: scroll;
 	}
-	.menuHeading {
-		grid-column: 1/3;
-	}
+
 	h2 {
 		color: white;
 	}
 	h3 {
 		color: white;
+		width: 150px;
 	}
 	.menuItem {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
 	}
 	.container {
 		position: absolute;
 		bottom: 0%;
 		right: 0%;
-
 		width: 0;
 		height: 0;
 		border-style: solid;
@@ -157,7 +161,7 @@
 	.iconContainer svg {
 		position: absolute;
 		stroke: white;
-		bottom: 2%;
+		bottom: 1%;
 		right: 1%;
 	}
 	/* The switch - the box around the slider */
@@ -224,5 +228,18 @@
 	}
 	.timerSetting {
 		max-width: 3rem;
+	}
+	@media only screen and (min-width: 800px) {
+		.container {
+			border-width: 0 0 100px 100px;
+		}
+		.iconContainer svg {
+			position: absolute;
+			stroke: white;
+			bottom: 1%;
+			right: 1%;
+			width: 35px;
+			height: 35px;
+		}
 	}
 </style>
