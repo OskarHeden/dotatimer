@@ -23,6 +23,33 @@ const prepareAudio = (timer: TimerConfig) =>
 const initialTimers: TimerConfig[] = [
 	{
 		enabled: false,
+		title: 'Wisdom Rune',
+		interval: 7, // in minutes
+		initialSkip: 0,
+		icon: 'powerRune.webp',
+		audioSrc: 'powerRuneSpawn.mp3',
+		notifySecondsBefore: 15
+	},
+	{
+		enabled: false,
+		title: 'Tormentor',
+		interval: 20, // in minutes
+		initialSkip: 0,
+		icon: 'powerRune.webp',
+		audioSrc: 'powerRuneSpawn.mp3',
+		notifySecondsBefore: 15
+	},
+	{
+		enabled: false,
+		title: 'Lotus',
+		interval: 3, // in minutes
+		initialSkip: 0,
+		icon: 'Bountyrune.png',
+		audioSrc: 'bountyRuneSpawn.mp3',
+		notifySecondsBefore: 15
+	},
+	{
+		enabled: false,
 		title: 'Power Rune',
 		interval: 2, // in minutes
 		initialSkip: 2,

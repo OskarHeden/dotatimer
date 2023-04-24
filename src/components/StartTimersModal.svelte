@@ -49,7 +49,6 @@
 <style>
 	.start-timers-modal {
 		width: 70vw;
-		height: 70vh;
 		padding: 1rem;
 		border-radius: 12px;
 		background-color: white;

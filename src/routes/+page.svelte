@@ -26,7 +26,7 @@
 			enableAudio(audioContext);
 
 			// Restore localStorage timers
-			restoreTimers();
+			// restoreTimers();
 		}
 	});
 
