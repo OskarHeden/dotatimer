@@ -14,9 +14,12 @@
 	<br />
 	<span>Set the starting time of the timer:</span>
 	<div class="timeInput">
-		<input type="text" /> <input type="text" />
+		<input type="text" placeholder="-01" /> <input type="text" placeholder="00" />
 	</div>
 	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
+	<span>How long before the event would you like to be reminded?</span>
+	<input type="text" placeholder="15" />
+
 	<span>Use the settings menu in the lower right corner to edit settings for the timers</span>
 	<!-- <span>Please enter your desired start time:</span>
 	<br />
@@ -83,6 +86,8 @@
 		max-width: 75px;
 		height: 40px;
 		margin: 20px 0px 20px 0px;
+		font-size: 1.5rem;
+		text-align: center;
 	}
 
 	h1 {
