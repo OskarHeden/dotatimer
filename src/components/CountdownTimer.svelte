@@ -3,6 +3,7 @@
 	import { timerConfig, setLocalStorage } from '../stores/timerConfig';
 
 	export let timer: Timer;
+	export let big: boolean;
 
 	const toggleTimer = () => {
 		$timerConfig[timer.index].enabled = !timer.enabled;
@@ -12,6 +13,7 @@
 
 <button
 	class="timerContainer"
+	class:big
 	class:flash={timer.flash}
 	class:disabled={!timer.enabled}
 	on:click={toggleTimer}
@@ -27,6 +29,7 @@
 	.countdown {
 		font-family: 'Orbitron', sans-serif;
 		font-size: 1.3rem;
+		margin-bottom: 3px;
 	}
 
 	.iconImage {
@@ -57,19 +60,27 @@
 		border: none;
 		color: black;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
 		justify-content: start;
 	}
 	.disabled {
 		opacity: 0.2;
 	}
+	.big .countdown {
+		font-size: 2.3rem;
+		margin-bottom: 0px;
+		margin-top: 10px;
+	}
+	.big .title {
+		font-size: 1.2rem;
+	}
 
 	.timerContainer.flash {
 		animation: colorSwap 3s infinite;
 	}
 	.title {
-		color: white;
+		color: #b1a6a6;
 	}
 	.flash .title {
 		animation: reverseColorSwap 3s infinite;

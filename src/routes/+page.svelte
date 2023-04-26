@@ -51,7 +51,7 @@
 		<div class="componentGrid">
 			{#each $timerEngine as timer (timer.index)}
 				<div animate:flip={{ duration: 300 }} class="timer" class:big={timer.order < 2}>
-					<CountdownTimer {timer} />
+					<CountdownTimer {timer} big={timer.order < 2} />
 				</div>
 			{/each}
 

@@ -12,6 +12,12 @@
 	<h1>Welcome to Dota Timer!</h1>
 	<span>The home of Dota time</span>
 	<br />
+	<span>Set the starting time of the timer:</span>
+	<div class="timeInput">
+		<input type="text" /> <input type="text" />
+	</div>
+	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
+	<span>Use the settings menu in the lower right corner to edit settings for the timers</span>
 	<!-- <span>Please enter your desired start time:</span>
 	<br />
 	<div class="startingTimeInputs">
@@ -20,26 +26,25 @@
 		<input type="number" pattern="[0-9]" bind:value={startMinutes} id="minutes" />
 		<input type="number" pattern="[0-9]" bind:value={startSeconds} id="seconds" />
 	</div> -->
-
-	<div>
-		<span> Here you can chose which timers you want: </span>
-		<div class="timers">
-			{#each $timerConfig as timer, index}
-				<div class="timer">
-					<span>{timer.title}</span>
-					<div style="display:flex;align-items:center;">
-						<Slider onChange={() => toggleTimer(index)} disabled={false} checked={timer.enabled} />
-					</div>
-					<div class="reminder">
-						<span style="margin-right:0.5em;">Reminder:</span>
-						<input
-							on:input={(evt) => setTimerReminder(parseInt(evt?.target?.value), index)}
-							placeholder={timer.notifySecondsBefore.toString()}
-						/>
-					</div>
+	<!-- <div class="timers">
+		{#each $timerConfig as timer, index}
+			<div class="timer">
+				<span>{timer.title}</span>
+				<div style="display:flex;align-items:center;">
+					<Slider onChange={() => toggleTimer(index)} disabled={false} checked={timer.enabled} />
 				</div>
-			{/each}
-		</div>
+				<div class="reminder">
+					<span style="margin-right:0.5em;">Reminder:</span>
+					<input
+						on:input={(evt) => setTimerReminder(parseInt(evt?.target?.value), index)}
+						placeholder={timer.notifySecondsBefore.toString()}
+					/>
+				</div>
+			</div>
+		{/each}
+	</div> -->
+	<div>
+		<span />
 	</div>
 	<button on:click={onStartTimer}>Start timers</button>
 </div>
@@ -47,11 +52,11 @@
 <style>
 	.start-timers-modal {
 		width: 70vw;
-		padding: 1rem;
+		padding: 1rem 1rem 5rem 1rem;
 		border-radius: 12px;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+
 		align-items: center;
 		text-align: center;
 		background: rgb(133, 133, 133);
@@ -69,6 +74,15 @@
 			rgba(79, 79, 79, 1) 79%,
 			rgba(110, 111, 110, 1) 100%
 		);
+	}
+	.timeInput {
+		display: flex;
+		flex-direction: row;
+	}
+	input {
+		max-width: 75px;
+		height: 40px;
+		margin: 20px 0px 20px 0px;
 	}
 
 	h1 {
@@ -94,8 +108,11 @@
 		font-size: 24px;
 		padding: 0.5em 1em;
 		color: #fff;
-		background-color: #000;
 		border-radius: 4px;
+		background-color: black;
+		margin-top: 5rem;
+	}
+	button:hover {
 		box-shadow: 0px 0px 5px 2px #ff6046;
 	}
 	.timers {
