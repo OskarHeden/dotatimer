@@ -115,7 +115,7 @@
 		color: #fff;
 		border-radius: 4px;
 		background-color: black;
-		margin-top: 5rem;
+		margin-top: 1rem;
 	}
 	button:hover {
 		box-shadow: 0px 0px 5px 2px #ff6046;
