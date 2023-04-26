@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { clickOutside } from '../helpers/clickOutside';
 	import { config } from '../stores/config';
-	import { timerConfig, toggleTimer, setTimerReminder } from '../stores/timerConfig';
+	import { timerConfig, toggleTimerSound, setTimerReminder } from '../stores/timerConfig';
 	import Slider from './Slider.svelte';
+	import LockScroll from './utility/LockScroll.svelte';
 
 	let buttonRef: HTMLElement;
 	let buttonIconRef: SVGSVGElement;
@@ -13,7 +14,7 @@
 	};
 
 	const handleSliderOnChange = (index: number) => {
-		toggleTimer(index);
+		toggleTimerSound(index);
 	};
 
 	const handleOnInput = (evt: Event, index: number) => {
@@ -28,63 +29,65 @@
 </script>
 
 {#if visible}
-	<div
-		class="menuContainer"
-		use:clickOutside={{
-			enabled: visible,
-			callback: closeMenu,
-			exceptions: [buttonRef, buttonIconRef]
-		}}
-	>
-		<div class="content">
-			<div class="close" on:click={() => (visible = false)} on:keydown={handleKeyDown}>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="feather feather-x"
-					><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg
-				>
-			</div>
-			<h2 class="menuHeading">Timer settings</h2>
-			<div class="menuItem">
-				<h3>Sound</h3>
-				<label class="switch">
-					<input type="checkbox" bind:checked={$config.soundEnabled} />
-					<span class="slider round" />
-				</label>
-			</div>
-			<h2 class="menuHeading">Visable Timers</h2>
-			<div class="menuItem">
-				<h3>Name:</h3>
-				<h3>On/Off</h3>
-				<h3>Reminder</h3>
-			</div>
-
-			{#each $timerConfig as timer, index}
-				<div class="menuItem">
-					<h3>{timer.title}</h3>
-					<Slider
-						onChange={() => handleSliderOnChange(index)}
-						checked={timer.enabled}
-						disabled={false}
-					/>
-					<input
-						class="timerSetting"
-						type="number"
-						placeholder={timer.notifySecondsBefore.toString()}
-						on:input={(evt) => handleOnInput(evt, index)}
-					/>
+	<LockScroll>
+		<div
+			class="menuContainer"
+			use:clickOutside={{
+				enabled: visible,
+				callback: closeMenu,
+				exceptions: [buttonRef, buttonIconRef]
+			}}
+		>
+			<div class="content">
+				<div class="close" on:click={() => (visible = false)} on:keydown={handleKeyDown}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="feather feather-x"
+						><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg
+					>
 				</div>
-			{/each}
+				<h2 class="menuHeading">Timer settings</h2>
+				<div class="menuItem">
+					<h3>Sound</h3>
+					<label class="switch">
+						<input type="checkbox" bind:checked={$config.soundEnabled} />
+						<span class="slider round" />
+					</label>
+				</div>
+				<h2 class="menuHeading">Visable Timers</h2>
+				<div class="menuItem">
+					<h3>Name:</h3>
+					<h3>Sound</h3>
+					<h3>Reminder</h3>
+				</div>
+
+				{#each $timerConfig as timer, index}
+					<div class="menuItem">
+						<h3>{timer.title}</h3>
+						<Slider
+							onChange={() => handleSliderOnChange(index)}
+							checked={timer.soundEnabled}
+							disabled={false}
+						/>
+						<input
+							class="timerSetting"
+							type="number"
+							value={timer.notifySecondsBefore.toString()}
+							on:input={(evt) => handleOnInput(evt, index)}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
+	</LockScroll>
 {/if}
 
 <div
@@ -145,13 +148,14 @@
 	}
 	h3 {
 		color: white;
-		width: 150px;
+		width: 120px;
+		text-align: start;
 	}
 	.menuItem {
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		align-items: center;
-		justify-content: space-between;
+		justify-items: center;
 	}
 	.container {
 		position: absolute;

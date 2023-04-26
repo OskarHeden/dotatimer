@@ -3,6 +3,7 @@ import { get, writable, type Writable } from 'svelte/store';
 
 export interface TimerConfig {
 	enabled: boolean;
+	soundEnabled: boolean;
 	title: string;
 	interval: number; // in minutes
 	initialSkip: number;
@@ -23,6 +24,7 @@ const prepareAudio = (timer: TimerConfig) =>
 const initialTimers: TimerConfig[] = [
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Wisdom Rune',
 		interval: 7, // in minutes
 		initialSkip: 0,
@@ -32,6 +34,7 @@ const initialTimers: TimerConfig[] = [
 	},
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Tormentor',
 		interval: 20, // in minutes
 		initialSkip: 0,
@@ -41,6 +44,7 @@ const initialTimers: TimerConfig[] = [
 	},
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Lotus',
 		interval: 3, // in minutes
 		initialSkip: 0,
@@ -50,6 +54,7 @@ const initialTimers: TimerConfig[] = [
 	},
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Power Rune',
 		interval: 2, // in minutes
 		initialSkip: 2,
@@ -59,6 +64,7 @@ const initialTimers: TimerConfig[] = [
 	},
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Bounty Rune',
 		interval: 3, // in minutes
 		initialSkip: 0,
@@ -68,6 +74,7 @@ const initialTimers: TimerConfig[] = [
 	},
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Stacking',
 		interval: 1, // in minutes
 		initialSkip: 1,
@@ -77,6 +84,7 @@ const initialTimers: TimerConfig[] = [
 	},
 	{
 		enabled: false,
+		soundEnabled: true,
 		title: 'Catapult Wave',
 		interval: 5, // in minutes
 		initialSkip: 0,
@@ -102,6 +110,12 @@ export const setTimerReminder = (value: number, index: number) => {
 export const toggleTimer = (index: number) => {
 	const timers = get(timerConfig);
 	timers[index].enabled = !timers[index].enabled;
+	setLocalStorage();
+};
+
+export const toggleTimerSound = (index: number) => {
+	const timers = get(timerConfig);
+	timers[index].soundEnabled = !timers[index].soundEnabled;
 	setLocalStorage();
 };
 

@@ -43,13 +43,10 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				let flash = false;
 
-				if (timer.enabled) {
+				if (timer.enabled && timer.soundEnabled) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
-					if (
-						$config.soundEnabled &&
-						remainingSeconds === timer.notifySecondsBefore &&
-						timer.audio
-					) playSoundEffect(timer.audio);
+					if ($config.soundEnabled && remainingSeconds === timer.notifySecondsBefore && timer.audio)
+						playSoundEffect(timer.audio);
 				}
 
 				return {
@@ -66,9 +63,10 @@ export const timerEngine: Readable<Timer[]> = derived(
 						? 1
 						: -1
 					: a.remainingSeconds > b.remainingSeconds
-						? 1
-						: -1
-			).map((timer, index) => ({
+					? 1
+					: -1
+			)
+			.map((timer, index) => ({
 				...timer,
 				order: index
 			}));

@@ -5,8 +5,13 @@
 	export let timer: Timer;
 	export let big: boolean;
 
-	const toggleTimer = () => {
+	export const toggleTimer = () => {
 		$timerConfig[timer.index].enabled = !timer.enabled;
+		setLocalStorage();
+	};
+
+	export const toggleTimerSound = () => {
+		$timerConfig[timer.index].soundEnabled = true;
 		setLocalStorage();
 	};
 </script>
@@ -18,6 +23,11 @@
 	class:disabled={!timer.enabled}
 	on:click={toggleTimer}
 >
+	{#if !timer.soundEnabled}
+		<button class="soundDisabled" on:click|stopPropagation={toggleTimerSound}>
+			<img src="/soundDisabled.svg" alt="sound-disabled-icon" />
+		</button>
+	{/if}
 	<p class="countdown">{timer.remainingFormatted}</p>
 	{#if timer.icon}
 		<img class="iconImage" src={timer.icon} alt="icon" />
@@ -109,5 +119,17 @@
 		to {
 			filter: brightness(1);
 		}
+	}
+
+	.soundDisabled {
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: transparent;
+		border: none;
+	}
+	.soundDisabled img {
+		height: 20px;
+		width: 20px;
 	}
 </style>
