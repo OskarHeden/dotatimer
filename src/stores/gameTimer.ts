@@ -49,7 +49,7 @@ const incrementOneSecond = () => {
 	timerStore.update((state) => ({
 		...state,
 		start: state.start - 1000,
-		time: getElapsedTime(state.start - 1000)
+		time: state.initialTime + getElapsedTime(state.start - 1000)
 	}));
 };
 
@@ -57,7 +57,7 @@ const decrementOneSecond = () => {
 	timerStore.update((state) => ({
 		...state,
 		start: state.start + 1000,
-		time: getElapsedTime(state.start - 1000)
+		time: state.initialTime + getElapsedTime(state.start - 1000)
 	}));
 };
 
