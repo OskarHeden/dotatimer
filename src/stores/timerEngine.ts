@@ -25,10 +25,12 @@ export const timerEngine: Readable<Timer[]> = derived(
 				// Calculate the total elapsed rounds for the current game timer value
 				const elapsedRounds = Math.floor($gameTimer.time / (timer.interval * 60));
 
+				const negativeTime = $gameTimer.time < 0;
+
 				// Check if the timer should still skip rounds
 				if (elapsedRounds < timer.initialSkip) {
 					remainingSeconds =
-						timer.interval * 60 * (timer.initialSkip - elapsedRounds) +
+						timer.interval * 60 * (timer.initialSkip - (negativeTime ? 0 : elapsedRounds)) +
 						timer.interval * 60 -
 						$gameTimer.time;
 				} else {
