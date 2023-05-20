@@ -12,8 +12,15 @@
 	const editTime = () => {
 		if (!editingTime) {
 			editingTime = true;
-			minutes = `${Math.floor(time / 60)}`;
-			seconds = `${time % 60}`;
+			const negativeTime = time < 0;
+			if (negativeTime) {
+				const negativeMinutes = time < -59;
+				minutes = `${negativeMinutes ? '-' : ''}${Math.floor(Math.abs(time) / 60)}`;
+				seconds = `${negativeMinutes ? '' : '-'}${Math.abs(time) % 60}`;
+			} else {
+				minutes = `${Math.floor(time / 60)}`;
+				seconds = `${time % 60}`;
+			}
 		}
 	};
 

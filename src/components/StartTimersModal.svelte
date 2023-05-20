@@ -1,11 +1,26 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { gameTimer } from '../stores/gameTimer';
 	import { timerConfig, setTimerReminder, toggleTimer } from '../stores/timerConfig';
 	import Slider from './Slider.svelte';
 
 	export let onStartTimer = () => {};
 
-	let startMinutes: number;
-	let startSeconds: number;
+	const handleOnChange = () => {
+		const minutesInSeconds = +startMinutes * 60;
+		const totalSeconds =
+			minutesInSeconds < 0 ? minutesInSeconds - +startSeconds : minutesInSeconds + +startSeconds;
+		if (typeof minutesInSeconds === 'number' && typeof totalSeconds === 'number') {
+			$gameTimer.initialTime = totalSeconds;
+		}
+	};
+
+	let startMinutes: string = '-01';
+	let startSeconds: string = '00';
+
+	onMount(() => {
+		handleOnChange();
+	});
 </script>
 
 <div class="start-timers-modal">
@@ -14,11 +29,12 @@
 	<br />
 	<span>Set the starting time of the timer:</span>
 	<div class="timeInput">
-		<input type="text" placeholder="-01" /> <input type="text" placeholder="00" />
+		<input type="text" bind:value={startMinutes} on:input={handleOnChange} placeholder="-1" />
+		<input type="text" bind:value={startSeconds} on:input={handleOnChange} placeholder="00" />
 	</div>
 	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
 	<span>How long before the event would you like to be reminded?</span>
-	<input type="text" placeholder="15" />
+	<input type="text" placeholder="15" value={15} />
 
 	<span>Use the settings menu in the lower right corner to edit settings for the timers</span>
 	<!-- <span>Please enter your desired start time:</span>

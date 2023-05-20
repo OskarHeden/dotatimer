@@ -3,12 +3,14 @@ import { writable } from 'svelte/store';
 
 interface TimerState {
 	start: number;
+	initialTime: number;
 	time: number;
 	isRunning: boolean;
 }
 
 const initialState: TimerState = {
 	time: 0,
+	initialTime: 0,
 	start: 0,
 	isRunning: false
 };
@@ -23,11 +25,15 @@ const start = () => {
 	timerStore.update((state) => {
 		if (!state.isRunning) {
 			interval = setInterval(() => {
-				timerStore.update((state) => ({ ...state, time: getElapsedTime(state.start) }));
+				timerStore.update((state) => ({
+					...state,
+					time: state.initialTime + getElapsedTime(state.start)
+				}));
 			}, 1000);
 		}
 		return {
 			...state,
+			time: state.initialTime,
 			start: new Date().getTime(),
 			isRunning: true
 		};
@@ -56,11 +62,13 @@ const decrementOneSecond = () => {
 };
 
 const formatTime = (time: number) => {
-	const seconds = time % 60;
-	const minutes = Math.floor(time / 60);
+	const negative = time < 0;
+	const seconds = Math.abs(time) % 60;
+	const minutes = negative ? Math.ceil(time / 60) : Math.floor(time / 60);
+	const showPrefixMinus = minutes === 0 && negative;
 
 	return {
-		minutes: minutes.toString().padStart(2, '0'),
+		minutes: `${showPrefixMinus ? '-' : ''}${minutes.toString().padStart(2, '0')}`,
 		seconds: seconds.toString().padStart(2, '0')
 	};
 };
@@ -79,7 +87,8 @@ export const gameTimer = {
 
 			return {
 				...state,
-				start: newStart,
+				start: new Date().getTime(),
+				initialTime: time,
 				time: getElapsedTime(newStart)
 			};
 		});
