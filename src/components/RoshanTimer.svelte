@@ -2,6 +2,8 @@
 	import { playSoundEffect } from '../helpers/sound';
 	import { gameTimer } from '../stores/gameTimer';
 	import '@fontsource/orbitron';
+	import { roshanTimer } from '../stores/timerEngine';
+	import { roshan } from '../stores/timerConfig';
 
 	let startingTime: number | undefined;
 	let startingTimeString: string;
@@ -21,6 +23,10 @@
 	};
 
 	const startCountDown = () => {
+		if (!$roshan.activated) {
+			roshan.activate($gameTimer.time);
+		}
+
 		const time = $gameTimer.time;
 		const gameTimeMinutes = Math.floor(time / 60);
 		const gameTimeSeconds = time % 60;

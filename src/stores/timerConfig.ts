@@ -1,5 +1,6 @@
 // timersStore.ts
 import { get, writable, type Writable } from 'svelte/store';
+import { gameTimer } from './gameTimer';
 
 export interface TimerConfig {
 	enabled: boolean;
@@ -11,7 +12,18 @@ export interface TimerConfig {
 	audioSrc: string;
 	audio?: HTMLAudioElement;
 	notifySecondsBefore: number;
+	static?: boolean;
+	startTime?: number;
 }
+
+const prepareRoshanAudio = (timer: RoshanConfig) =>
+	typeof window === 'undefined'
+		? timer
+		: {
+				...timer,
+				potentialSpawnAudio: new Audio(`/sound/Joey/${timer.potentialSpawnAudioSrc}`),
+				definiteSpawnAudio: new Audio(`/sound/Joey/${timer.definiteSpawnAudioSrc}`)
+		  };
 
 const prepareAudio = (timer: TimerConfig) =>
 	typeof window === 'undefined'
@@ -131,4 +143,67 @@ export const restoreTimers = () => {
 	}
 };
 
-export const timerConfig: Writable<TimerConfig[]> = writable(initialTimers);
+export const timers: Writable<TimerConfig[]> = writable(initialTimers);
+
+const aegisTimer = {
+	enabled: true,
+	soundEnabled: true,
+	title: 'Aegis',
+	interval: 6,
+	initialSkip: 0,
+	icon: 'roshan.webp',
+	audioSrc: 'aegisReclaimed.mp3',
+	notifySecondsBefore: 30,
+	static: true
+};
+
+export const timerConfig = {
+	set: timers.set,
+	update: timers.update,
+	subscribe: timers.subscribe,
+	addAegisTimer: (startTime: number) => {
+		timers.update((s) => [...s, { ...aegisTimer, startTime }]);
+	},
+	removeAegisTimer: () => {
+		timers.update((timers) => timers.filter((timer) => timer.title !== 'Aegis'));
+	}
+};
+
+export interface RoshanConfig {
+	activated: boolean;
+	soundEnabled: boolean;
+	title: string;
+	maxSpawn: number;
+	minSpawn: number;
+	icon: string;
+	potentialSpawnAudioSrc: string;
+	definiteSpawnAudioSrc: string;
+	potentialSpawnAudio?: HTMLAudioElement;
+	definiteSpawnAudio?: HTMLAudioElement;
+	notifySecondsBefore: number;
+	killTime?: number;
+}
+
+const roshanConfig: RoshanConfig = {
+	activated: false,
+	soundEnabled: true,
+	title: 'Roshan',
+	maxSpawn: 11,
+	minSpawn: 8,
+	icon: 'roshan.webp',
+	potentialSpawnAudioSrc: 'roshanPotentialSpawn.mp3',
+	definiteSpawnAudioSrc: 'roshanHasSpawned.mp3',
+	notifySecondsBefore: 0
+};
+const roshanStore: Writable<RoshanConfig> = writable(prepareRoshanAudio(roshanConfig));
+
+export const roshan = {
+	set: roshanStore.set,
+	update: roshanStore.update,
+	subscribe: roshanStore.subscribe,
+	activate: (killTime: number) => {
+		roshanStore.update((s) => ({ ...s, activated: true, killTime }));
+		const gameTime = get(gameTimer).time;
+		timerConfig.addAegisTimer(gameTime);
+	}
+};
