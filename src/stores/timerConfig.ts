@@ -143,31 +143,7 @@ export const restoreTimers = () => {
 	}
 };
 
-export const timers: Writable<TimerConfig[]> = writable(initialTimers);
-
-const aegisTimer = {
-	enabled: true,
-	soundEnabled: true,
-	title: 'Aegis',
-	interval: 6,
-	initialSkip: 0,
-	icon: 'roshan.webp',
-	audioSrc: 'aegisReclaimed.mp3',
-	notifySecondsBefore: 30,
-	static: true
-};
-
-export const timerConfig = {
-	set: timers.set,
-	update: timers.update,
-	subscribe: timers.subscribe,
-	addAegisTimer: (startTime: number) => {
-		timers.update((s) => [...s, { ...aegisTimer, startTime }]);
-	},
-	removeAegisTimer: () => {
-		timers.update((timers) => timers.filter((timer) => timer.title !== 'Aegis'));
-	}
-};
+export const timerConfig: Writable<TimerConfig[]> = writable(initialTimers);
 
 export interface RoshanConfig {
 	activated: boolean;
@@ -201,9 +177,34 @@ export const roshan = {
 	set: roshanStore.set,
 	update: roshanStore.update,
 	subscribe: roshanStore.subscribe,
-	activate: (killTime: number) => {
-		roshanStore.update((s) => ({ ...s, activated: true, killTime }));
-		const gameTime = get(gameTimer).time;
-		timerConfig.addAegisTimer(gameTime);
+	activate: (startTime: number) => {
+		roshanStore.update((s) => ({ ...s, killTime: startTime, activated: true }));
+		aegis.activate(startTime);
+	}
+};
+
+const aegisConfig: TimerConfig = {
+	enabled: false,
+	soundEnabled: true,
+	title: 'Aegis',
+	interval: 6,
+	initialSkip: 0,
+	icon: 'roshan.webp',
+	audioSrc: 'aegisReclaimed.mp3',
+	notifySecondsBefore: 30,
+	static: true
+};
+
+const aegisStore: Writable<TimerConfig> = writable(prepareAudio(aegisConfig));
+
+export const aegis = {
+	set: aegisStore.set,
+	update: aegisStore.update,
+	subscribe: aegisStore.subscribe,
+	activate: (startTime: number) => {
+		aegisStore.update((s) => ({ ...s, startTime, enabled: true }));
+	},
+	reclaim: () => {
+		aegisStore.update((s) => ({ ...s, startTime: undefined, enabled: false }));
 	}
 };
