@@ -30,6 +30,8 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				const negativeTime = $gameTimer.time < 0;
 
+				let flash = false;
+
 				// Check if the timer should still skip rounds
 				if (elapsedRounds < timer.initialSkip) {
 					remainingSeconds =
@@ -39,15 +41,14 @@ export const timerEngine: Readable<Timer[]> = derived(
 				} else {
 					if (timer.static && timer.startTime) {
 						remainingSeconds = 60 * timer.interval - ($gameTimer.time - timer.startTime);
+						flash = remainingSeconds <= timer.notifySecondsBefore;
 						if (remainingSeconds === 0) {
 							playSoundEffect(timer.audio);
-							setTimeout(() => {
-								aegis.reclaim();
-							}, 2000);
 						}
 
 						// Don't show negative time during fade-out
-						if (remainingSeconds < 0) {
+						if (remainingSeconds <= 0) {
+							aegis.reclaim();
 							remainingSeconds = 0;
 						}
 					} else {
@@ -60,8 +61,6 @@ export const timerEngine: Readable<Timer[]> = derived(
 				const minutesLeft = Math.floor(remainingSeconds / 60);
 				const secondsLeft = remainingSeconds % 60;
 				const remainingFormatted = `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
-
-				let flash = false;
 
 				if (timer.enabled && timer.soundEnabled && $config.soundEnabled && !timer.static) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
@@ -94,28 +93,75 @@ export const timerEngine: Readable<Timer[]> = derived(
 );
 
 export interface RoshanTimer extends RoshanConfig {
-	potentialRemainingSeconds?: number;
-	potentialRemainingFormatted?: string;
-	definiteRemainingSeconds?: number;
-	definiteRemainingFormatted?: string;
+	potentialRemainingFormatted?: string | null;
+	definiteRemainingFormatted?: string | null;
+	killTimeFormatted?: string;
+	location?: string | null;
 	flash?: boolean;
+	shouldReset?: boolean;
 }
 
 export const roshanTimer: Readable<RoshanTimer> = derived(
 	[gameTimer, config, roshan],
 	([$gameTimer, $config, $roshan]): RoshanTimer => {
 		if (!($roshan.activated && $roshan.killTime)) {
-			return $roshan;
+			const gameTimeMinutes = Math.floor($gameTimer.time / 60);
+			console.log({ gameTimeMinutes, stuff: (gameTimeMinutes / 5) % 2 });
+			const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
+			return { ...$roshan, location };
 		}
 
 		const killTime = $roshan.killTime;
-		const definiteSpawnTime = $roshan.maxSpawn * 60 - (killTime - $gameTimer.time);
-		const potentialSpawnTime = definiteSpawnTime - ($roshan.maxSpawn - $roshan.minSpawn) * 60;
-		const gameTimeMinutes = Math.floor(definiteSpawnTime / 60);
-		const gameTimeSeconds = definiteSpawnTime % 60;
+		const killTimeMinutes = Math.floor(killTime / 60);
+		const killTimeSeconds = killTime % 60;
+		const killTimeFormatted = `${formatTime(killTimeMinutes)}:${formatTime(killTimeSeconds)}`;
 
-		console.log({ gameTimeMinutes, gameTimeSeconds });
+		let definiteSpawnTime = $roshan.maxSpawn * 60 - ($gameTimer.time - killTime);
+		const definiteMinutes = Math.floor(definiteSpawnTime / 60);
+		const definiteSeconds = definiteSpawnTime % 60;
+		let definiteRemainingFormatted: string | null = `${formatTime(definiteMinutes)}:${formatTime(
+			definiteSeconds
+		)}`;
 
-		return { ...$roshan };
+		let potentialSpawnTime = definiteSpawnTime - ($roshan.maxSpawn - $roshan.minSpawn) * 60;
+		const potentialMinutes = Math.floor(potentialSpawnTime / 60);
+		const potentialSeconds = potentialSpawnTime % 60;
+		let potentialRemainingFormatted: string | null = `${formatTime(potentialMinutes)}:${formatTime(
+			potentialSeconds
+		)}`;
+
+		const flash = definiteSeconds <= $roshan.notifySecondsBefore;
+
+		if ($roshan.soundEnabled && $config.soundEnabled) {
+			if (potentialSpawnTime === $roshan.notifySecondsBefore)
+				playSoundEffect($roshan.potentialSpawnAudio);
+			if (definiteSpawnTime === $roshan.notifySecondsBefore)
+				playSoundEffect($roshan.definiteSpawnAudio);
+		}
+
+		let shouldReset = false;
+		if (definiteSpawnTime <= 0) {
+			shouldReset = false;
+			roshan.reset();
+		}
+
+		if (definiteSpawnTime < 0) {
+			definiteRemainingFormatted = null;
+			definiteSpawnTime = 0;
+		}
+		if (potentialSpawnTime < 0) {
+			potentialRemainingFormatted = null;
+			potentialSpawnTime = 0;
+		}
+
+		return {
+			...$roshan,
+			location: null,
+			definiteRemainingFormatted,
+			potentialRemainingFormatted,
+			killTimeFormatted,
+			flash,
+			shouldReset
+		};
 	}
 );

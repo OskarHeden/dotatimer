@@ -5,144 +5,137 @@
 	import { roshanTimer } from '../stores/timerEngine';
 	import { roshan } from '../stores/timerConfig';
 
-	let startingTime: number | undefined;
-	let startingTimeString: string;
-	let elapsedTime: number | undefined;
-	let interval: NodeJS.Timer;
+	let editingTime: boolean;
+	let minutes: string;
+	let seconds: string;
 
-	const MIN_SPAWN_TIME = 8 * 60;
-	const MAX_SPAWN_TIME = 11 * 60;
-	const AEGIS_RECLAIMED = 6 * 60;
+	const editTime = () => {
+		editingTime = true;
+	};
 
-	const reset = () => {
-		clearInterval(interval);
-		setTimeout(() => {
-			elapsedTime = undefined;
-			startingTime = undefined;
-		}, 2000);
+	const closeEditTime = () => {
+		editingTime = false;
+	};
+
+	const closeAndSave = () => {
+		const secondsFromMinutes: number = parseInt(minutes) * 60;
+		const totalSeconds =
+			secondsFromMinutes < 0
+				? +(secondsFromMinutes - parseInt(seconds))
+				: +(secondsFromMinutes + parseInt(seconds));
+		roshan.activate(totalSeconds);
+		closeEditTime();
 	};
 
 	const startCountDown = () => {
 		if (!$roshan.activated) {
 			roshan.activate($gameTimer.time);
 		}
-
-		const time = $gameTimer.time;
-		const gameTimeMinutes = Math.floor(time / 60);
-		const gameTimeSeconds = time % 60;
-		startingTime = time;
-		startingTimeString = `${formatTime(gameTimeMinutes)}:${formatTime(gameTimeSeconds)}`;
-		if (interval) {
-			clearInterval(interval);
-		}
-		const startTime = $gameTimer.time;
-		elapsedTime = startTime - startingTime;
-		interval = setInterval(() => {
-			const newTime = $gameTimer.time;
-			elapsedTime = newTime - startingTime;
-		}, 1000);
 	};
 
-	const REMINDERS = [60, 30, 15];
-
-	const formatTime = (value: number) => value.toString().padStart(2, '0');
-	let flash = false;
-
-	const getCountdown = (elapsedTime: number) => {
-		const time = MAX_SPAWN_TIME - elapsedTime;
-		const gameTimeMinutes = Math.floor(time / 60);
-		const gameTimeSeconds = time % 60;
-
-		let aegisReclaimTimer = null;
-		let potentialSpawnTimer = null;
-
-		if (elapsedTime < AEGIS_RECLAIMED) {
-			const aegisTimeRemaining = AEGIS_RECLAIMED - elapsedTime;
-			const aegisReclaimedMinutes = Math.floor(aegisTimeRemaining / 60);
-			const aegisReclaimedSeconds = aegisTimeRemaining % 60;
-			aegisReclaimTimer = `${formatTime(aegisReclaimedMinutes)}:${formatTime(
-				aegisReclaimedSeconds
-			)}`;
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key === 'Enter') {
+			closeAndSave();
+		} else if (event.key === 'Escape') {
+			closeEditTime();
 		}
-		if (elapsedTime < MIN_SPAWN_TIME) {
-			const potentialSpawnRemaining = MIN_SPAWN_TIME - elapsedTime;
-			const potentialSpawnMinutes = Math.floor(potentialSpawnRemaining / 60);
-			const potentialSpawnSeconds = potentialSpawnRemaining % 60;
-			potentialSpawnTimer = `${formatTime(potentialSpawnMinutes)}:${formatTime(
-				potentialSpawnSeconds
-			)}`;
-		}
-		flash = MAX_SPAWN_TIME - elapsedTime < 16 && MAX_SPAWN_TIME - elapsedTime > 0;
-
-		if (elapsedTime === MAX_SPAWN_TIME) {
-			playSoundEffect('./sound/Joey/roshanHasSpawned.mp3');
-			reset();
-		} else if (elapsedTime === AEGIS_RECLAIMED) {
-			playSoundEffect('./sound/Joey/aegisReclaimed.mp3');
-		} else if (elapsedTime === MIN_SPAWN_TIME) {
-			playSoundEffect('./sound/Joey/roshanPotentialSpawn.mp3');
-		}
-
-		return {
-			countdownTimer: `${formatTime(gameTimeMinutes)}:${formatTime(gameTimeSeconds)}`,
-			aegisReclaimTimer,
-			potentialSpawnTimer
-		};
 	};
 
-	$: countDowns = getCountdown(elapsedTime);
-	$: countdownTimer = countDowns.countdownTimer;
-	$: aegisReclaimTimer = countDowns.aegisReclaimTimer;
-	$: potentialSpawnTimer = countDowns.potentialSpawnTimer;
+	$: subtitle = `Click to ${killTime ? 'Restart' : 'Start'}`;
 
-	$: subtitle = `Click to ${startingTime ? 'Restart' : 'Start'}`;
+	$: killTime = $roshanTimer.killTimeFormatted;
+	$: location = $roshanTimer.location;
+	$: flash = $roshanTimer.flash;
+	$: definiteRemainingFormatted = $roshanTimer.definiteRemainingFormatted;
+	$: potentialRemainingFormatted = $roshanTimer.potentialRemainingFormatted;
+
+	const resetRoshanTimer = () => {
+		roshan.reset();
+	};
+	$: if ($roshanTimer.shouldReset) {
+		resetRoshanTimer();
+	}
 </script>
 
-<!-- <UITimer title="Roshan Timer" {subtitle} flash={flash} onToggle={startCountDown}> -->
 <button class="timerContainer" class:flash on:click={startCountDown}>
-	{#if startingTime}
+	{#if location}
+		<div class="location">
+			<span>Location:</span>
+			<span class="pit">{location}</span>
+		</div>
+	{/if}
+	{#if killTime}
 		<div class="startingTime">
-			<span>Start time:</span>
-			<span class="countDowns">{startingTimeString}</span>
+			<button on:click={resetRoshanTimer}>RESET</button>
+			<div>
+				<span>Start time:</span>
+				{#if editingTime}
+					<div class="editTimeInputs">
+						<input
+							bind:value={minutes}
+							pattern="[0-9]*"
+							type="number"
+							on:keydown={handleKeyDown}
+							autofocus
+						/>
+						<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
+					</div>
+				{:else}
+					<span class="countDowns">{killTime}</span>
+				{/if}
+			</div>
+			{#if !editingTime}
+				<button on:click={editTime}>EDIT TIME</button>
+			{/if}
 		</div>
 	{/if}
 	<div class="content">
-		{#if elapsedTime !== undefined}
-			<p>Definitive spawn:</p>
-			<p class="countDowns">{countdownTimer}</p>
+		{#if definiteRemainingFormatted}
+			<div>
+				<p>Definitive spawn:</p>
+				<p class="countDowns">{definiteRemainingFormatted}</p>
+			</div>
 		{/if}
-		{#if potentialSpawnTimer}
-			<p>Potential spawn:</p>
-			<p class="countDowns">{potentialSpawnTimer}</p>
-		{/if}
-		{#if aegisReclaimTimer}
-			<p>Aegis reclaimed in:</p>
-			<p class="countDowns">{aegisReclaimTimer}</p>
+		{#if potentialRemainingFormatted}
+			<div>
+				<p>Potential spawn:</p>
+				<p class="countDowns">{potentialRemainingFormatted}</p>
+			</div>
 		{/if}
 	</div>
 	<img class="roshanPic" src="../roshan.webp" alt="roshan" />
 
 	<slot />
-	<span class="title" class:flash>Roshan Timer</span>
-	{#if subtitle}
+	{#if !$roshanTimer.activated}
+		<span class="title" class:flash>Roshan Timer</span>
 		<span class="subtitle" class:flash>{subtitle}</span>
 	{/if}
 </button>
 
 <style>
 	.startingTime {
-		position: absolute;
-		top: 0;
-		right: 0;
+		display: flex;
+		flex-direction: row;
+		font-size: 1.5em;
+	}
+	.startingTime > div {
 		display: flex;
 		flex-direction: column;
 	}
 	.content {
 		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.content > div {
+		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		overflow: hidden;
+		margin: 1em;
+		font-size: 1.2em;
 	}
 
 	.countDowns {
@@ -156,7 +149,7 @@
 		position: absolute;
 		top: 40px;
 		right: 0%;
-		max-width: 200px;
+		max-width: 160px;
 		filter: brightness(0);
 		pointer-events: none;
 	}
@@ -179,9 +172,9 @@
 		border: none;
 		color: black;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
-		justify-content: start;
+		justify-content: center;
 	}
 
 	.timerContainer.flash {
@@ -215,7 +208,36 @@
 			top: unset;
 			bottom: 0%;
 			right: 0%;
-			max-width: 100px;
+			max-width: 80px;
 		}
+	}
+
+	.editTimeInputs {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.editTimeInputs input {
+		width: 2rem;
+		text-align: center;
+		font-size: 1.5rem;
+		background-color: #111;
+		color: #fff;
+		border: none;
+		margin: 0.25rem;
+		padding: 0.25rem;
+	}
+
+	.location {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		display: flex;
+		flex-direction: column;
+	}
+	.location .pit {
+		font-size: 1.6em;
 	}
 </style>
