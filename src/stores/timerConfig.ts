@@ -157,7 +157,7 @@ export interface RoshanConfig {
 	potentialSpawnAudio?: HTMLAudioElement;
 	definiteSpawnAudio?: HTMLAudioElement;
 	notifySecondsBefore: number;
-	killTime?: number;
+	killTime?: number | null;
 }
 
 const roshanConfig: RoshanConfig = {
@@ -180,6 +180,9 @@ export const roshan = {
 	activate: (startTime: number) => {
 		roshanStore.update((s) => ({ ...s, killTime: startTime, activated: true }));
 		aegis.activate(startTime);
+	},
+	reset: () => {
+		roshanStore.set(prepareRoshanAudio(roshanConfig));
 	}
 };
 
@@ -191,7 +194,7 @@ const aegisConfig: TimerConfig = {
 	initialSkip: 0,
 	icon: 'Aegis.png',
 	audioSrc: 'aegisReclaimed.mp3',
-	notifySecondsBefore: 0,
+	notifySecondsBefore: 30,
 	static: true
 };
 
@@ -201,6 +204,9 @@ export const aegis = {
 	set: aegisStore.set,
 	update: aegisStore.update,
 	subscribe: aegisStore.subscribe,
+	reset: () => {
+		aegisStore.set(prepareAudio(aegisConfig));
+	},
 	activate: (startTime: number) => {
 		aegisStore.update((s) => ({ ...s, startTime, enabled: true }));
 	},
