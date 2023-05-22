@@ -18,6 +18,12 @@
 	let startMinutes: string = '-01';
 	let startSeconds: string = '00';
 
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key === 'Enter') {
+			onStartTimer();
+		}
+	};
+
 	onMount(() => {
 		handleOnChange();
 	});
@@ -29,8 +35,20 @@
 	<br />
 	<span>Set the starting time of the timer:</span>
 	<div class="timeInput">
-		<input type="text" bind:value={startMinutes} on:input={handleOnChange} placeholder="-1" />
-		<input type="text" bind:value={startSeconds} on:input={handleOnChange} placeholder="00" />
+		<input
+			type="text"
+			bind:value={startMinutes}
+			on:input={handleOnChange}
+			on:keydown={handleKeyDown}
+			placeholder="-1"
+		/>
+		<input
+			type="text"
+			bind:value={startSeconds}
+			on:input={handleOnChange}
+			on:keydown={handleKeyDown}
+			placeholder="00"
+		/>
 	</div>
 	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
 	<span>How long before the event would you like to be reminded?</span>

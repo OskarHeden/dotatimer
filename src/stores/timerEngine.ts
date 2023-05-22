@@ -39,10 +39,11 @@ export const timerEngine: Readable<Timer[]> = derived(
 				} else {
 					if (timer.static && timer.startTime) {
 						remainingSeconds = 60 * timer.interval - ($gameTimer.time - timer.startTime);
-						if (remainingSeconds === 1) {
+						if (remainingSeconds === 0) {
+							playSoundEffect(timer.audio);
 							setTimeout(() => {
 								aegis.reclaim();
-							}, 3000);
+							}, 2000);
 						}
 
 						// Don't show negative time during fade-out
@@ -62,7 +63,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				let flash = false;
 
-				if (timer.enabled && timer.soundEnabled) {
+				if (timer.enabled && timer.soundEnabled && $config.soundEnabled && !timer.static) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
 					if ($config.soundEnabled && remainingSeconds === timer.notifySecondsBefore && timer.audio)
 						playSoundEffect(timer.audio);
