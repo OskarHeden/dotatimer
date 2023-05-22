@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
 import type { Readable } from 'svelte/store';
-import { timerConfig, roshan, type TimerConfig, type RoshanConfig } from './timerConfig';
+import { timerConfig, roshan, type TimerConfig, type RoshanConfig, aegis } from './timerConfig';
 import { gameTimer } from './gameTimer'; // Assuming this store already exists
 import { playSoundEffect } from '../helpers/sound';
 import { config } from './config';
@@ -18,9 +18,10 @@ export interface Timer extends TimerConfig {
 const formatTime = (value: number) => value.toString().padStart(2, '0');
 
 export const timerEngine: Readable<Timer[]> = derived(
-	[timerConfig, gameTimer, config],
-	([$timerConfigs, $gameTimer, $config]): Timer[] => {
-		return $timerConfigs
+	[timerConfig, gameTimer, config, aegis],
+	([$timerConfigs, $gameTimer, $config, $aegis]): Timer[] => {
+		const allTimers = $aegis.enabled ? [...$timerConfigs, $aegis] : $timerConfigs;
+		return allTimers
 			.map((timer, index) => {
 				let remainingSeconds: number;
 
@@ -39,10 +40,14 @@ export const timerEngine: Readable<Timer[]> = derived(
 					if (timer.static && timer.startTime) {
 						remainingSeconds = 60 * timer.interval - ($gameTimer.time - timer.startTime);
 						if (remainingSeconds === 1) {
-							console.log('REMOVING');
 							setTimeout(() => {
-								timerConfig.removeAegisTimer();
+								aegis.reclaim();
 							}, 3000);
+						}
+
+						// Don't show negative time during fade-out
+						if (remainingSeconds < 0) {
+							remainingSeconds = 0;
 						}
 					} else {
 						// Calculate the remaining seconds for the current round
@@ -98,9 +103,18 @@ export interface RoshanTimer extends RoshanConfig {
 export const roshanTimer: Readable<RoshanTimer> = derived(
 	[gameTimer, config, roshan],
 	([$gameTimer, $config, $roshan]): RoshanTimer => {
-		if (!$roshan.activated) {
+		if (!($roshan.activated && $roshan.killTime)) {
 			return $roshan;
 		}
+
+		const killTime = $roshan.killTime;
+		const definiteSpawnTime = $roshan.maxSpawn * 60 - (killTime - $gameTimer.time);
+		const potentialSpawnTime = definiteSpawnTime - ($roshan.maxSpawn - $roshan.minSpawn) * 60;
+		const gameTimeMinutes = Math.floor(definiteSpawnTime / 60);
+		const gameTimeSeconds = definiteSpawnTime % 60;
+
+		console.log({ gameTimeMinutes, gameTimeSeconds });
+
 		return { ...$roshan };
 	}
 );
