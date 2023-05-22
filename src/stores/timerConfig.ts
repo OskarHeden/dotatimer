@@ -29,9 +29,9 @@ const prepareAudio = (timer: TimerConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-			...timer,
-			audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
-		};
+				...timer,
+				audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
+		  };
 
 const initialTimers: TimerConfig[] = [
 	{
@@ -189,9 +189,9 @@ const aegisConfig: TimerConfig = {
 	title: 'Aegis',
 	interval: 6,
 	initialSkip: 0,
-	icon: 'roshan.webp',
+	icon: 'Aegis.png',
 	audioSrc: 'aegisReclaimed.mp3',
-	notifySecondsBefore: 30,
+	notifySecondsBefore: 0,
 	static: true
 };
 
