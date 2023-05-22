@@ -17,9 +17,9 @@ const prepareAudio = (timer: TimerConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-				...timer,
-				audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
-		  };
+			...timer,
+			audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
+		};
 
 const initialTimers: TimerConfig[] = [
 	{
@@ -28,7 +28,7 @@ const initialTimers: TimerConfig[] = [
 		title: 'Wisdom Rune',
 		interval: 7, // in minutes
 		initialSkip: 0,
-		icon: 'powerRune.webp',
+		icon: 'Wisdom.webp',
 		audioSrc: 'powerRuneSpawn.mp3',
 		notifySecondsBefore: 15
 	},
@@ -38,7 +38,7 @@ const initialTimers: TimerConfig[] = [
 		title: 'Tormentor',
 		interval: 20, // in minutes
 		initialSkip: 0,
-		icon: 'powerRune.webp',
+		icon: 'Tormentor.webp',
 		audioSrc: 'powerRuneSpawn.mp3',
 		notifySecondsBefore: 15
 	},
@@ -48,7 +48,7 @@ const initialTimers: TimerConfig[] = [
 		title: 'Lotus',
 		interval: 3, // in minutes
 		initialSkip: 0,
-		icon: 'Bountyrune.png',
+		icon: 'Lotus.png',
 		audioSrc: 'bountyRuneSpawn.mp3',
 		notifySecondsBefore: 15
 	},

@@ -7,6 +7,7 @@
 	import { gameTimer } from '../stores/gameTimer';
 	import { timerEngine } from '../stores/timerEngine';
 	import Menu from '../components/Menu.svelte';
+	import Mute from '../components/Mute.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 	import StartTimersModal from '../components/StartTimersModal.svelte';
@@ -43,6 +44,7 @@
 
 {#if started}
 	<Menu />
+	<Mute />
 {/if}
 <Header />
 
@@ -79,6 +81,7 @@
 		justify-content: center;
 		text-align: center;
 		grid-gap: 10px;
+		max-width: 1200px;
 	}
 	.roshanContainer {
 		grid-row: 3;
