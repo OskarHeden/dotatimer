@@ -65,7 +65,6 @@
 	{/if}
 	{#if killTime}
 		<div class="startingTime">
-			<button on:click={resetRoshanTimer}>RESET</button>
 			<div>
 				<span>Start time:</span>
 				{#if editingTime}
