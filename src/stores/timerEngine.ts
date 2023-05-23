@@ -5,6 +5,7 @@ import { gameTimer } from './gameTimer'; // Assuming this store already exists
 import { playSoundEffect } from '../helpers/sound';
 import { config } from './config';
 import type TimerState from '../components/GameTimer.svelte';
+import { audioQueue } from './audioQueue';
 
 export interface Timer extends TimerConfig {
 	index: number;
@@ -43,7 +44,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 						remainingSeconds = 60 * timer.interval - ($gameTimer.time - timer.startTime);
 						flash = remainingSeconds <= timer.notifySecondsBefore;
 						if (remainingSeconds === 0) {
-							playSoundEffect(timer.audio);
+							audioQueue.addAudio(timer.audio as HTMLAudioElement);
 						}
 
 						// Don't show negative time during fade-out
@@ -54,7 +55,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 					} else if (timer.dynamic && $gameTimer.time >= timer.interval * 60) {
 						// Play audio for initial spawn
 						if ($gameTimer.time === timer.interval * 60) {
-							playSoundEffect(timer.audio);
+							audioQueue.addAudio(timer.audio as HTMLAudioElement);
 						}
 						if (timer.startTime && timer.dynamicRespawn) {
 							if ($gameTimer.time - timer.startTime < timer.dynamicRespawn * 60) {
@@ -62,7 +63,7 @@ export const timerEngine: Readable<Timer[]> = derived(
 							} else {
 								// Play audio for respawn
 								if ($gameTimer.time - timer.startTime === timer.dynamicRespawn * 60) {
-									playSoundEffect(timer.audio);
+									audioQueue.addAudio(timer.audio as HTMLAudioElement);
 								}
 								remainingSeconds = 0;
 							}
@@ -93,8 +94,13 @@ export const timerEngine: Readable<Timer[]> = derived(
 					!timer.dynamic
 				) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
-					if ($config.soundEnabled && remainingSeconds === timer.notifySecondsBefore && timer.audio)
-						playSoundEffect(timer.audio);
+					if (
+						$config.soundEnabled &&
+						remainingSeconds === timer.notifySecondsBefore &&
+						timer.audio
+					) {
+						audioQueue.addAudio(timer.audio as HTMLAudioElement);
+					}
 				}
 
 				return {

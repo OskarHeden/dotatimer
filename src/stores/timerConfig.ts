@@ -23,8 +23,8 @@ const prepareRoshanAudio = (timer: RoshanConfig) =>
 		? timer
 		: {
 				...timer,
-				potentialSpawnAudio: new Audio(`/sound/Joey/${timer.potentialSpawnAudioSrc}`),
-				definiteSpawnAudio: new Audio(`/sound/Joey/${timer.definiteSpawnAudioSrc}`)
+				potentialSpawnAudio: new Audio(`/sound/effects/${timer.potentialSpawnAudioSrc}`),
+				definiteSpawnAudio: new Audio(`/sound/effects/${timer.definiteSpawnAudioSrc}`)
 		  };
 
 const prepareAudio = (timer: TimerConfig) =>
@@ -39,6 +39,16 @@ const initialTimers: TimerConfig[] = [
 	{
 		enabled: false,
 		soundEnabled: true,
+		title: 'Stacking',
+		interval: 1, // in minutes
+		initialSkip: 1,
+		icon: 'Centaurcreep.webp',
+		audioSrc: 'Stack.mp3',
+		notifySecondsBefore: 15
+	},
+	{
+		enabled: false,
+		soundEnabled: true,
 		title: 'Wisdom Rune',
 		interval: 7, // in minutes
 		initialSkip: 0,
@@ -47,7 +57,7 @@ const initialTimers: TimerConfig[] = [
 		notifySecondsBefore: 45
 	},
 	{
-		enabled: true,
+		enabled: false,
 		soundEnabled: true,
 		title: 'Tormentor',
 		interval: 20, // in minutes
@@ -66,7 +76,7 @@ const initialTimers: TimerConfig[] = [
 		initialSkip: 0,
 		icon: 'Lotus.png',
 		audioSrc: 'Lotus.mp3',
-		notifySecondsBefore: 10
+		notifySecondsBefore: 15
 	},
 	{
 		enabled: false,
@@ -86,16 +96,6 @@ const initialTimers: TimerConfig[] = [
 		initialSkip: 0,
 		icon: 'Bountyrune.png',
 		audioSrc: 'Bounty.mp3',
-		notifySecondsBefore: 20
-	},
-	{
-		enabled: false,
-		soundEnabled: true,
-		title: 'Stacking',
-		interval: 1, // in minutes
-		initialSkip: 1,
-		icon: 'Centaurcreep.webp',
-		audioSrc: 'Stack.mp3',
 		notifySecondsBefore: 15
 	},
 	{
@@ -171,8 +171,8 @@ const roshanConfig: RoshanConfig = {
 	maxSpawn: 11,
 	minSpawn: 8,
 	icon: 'roshan.webp',
-	potentialSpawnAudioSrc: 'roshanPotentialSpawn.mp3',
-	definiteSpawnAudioSrc: 'roshanHasSpawned.mp3',
+	potentialSpawnAudioSrc: 'Roshan.mp3',
+	definiteSpawnAudioSrc: 'Roshan.mp3',
 	notifySecondsBefore: 0
 };
 const roshanStore: Writable<RoshanConfig> = writable(prepareRoshanAudio(roshanConfig));
@@ -197,8 +197,8 @@ const aegisConfig: TimerConfig = {
 	interval: 6,
 	initialSkip: 0,
 	icon: 'Aegis.png',
-	audioSrc: 'aegisReclaimed.mp3',
-	notifySecondsBefore: 30,
+	audioSrc: 'Aegis.mp3',
+	notifySecondsBefore: 0,
 	static: true
 };
 
