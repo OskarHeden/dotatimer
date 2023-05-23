@@ -13,6 +13,8 @@ export interface TimerConfig {
 	audio?: HTMLAudioElement;
 	notifySecondsBefore: number;
 	static?: boolean;
+	dynamic?: boolean;
+	dynamicRespawn?: number;
 	startTime?: number;
 }
 
@@ -30,7 +32,7 @@ const prepareAudio = (timer: TimerConfig) =>
 		? timer
 		: {
 				...timer,
-				audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
+				audio: new Audio(`/sound/effects/${timer.audioSrc}`)
 		  };
 
 const initialTimers: TimerConfig[] = [
@@ -45,14 +47,16 @@ const initialTimers: TimerConfig[] = [
 		notifySecondsBefore: 15
 	},
 	{
-		enabled: false,
+		enabled: true,
 		soundEnabled: true,
 		title: 'Tormentor',
 		interval: 20, // in minutes
 		initialSkip: 0,
 		icon: 'Tormentor.webp',
 		audioSrc: 'powerRuneSpawn.mp3',
-		notifySecondsBefore: 15
+		notifySecondsBefore: 0,
+		dynamic: true,
+		dynamicRespawn: 10
 	},
 	{
 		enabled: false,
