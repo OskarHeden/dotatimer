@@ -1,5 +1,6 @@
 // timersStore.ts
 import { get, writable, type Writable } from 'svelte/store';
+import { gameTimer } from './gameTimer';
 
 export interface TimerConfig {
 	enabled: boolean;
@@ -11,15 +12,26 @@ export interface TimerConfig {
 	audioSrc: string;
 	audio?: HTMLAudioElement;
 	notifySecondsBefore: number;
+	static?: boolean;
+	startTime?: number;
 }
+
+const prepareRoshanAudio = (timer: RoshanConfig) =>
+	typeof window === 'undefined'
+		? timer
+		: {
+				...timer,
+				potentialSpawnAudio: new Audio(`/sound/Joey/${timer.potentialSpawnAudioSrc}`),
+				definiteSpawnAudio: new Audio(`/sound/Joey/${timer.definiteSpawnAudioSrc}`)
+		  };
 
 const prepareAudio = (timer: TimerConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-			...timer,
-			audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
-		};
+				...timer,
+				audio: new Audio(`/sound/Joey/${timer.audioSrc}`)
+		  };
 
 const initialTimers: TimerConfig[] = [
 	{
@@ -132,3 +144,73 @@ export const restoreTimers = () => {
 };
 
 export const timerConfig: Writable<TimerConfig[]> = writable(initialTimers);
+
+export interface RoshanConfig {
+	activated: boolean;
+	soundEnabled: boolean;
+	title: string;
+	maxSpawn: number;
+	minSpawn: number;
+	icon: string;
+	potentialSpawnAudioSrc: string;
+	definiteSpawnAudioSrc: string;
+	potentialSpawnAudio?: HTMLAudioElement;
+	definiteSpawnAudio?: HTMLAudioElement;
+	notifySecondsBefore: number;
+	killTime?: number | null;
+}
+
+const roshanConfig: RoshanConfig = {
+	activated: false,
+	soundEnabled: true,
+	title: 'Roshan',
+	maxSpawn: 11,
+	minSpawn: 8,
+	icon: 'roshan.webp',
+	potentialSpawnAudioSrc: 'roshanPotentialSpawn.mp3',
+	definiteSpawnAudioSrc: 'roshanHasSpawned.mp3',
+	notifySecondsBefore: 0
+};
+const roshanStore: Writable<RoshanConfig> = writable(prepareRoshanAudio(roshanConfig));
+
+export const roshan = {
+	set: roshanStore.set,
+	update: roshanStore.update,
+	subscribe: roshanStore.subscribe,
+	activate: (startTime: number) => {
+		roshanStore.update((s) => ({ ...s, killTime: startTime, activated: true }));
+		aegis.activate(startTime);
+	},
+	reset: () => {
+		roshanStore.set(prepareRoshanAudio(roshanConfig));
+	}
+};
+
+const aegisConfig: TimerConfig = {
+	enabled: false,
+	soundEnabled: true,
+	title: 'Aegis',
+	interval: 6,
+	initialSkip: 0,
+	icon: 'Aegis.png',
+	audioSrc: 'aegisReclaimed.mp3',
+	notifySecondsBefore: 30,
+	static: true
+};
+
+const aegisStore: Writable<TimerConfig> = writable(prepareAudio(aegisConfig));
+
+export const aegis = {
+	set: aegisStore.set,
+	update: aegisStore.update,
+	subscribe: aegisStore.subscribe,
+	reset: () => {
+		aegisStore.set(prepareAudio(aegisConfig));
+	},
+	activate: (startTime: number) => {
+		aegisStore.update((s) => ({ ...s, startTime, enabled: true }));
+	},
+	reclaim: () => {
+		aegisStore.update((s) => ({ ...s, startTime: undefined, enabled: false }));
+	}
+};

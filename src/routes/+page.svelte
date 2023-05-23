@@ -11,7 +11,7 @@
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 	import StartTimersModal from '../components/StartTimersModal.svelte';
-	import { restoreTimers } from '../stores/timerConfig';
+	import { aegis, restoreTimers, roshan } from '../stores/timerConfig';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -34,6 +34,8 @@
 	let started = false;
 	const startTimer = () => {
 		started = true;
+		roshan.reset();
+		aegis.reset();
 		$timerEngine.forEach((timer) => {
 			timer.audio?.load();
 			timer.audio?.pause();
