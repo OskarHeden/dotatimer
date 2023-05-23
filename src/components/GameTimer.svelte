@@ -146,8 +146,11 @@
 		background-color: #111;
 		color: #fff;
 		border: none;
+		border-radius: 2px;
 		margin: 0.25rem;
 		padding: 0.25rem;
+		-webkit-appearance: none;
+		-moz-appearance: textfield;
 	}
 
 	.adjustTime {
