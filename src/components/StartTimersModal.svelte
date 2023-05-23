@@ -23,7 +23,7 @@
 	});
 </script>
 
-<video autoplay="autoplay" loop>
+<video autoplay="autoplay" muted loop>
 	<source src="Roshan.mp4" type="video/mp4" />
 </video>
 <div class="start-timers-modal">
