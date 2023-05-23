@@ -140,7 +140,7 @@
 	}
 
 	.editTimeInputs input {
-		width: 2rem;
+		width: 2.5rem;
 		text-align: center;
 		font-size: 1.5rem;
 		background-color: #111;
