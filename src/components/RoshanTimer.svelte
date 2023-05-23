@@ -228,6 +228,16 @@
 		padding: 0.25rem;
 	}
 
+	/* Hide input arrows */
+	.editTimeInputs input::-webkit-outer-spin-button,
+	.editTimeInputs input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	input[type='number'] {
+		-moz-appearance: textfield;
+	}
+
 	.location {
 		position: absolute;
 		top: 1rem;

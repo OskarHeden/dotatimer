@@ -153,6 +153,16 @@
 		-moz-appearance: textfield;
 	}
 
+	/* Hide input arrows */
+	.editTimeInputs input::-webkit-outer-spin-button,
+	.editTimeInputs input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	input[type='number'] {
+		-moz-appearance: textfield;
+	}
+
 	.adjustTime {
 		font-size: 3rem;
 		width: 20vw;
