@@ -57,6 +57,9 @@
 		border: none;
 		color: transparent;
 		background-color: transparent;
+		position: absolute;
+		left: 0%;
+		bottom: 0%;
 	}
 	.iconContainer :hover {
 		stroke: red;
