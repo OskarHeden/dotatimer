@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { playSoundEffect } from '../helpers/sound';
-	import { gameTimer } from '../stores/gameTimer';
 	import '@fontsource/orbitron';
+	import { gameTimer } from '../stores/gameTimer';
 	import { roshanTimer } from '../stores/timerEngine';
 	import { roshan } from '../stores/timerConfig';
 
