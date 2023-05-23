@@ -43,8 +43,8 @@ const initialTimers: TimerConfig[] = [
 		interval: 7, // in minutes
 		initialSkip: 0,
 		icon: 'Wisdom.webp',
-		audioSrc: 'powerRuneSpawn.mp3',
-		notifySecondsBefore: 15
+		audioSrc: 'Wisdom.mp3',
+		notifySecondsBefore: 45
 	},
 	{
 		enabled: true,
@@ -53,7 +53,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 20, // in minutes
 		initialSkip: 0,
 		icon: 'Tormentor.webp',
-		audioSrc: 'powerRuneSpawn.mp3',
+		audioSrc: 'Tormentor.mp3',
 		notifySecondsBefore: 0,
 		dynamic: true,
 		dynamicRespawn: 10
@@ -65,8 +65,8 @@ const initialTimers: TimerConfig[] = [
 		interval: 3, // in minutes
 		initialSkip: 0,
 		icon: 'Lotus.png',
-		audioSrc: 'bountyRuneSpawn.mp3',
-		notifySecondsBefore: 15
+		audioSrc: 'Lotus.mp3',
+		notifySecondsBefore: 10
 	},
 	{
 		enabled: false,
@@ -75,7 +75,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 2, // in minutes
 		initialSkip: 2,
 		icon: 'powerRune.webp',
-		audioSrc: 'powerRuneSpawn.mp3',
+		audioSrc: 'Power.mp3',
 		notifySecondsBefore: 15
 	},
 	{
@@ -85,8 +85,8 @@ const initialTimers: TimerConfig[] = [
 		interval: 3, // in minutes
 		initialSkip: 0,
 		icon: 'Bountyrune.png',
-		audioSrc: 'bountyRuneSpawn.mp3',
-		notifySecondsBefore: 15
+		audioSrc: 'Bounty.mp3',
+		notifySecondsBefore: 20
 	},
 	{
 		enabled: false,
@@ -95,7 +95,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 1, // in minutes
 		initialSkip: 1,
 		icon: 'Centaurcreep.webp',
-		audioSrc: 'timeToStack.mp3',
+		audioSrc: 'Stack.mp3',
 		notifySecondsBefore: 15
 	},
 	{
@@ -105,8 +105,8 @@ const initialTimers: TimerConfig[] = [
 		interval: 5, // in minutes
 		initialSkip: 0,
 		icon: 'Catapult.webp',
-		audioSrc: 'catapultWave.mp3',
-		notifySecondsBefore: 15
+		audioSrc: 'Catapult.mp3',
+		notifySecondsBefore: 30
 	}
 ].map((timer) => prepareAudio(timer));
 
