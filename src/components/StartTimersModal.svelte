@@ -23,18 +23,24 @@
 	});
 </script>
 
+<video autoplay="autoplay" loop>
+	<source src="Roshan.mp4" type="video/mp4" />
+</video>
 <div class="start-timers-modal">
 	<h1>Welcome to Dota Timer!</h1>
-	<span>The home of Dota time</span>
+	<span
+		>We help you fine-tune your senses to Bloodseeker levels!<br /> Dive into the Dota 2 universe
+		with our game-changing timer tool that keeps you connected with every critical event,<br
+		/>sharpening your gameplay and giving you the competitive edge.</span
+	>
 	<br />
-	<span>Set the starting time of the timer:</span>
+	<span class="subHeading">Set the starting time of the timer:</span>
 	<div class="timeInput">
 		<input type="text" bind:value={startMinutes} on:input={handleOnChange} placeholder="-1" />
+		<span class="semiColon">:</span>
 		<input type="text" bind:value={startSeconds} on:input={handleOnChange} placeholder="00" />
 	</div>
 	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
-	<span>How long before the event would you like to be reminded?</span>
-	<input type="text" placeholder="15" value={15} />
 
 	<span>Use the settings menu in the lower right corner to edit settings for the timers</span>
 	<!-- <span>Please enter your desired start time:</span>
@@ -69,34 +75,28 @@
 </div>
 
 <style>
+	video {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		min-width: 100%;
+		min-height: 100%;
+		z-index: -1;
+	}
 	.start-timers-modal {
 		width: 70vw;
-		padding: 1rem 1rem 5rem 1rem;
+		padding: 1rem;
 		border-radius: 12px;
 		display: flex;
 		flex-direction: column;
 
 		align-items: center;
 		text-align: center;
-		background: rgb(133, 133, 133);
-		background: linear-gradient(
-			135deg,
-			rgba(133, 133, 133, 1) 7%,
-			rgba(0, 0, 0, 1) 8%,
-			rgba(106, 106, 106, 1) 8%,
-			rgba(71, 71, 71, 1) 34%,
-			rgba(76, 76, 76, 1) 35%,
-			rgba(129, 129, 129, 1) 59%,
-			rgba(0, 0, 0, 1) 60%,
-			rgba(91, 91, 91, 1) 61%,
-			rgba(78, 78, 78, 1) 75%,
-			rgba(79, 79, 79, 1) 79%,
-			rgba(110, 111, 110, 1) 100%
-		);
 	}
-	.timeInput {
-		display: flex;
-		flex-direction: row;
+
+	.subHeading {
+		margin-top: 10px;
+		font-weight: bold;
 	}
 	input {
 		max-width: 75px;
@@ -104,10 +104,22 @@
 		margin: 20px 0px 20px 0px;
 		font-size: 1.5rem;
 		text-align: center;
+		background-color: black;
+		color: white;
+		border: 1px solid white;
+		border-radius: 5px;
 	}
 
 	h1 {
 		margin-top: 0;
+		font-size: 3rem;
+		color: rgb(226, 218, 206);
+	}
+	span {
+		color: rgb(226, 218, 206);
+	}
+	.semiColon {
+		font-size: 2rem;
 	}
 	.startingTimeInputs {
 		display: grid;
@@ -132,9 +144,11 @@
 		border-radius: 4px;
 		background-color: black;
 		margin-top: 1rem;
+		border: 2px solid rgb(226, 218, 206);
 	}
 	button:hover {
 		box-shadow: 0px 0px 5px 2px #ff6046;
+		border: 2px solid #ff6046;
 	}
 	.timers {
 		display: grid;
