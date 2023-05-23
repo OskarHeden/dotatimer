@@ -1,13 +1,18 @@
 <script lang="ts">
 	import type { Timer } from '../stores/timerEngine';
 	import { timerConfig, setLocalStorage } from '../stores/timerConfig';
+	import { gameTimer } from '../stores/gameTimer';
 
 	export let timer: Timer;
 	export let big: boolean;
 
 	export const toggleTimer = () => {
-		$timerConfig[timer.index].enabled = !timer.enabled;
-		setLocalStorage();
+		if (timer.dynamic && !timer.remainingFormatted) {
+			$timerConfig[timer.index].startTime = $gameTimer.time;
+		} else {
+			$timerConfig[timer.index].enabled = !timer.enabled;
+			setLocalStorage();
+		}
 	};
 
 	export const toggleTimerSound = () => {
@@ -28,11 +33,16 @@
 			<img src="/soundDisabled.svg" alt="sound-disabled-icon" />
 		</button>
 	{/if}
-	<p class="countdown">{timer.remainingFormatted}</p>
+	{#if timer.remainingFormatted}
+		<p class="countdown">{timer.remainingFormatted}</p>
+	{/if}
 	{#if timer.icon}
 		<img class="iconImage" src={timer.icon} alt="icon" />
 	{/if}
-	<span class="title">{timer.title}</span>
+	<span class="title" class:ready={!timer.remainingFormatted}>{timer.title}</span>
+	{#if !timer.remainingFormatted}
+		<p>Click to start</p>
+	{/if}
 </button>
 
 <style>
@@ -91,6 +101,9 @@
 	}
 	.title {
 		color: #b1a6a6;
+	}
+	.title.ready {
+		margin-top: 1em;
 	}
 	.flash .title {
 		animation: reverseColorSwap 3s infinite;

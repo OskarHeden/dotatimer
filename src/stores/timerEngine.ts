@@ -10,7 +10,7 @@ export interface Timer extends TimerConfig {
 	index: number;
 	order?: number;
 	remainingSeconds: number;
-	remainingFormatted: string;
+	remainingFormatted: string | null;
 	flash: boolean;
 	startTimeFormatted?: string;
 }
@@ -51,6 +51,24 @@ export const timerEngine: Readable<Timer[]> = derived(
 							aegis.reclaim();
 							remainingSeconds = 0;
 						}
+					} else if (timer.dynamic && $gameTimer.time >= timer.interval * 60) {
+						// Play audio for initial spawn
+						if ($gameTimer.time === timer.interval * 60) {
+							playSoundEffect(timer.audio);
+						}
+						if (timer.startTime && timer.dynamicRespawn) {
+							if ($gameTimer.time - timer.startTime < timer.dynamicRespawn * 60) {
+								remainingSeconds = timer.dynamicRespawn * 60 - ($gameTimer.time - timer.startTime);
+							} else {
+								// Play audio for respawn
+								if ($gameTimer.time - timer.startTime === timer.dynamicRespawn * 60) {
+									playSoundEffect(timer.audio);
+								}
+								remainingSeconds = 0;
+							}
+						} else {
+							remainingSeconds = 0;
+						}
 					} else {
 						// Calculate the remaining seconds for the current round
 						const timeInCurrentRound = $gameTimer.time % (timer.interval * 60);
@@ -60,9 +78,20 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				const minutesLeft = Math.floor(remainingSeconds / 60);
 				const secondsLeft = remainingSeconds % 60;
-				const remainingFormatted = `${formatTime(minutesLeft)}:${formatTime(secondsLeft)}`;
+				let remainingFormatted: string | null = `${formatTime(minutesLeft)}:${formatTime(
+					secondsLeft
+				)}`;
+				if (timer.dynamic && remainingSeconds === 0) {
+					remainingFormatted = null;
+				}
 
-				if (timer.enabled && timer.soundEnabled && $config.soundEnabled && !timer.static) {
+				if (
+					timer.enabled &&
+					timer.soundEnabled &&
+					$config.soundEnabled &&
+					!timer.static &&
+					!timer.dynamic
+				) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
 					if ($config.soundEnabled && remainingSeconds === timer.notifySecondsBefore && timer.audio)
 						playSoundEffect(timer.audio);
@@ -106,7 +135,6 @@ export const roshanTimer: Readable<RoshanTimer> = derived(
 	([$gameTimer, $config, $roshan]): RoshanTimer => {
 		if (!($roshan.activated && $roshan.killTime)) {
 			const gameTimeMinutes = Math.floor($gameTimer.time / 60);
-			console.log({ gameTimeMinutes, stuff: (gameTimeMinutes / 5) % 2 });
 			const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
 			return { ...$roshan, location };
 		}
