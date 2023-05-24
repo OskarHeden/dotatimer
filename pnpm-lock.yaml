@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@fontsource-variable/merriweather-sans': ^5.0.2
   '@fontsource/orbitron': ^4.5.11
   '@playwright/test': ^1.28.1
   '@sveltejs/adapter-auto': ^1.0.0-next.90
@@ -22,6 +23,7 @@ specifiers:
   vitest: ^0.25.3
 
 dependencies:
+  '@fontsource-variable/merriweather-sans': 5.0.2
   '@fontsource/orbitron': 4.5.11
   '@sveltejs/adapter-static': 2.0.1_@sveltejs+kit@1.15.0
   '@vercel/analytics': 1.0.1
@@ -258,6 +260,10 @@ packages:
     resolution: {integrity: sha512-x5vzdtOOGgFVDCUs81QRB2+liax8rFg3+7hqM+QhBG0/G3F1ZsoYl97UrqgHgQ9KKT7G6c4V+aTUCgu/n22v1A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@fontsource-variable/merriweather-sans/5.0.2:
+    resolution: {integrity: sha512-OIMkmGfhmzgS7+M1O63NPCDvTr8hQVj4w6ff28AzWF7QL5ZIzOh/mMBrFoa4bfYnvmYKrJ7E97oCv+iAkyabtQ==}
+    dev: false
 
   /@fontsource/orbitron/4.5.11:
     resolution: {integrity: sha512-OClxk3btSUtbvH+LKk3JSO95Ly88lJZjODRgUY2yLVOVBhR/i7u3xlj9j0SUmIYQAFn21jrMX5+zbS5IfIP9YQ==}

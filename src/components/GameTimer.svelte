@@ -121,6 +121,8 @@
 		flex-direction: row;
 		align-items: center;
 		font-size: 1.75rem;
+	}
+	.gameTimer span {
 		font-family: 'Orbitron', sans-serif;
 	}
 	.minutes,

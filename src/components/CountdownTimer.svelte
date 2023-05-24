@@ -53,7 +53,7 @@
 	}
 
 	.iconImage {
-		max-width: 40px;
+		max-height: 100%;
 		filter: brightness(0);
 		position: absolute;
 		bottom: 50;
@@ -144,5 +144,11 @@
 	.soundDisabled img {
 		height: 20px;
 		width: 20px;
+	}
+
+	@media (max-width: 468px) {
+		.iconImage {
+			max-height: 50%;
+		}
 	}
 </style>

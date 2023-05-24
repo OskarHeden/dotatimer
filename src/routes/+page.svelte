@@ -16,6 +16,8 @@
 	import StartTimersModal from '../components/StartTimersModal.svelte';
 	import { aegis, restoreTimers, roshan } from '../stores/timerConfig';
 
+	import '@fontsource-variable/merriweather-sans';
+
 	interface Window {
 		AudioContext: typeof AudioContext;
 		webkitAudioContext: typeof AudioContext;
