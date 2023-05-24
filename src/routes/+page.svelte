@@ -44,7 +44,7 @@
 			timer.audio?.pause();
 		});
 		gameTimer.start();
-		vercelTrack('StartTimers', { timers: JSON.stringify($timerEngine) });
+		vercelTrack('StartTimers');
 	};
 </script>
 
