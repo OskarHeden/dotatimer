@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { clickOutside } from '../helpers/clickOutside';
 	import { config } from '../stores/config';
-	import { timerConfig, toggleTimerSound, setTimerReminder } from '../stores/timerConfig';
-	import Slider from './Slider.svelte';
+	import {
+		timerConfig,
+		setTimerReminder,
+		setSoundOption,
+		soundOptions
+	} from '../stores/timerConfig';
 	import LockScroll from './utility/LockScroll.svelte';
 
 	let buttonRef: HTMLElement;
@@ -13,12 +17,12 @@
 		visible = false;
 	};
 
-	const handleSliderOnChange = (index: number) => {
-		toggleTimerSound(index);
+	const handleReminderInput = (evt: Event, index: number) => {
+		setTimerReminder(parseInt(evt?.target?.value), index);
 	};
 
-	const handleOnInput = (evt: Event, index: number) => {
-		setTimerReminder(parseInt(evt?.target?.value), index);
+	const handleSoundRadio = (option: 'sfx' | 'voice', index: number) => {
+		setSoundOption(option, index);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
@@ -72,16 +76,26 @@
 				{#each $timerConfig as timer, index}
 					<div class="menuItem">
 						<h3>{timer.title}</h3>
-						<Slider
-							onChange={() => handleSliderOnChange(index)}
-							checked={timer.soundEnabled}
-							disabled={false}
-						/>
+						<div class="sound-options">
+							{#each soundOptions as { id, label }}
+								<div class="option">
+									<label for={id}>{label}</label>
+									<input
+										type="radio"
+										name="sound-{index}"
+										checked={timer.preferredSound === id}
+										{id}
+										value={id}
+										on:change={() => handleSoundRadio(id, index)}
+									/>
+								</div>
+							{/each}
+						</div>
 						<input
 							class="timerSetting"
 							type="number"
 							value={timer.notifySecondsBefore.toString()}
-							on:input={(evt) => handleOnInput(evt, index)}
+							on:input={(evt) => handleReminderInput(evt, index)}
 						/>
 					</div>
 				{/each}
@@ -250,5 +264,34 @@
 			width: 35px;
 			height: 35px;
 		}
+	}
+
+	.sound-options {
+		display: grid;
+		grid-template-columns: repeat(2, 35px); /* CHANGED */
+		align-items: center;
+		justify-items: center;
+		margin: auto;
+		grid-gap: 20px; /* ADDED */
+	}
+	.option {
+		display: flex;
+		flex-direction: column;
+		color: white;
+		position: relative;
+	}
+	.sound-options .option:after {
+		/* ADDED */
+		content: '';
+		position: absolute;
+		border-left: 1px solid white;
+		right: -15px; /* adjust this */
+		top: 0;
+		height: 120%; /* adjust this */
+	}
+
+	.sound-options .option:last-child:after {
+		/* ADDED */
+		display: none; /* Hide the divider for the last block */
 	}
 </style>

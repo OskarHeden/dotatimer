@@ -10,6 +10,7 @@ export interface TimerConfig {
 	initialSkip: number;
 	icon: string;
 	audioSrc: string;
+	preferredSound: 'sfx' | 'voice';
 	audio?: HTMLAudioElement;
 	notifySecondsBefore: number;
 	static?: boolean;
@@ -32,8 +33,15 @@ const prepareAudio = (timer: TimerConfig) =>
 		? timer
 		: {
 				...timer,
-				audio: new Audio(`/sound/effects/${timer.audioSrc}`)
+				audio: new Audio(
+					`/sound/${timer.preferredSound === 'sfx' ? 'effects' : 'voice'}/${timer.audioSrc}`
+				)
 		  };
+
+export const soundOptions: { id: 'sfx' | 'voice'; label: string }[] = [
+	{ id: 'sfx', label: 'SFX' },
+	{ id: 'voice', label: 'Voice' }
+];
 
 const initialTimers: TimerConfig[] = [
 	{
@@ -43,6 +51,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 1, // in minutes
 		initialSkip: 1,
 		icon: 'Centaurcreep.webp',
+		preferredSound: 'sfx',
 		audioSrc: 'Stack.mp3',
 		notifySecondsBefore: 15
 	},
@@ -53,6 +62,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 7, // in minutes
 		initialSkip: 0,
 		icon: 'Wisdom.webp',
+		preferredSound: 'sfx',
 		audioSrc: 'Wisdom.mp3',
 		notifySecondsBefore: 45
 	},
@@ -63,6 +73,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 20, // in minutes
 		initialSkip: 0,
 		icon: 'Tormentor.webp',
+		preferredSound: 'sfx',
 		audioSrc: 'Tormentor.mp3',
 		notifySecondsBefore: 0,
 		dynamic: true,
@@ -75,6 +86,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 3, // in minutes
 		initialSkip: 0,
 		icon: 'Lotus.png',
+		preferredSound: 'sfx',
 		audioSrc: 'Lotus.mp3',
 		notifySecondsBefore: 15
 	},
@@ -85,6 +97,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 2, // in minutes
 		initialSkip: 2,
 		icon: 'powerRune.webp',
+		preferredSound: 'sfx',
 		audioSrc: 'Power.mp3',
 		notifySecondsBefore: 15
 	},
@@ -95,6 +108,7 @@ const initialTimers: TimerConfig[] = [
 		interval: 3, // in minutes
 		initialSkip: 0,
 		icon: 'Bountyrune.png',
+		preferredSound: 'sfx',
 		audioSrc: 'Bounty.mp3',
 		notifySecondsBefore: 15
 	},
@@ -105,16 +119,28 @@ const initialTimers: TimerConfig[] = [
 		interval: 5, // in minutes
 		initialSkip: 0,
 		icon: 'Catapult.webp',
+		preferredSound: 'sfx',
 		audioSrc: 'Catapult.mp3',
 		notifySecondsBefore: 30
 	}
 ].map((timer) => prepareAudio(timer));
+
+const updateAudioOptions = () => {
+	timerConfig.update((timers) => timers.map((timer) => prepareAudio(timer)));
+};
 
 export const setLocalStorage = () => {
 	if (typeof window !== 'undefined') {
 		const timers = get(timerConfig);
 		localStorage.timers = JSON.stringify(timers);
 	}
+};
+
+export const setSoundOption = (value: 'sfx' | 'voice', index: number) => {
+	const timers = get(timerConfig);
+	timers[index].preferredSound = value;
+	setLocalStorage();
+	updateAudioOptions();
 };
 
 export const setTimerReminder = (value: number, index: number) => {
@@ -156,6 +182,7 @@ export interface RoshanConfig {
 	maxSpawn: number;
 	minSpawn: number;
 	icon: string;
+	preferredSound: 'sfx' | 'voice';
 	potentialSpawnAudioSrc: string;
 	definiteSpawnAudioSrc: string;
 	potentialSpawnAudio?: HTMLAudioElement;
@@ -171,6 +198,7 @@ const roshanConfig: RoshanConfig = {
 	maxSpawn: 11,
 	minSpawn: 8,
 	icon: 'roshan.webp',
+	preferredSound: 'sfx',
 	potentialSpawnAudioSrc: 'Roshan.mp3',
 	definiteSpawnAudioSrc: 'Roshan.mp3',
 	notifySecondsBefore: 0
@@ -197,6 +225,7 @@ const aegisConfig: TimerConfig = {
 	interval: 6,
 	initialSkip: 0,
 	icon: 'Aegis.png',
+	preferredSound: 'sfx',
 	audioSrc: 'Aegis.mp3',
 	notifySecondsBefore: 0,
 	static: true
