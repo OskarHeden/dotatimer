@@ -29,7 +29,7 @@
 	});
 </script>
 
-<video autoplay="autoplay" muted loop playsinline poster="poster.png">
+<video autoplay="autoplay" muted loop playsinline poster="poster.webp">
 	<source src="Roshan.mp4" type="video/mp4" />
 </video>
 <div class="start-timers-modal">
