@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { inject } from '@vercel/analytics';
+	import { inject, track as vercelTrack } from '@vercel/analytics';
 	inject({ mode: dev ? 'development' : 'production' });
 	import './global.css';
 	import { flip } from 'svelte/animate';
@@ -44,6 +44,7 @@
 			timer.audio?.pause();
 		});
 		gameTimer.start();
+		vercelTrack('StartTimers', { timers: JSON.stringify($timerEngine) });
 	};
 </script>
 
