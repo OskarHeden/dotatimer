@@ -61,31 +61,6 @@
 	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
 
 	<span>Use the settings menu in the lower right corner to edit settings for the timers</span>
-	<!-- <span>Please enter your desired start time:</span>
-	<br />
-	<div class="startingTimeInputs">
-		<label for="minutes">Minutes</label>
-		<label for="minutes">Seconds</label>
-		<input type="number" pattern="[0-9]" bind:value={startMinutes} id="minutes" />
-		<input type="number" pattern="[0-9]" bind:value={startSeconds} id="seconds" />
-	</div> -->
-	<!-- <div class="timers">
-		{#each $timerConfig as timer, index}
-			<div class="timer">
-				<span>{timer.title}</span>
-				<div style="display:flex;align-items:center;">
-					<Slider onChange={() => toggleTimer(index)} disabled={false} checked={timer.enabled} />
-				</div>
-				<div class="reminder">
-					<span style="margin-right:0.5em;">Reminder:</span>
-					<input
-						on:input={(evt) => setTimerReminder(parseInt(evt?.target?.value), index)}
-						placeholder={timer.notifySecondsBefore.toString()}
-					/>
-				</div>
-			</div>
-		{/each}
-	</div> -->
 	<div>
 		<span />
 	</div>
@@ -139,21 +114,6 @@
 	.semiColon {
 		font-size: 2rem;
 	}
-	.startingTimeInputs {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		justify-content: center;
-		align-content: center;
-	}
-	.startingTimeInputs input {
-		max-width: 20px;
-		margin: 0 auto;
-		text-align: center;
-	}
-
-	.startingTimeInputs label {
-		margin: 0 0.5em;
-	}
 	button {
 		border: none;
 		font-size: 24px;
@@ -167,35 +127,5 @@
 	button:hover {
 		box-shadow: 0px 0px 5px 2px #ff6046;
 		border: 2px solid #ff6046;
-	}
-	.timers {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		margin: 1rem 0;
-	}
-	.timer {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin: 10px;
-		color: black;
-
-		background: rgba(255, 255, 255, 0.2);
-		border-radius: 16px;
-		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-		backdrop-filter: blur(5px);
-		-webkit-backdrop-filter: blur(5px);
-		border: 1px solid rgba(0, 0, 0, 0.3);
-		border-radius: 5px;
-		box-shadow: -5px -5px 9px rgba(0, 0, 0, 0.45), 5px 5px 9px rgba(94, 104, 121, 0.3);
-	}
-	.reminder {
-		display: flex;
-		align-items: center;
-		margin: 0.5em 0;
-	}
-	.reminder input {
-		width: 20px;
-		text-align: center;
 	}
 </style>

@@ -69,6 +69,7 @@
 				<span>Start time:</span>
 				{#if editingTime}
 					<div class="editTimeInputs">
+						<!-- svelte-ignore a11y-autofocus -->
 						<input
 							bind:value={minutes}
 							pattern="[0-9]*"
