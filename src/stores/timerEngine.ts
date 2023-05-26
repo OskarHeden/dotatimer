@@ -58,24 +58,6 @@ export const timerEngine: Readable<Timer[]> = derived(
 							aegis.reclaim();
 							remainingSeconds = 0;
 						}
-					} else if (timer.dynamic && $gameTimer.time >= timer.interval * 60) {
-						// Play audio for initial spawn
-						if ($gameTimer.time === timer.interval * 60) {
-							audioQueue.addAudio(timer.audio as HTMLAudioElement);
-						}
-						if (timer.startTime && timer.dynamicRespawn) {
-							if ($gameTimer.time - timer.startTime < timer.dynamicRespawn * 60) {
-								remainingSeconds = timer.dynamicRespawn * 60 - ($gameTimer.time - timer.startTime);
-							} else {
-								// Play audio for respawn
-								if ($gameTimer.time - timer.startTime === timer.dynamicRespawn * 60) {
-									audioQueue.addAudio(timer.audio as HTMLAudioElement);
-								}
-								remainingSeconds = 0;
-							}
-						} else {
-							remainingSeconds = 0;
-						}
 					} else {
 						// Calculate the remaining seconds for the current round
 						const timeInCurrentRound = $gameTimer.time % (timer.interval * 60);
@@ -85,20 +67,11 @@ export const timerEngine: Readable<Timer[]> = derived(
 
 				const minutesLeft = Math.floor(remainingSeconds / 60);
 				const secondsLeft = remainingSeconds % 60;
-				let remainingFormatted: string | null = `${formatTime(minutesLeft)}:${formatTime(
+				const remainingFormatted: string | null = `${formatTime(minutesLeft)}:${formatTime(
 					secondsLeft
 				)}`;
-				if (timer.dynamic && remainingSeconds === 0) {
-					remainingFormatted = null;
-				}
 
-				if (
-					timer.enabled &&
-					timer.soundEnabled &&
-					$config.soundEnabled &&
-					!timer.static &&
-					!timer.dynamic
-				) {
+				if (timer.enabled && timer.soundEnabled && $config.soundEnabled && !timer.static) {
 					flash = remainingSeconds <= timer.notifySecondsBefore;
 					if (
 						$config.soundEnabled &&
@@ -144,6 +117,8 @@ export interface DynamicTimer extends DynamicTimerConfig {
 	flash?: boolean;
 	shouldReset?: boolean;
 }
+
+let tormentorInitialSpawn = false;
 
 export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 	[gameTimer, config, dynamicConfig, roshan],
@@ -228,26 +203,30 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 					const negativeTime = $gameTimer.time < 0;
 
 					let flash = false;
+					let shouldPlayAudio = false;
 
-					// Play audio for initial spawn
-					if ($gameTimer.time === timer.interval * 60) {
-						audioQueue.addAudio(timer.audio as HTMLAudioElement);
-					}
+					// Mark of initial spawn
 					if ($gameTimer.time >= timer.interval * 60) {
-						if (timer.startTime && timer.dynamicRespawn) {
-							if ($gameTimer.time - timer.startTime < timer.dynamicRespawn * 60) {
-								remainingSeconds = timer.dynamicRespawn * 60 - ($gameTimer.time - timer.startTime);
+						// If it has been activated
+						if (timer.killTime && timer.dynamicRespawn) {
+							if ($gameTimer.time - timer.killTime < timer.dynamicRespawn * 60) {
+								remainingSeconds = timer.dynamicRespawn * 60 - ($gameTimer.time - timer.killTime);
 							} else {
-								// Play audio for respawn
-								if ($gameTimer.time - timer.startTime === timer.dynamicRespawn * 60) {
-									audioQueue.addAudio(timer.audio as HTMLAudioElement);
+								if ($gameTimer.time === timer.killTime + timer.dynamicRespawn * 60) {
+									shouldPlayAudio = true;
 								}
 								remainingSeconds = 0;
 							}
 						} else {
+							// Play first spawn sound
+							if (!tormentorInitialSpawn && $gameTimer.time === timer.interval * 60) {
+								shouldPlayAudio = true;
+								tormentorInitialSpawn = true;
+							}
 							remainingSeconds = 0;
 						}
 					} else {
+						// Still counting down for first respawn
 						const timeInCurrentRound = $gameTimer.time % (timer.interval * 60);
 						remainingSeconds = timer.interval * 60 - timeInCurrentRound;
 					}
@@ -262,7 +241,8 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 					}
 
 					flash = remainingSeconds <= timer.notifySecondsBefore;
-					if (timer.enabled && timer.soundEnabled && $config.soundEnabled) {
+
+					if (shouldPlayAudio && timer.enabled && timer.soundEnabled && $config.soundEnabled) {
 						if (
 							$config.soundEnabled &&
 							remainingSeconds === timer.notifySecondsBefore &&
@@ -271,8 +251,6 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 							audioQueue.addAudio(timer.audio as HTMLAudioElement);
 						}
 					}
-
-					console.log({ remainingFormatted, remainingSeconds, flash });
 
 					return {
 						...timer,

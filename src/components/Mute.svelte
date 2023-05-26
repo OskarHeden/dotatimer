@@ -6,7 +6,6 @@
 
 <button
 	on:click={() => {
-		console.log('button works');
 		config.update((s) => ({ ...s, soundEnabled: !s.soundEnabled }));
 	}}
 >

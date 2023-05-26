@@ -8,7 +8,7 @@
 
 	export const toggleTimer = () => {
 		if (!timer.remainingFormatted) {
-			$dynamicConfig[timer.index].startTime = $gameTimer.time;
+			$dynamicConfig[timer.index].killTime = $gameTimer.time;
 		} else {
 			$dynamicConfig[timer.index].enabled = !timer.enabled;
 		}
@@ -18,7 +18,6 @@
 		$dynamicConfig[timer.index].soundEnabled = !timer.soundEnabled;
 		setLocalStorage();
 	};
-	$: console.log({ timer });
 </script>
 
 <button
