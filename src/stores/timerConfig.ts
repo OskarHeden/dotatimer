@@ -21,20 +21,20 @@ const prepareRoshanAudio = (timer: RoshanConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-			...timer,
-			potentialSpawnAudio: new Audio(`/sound/effects/${timer.potentialSpawnAudioSrc}`),
-			definiteSpawnAudio: new Audio(`/sound/effects/${timer.definiteSpawnAudioSrc}`)
-		};
+				...timer,
+				potentialSpawnAudio: new Audio(`/sound/effects/${timer.potentialSpawnAudioSrc}`),
+				definiteSpawnAudio: new Audio(`/sound/effects/${timer.definiteSpawnAudioSrc}`)
+		  };
 
 const prepareAudio = (timer: TimerConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-			...timer,
-			audio: new Audio(
-				`/sound/${timer.preferredSound === 'sfx' ? 'effects' : 'voice'}/${timer.audioSrc}`
-			)
-		};
+				...timer,
+				audio: new Audio(
+					`/sound/${timer.preferredSound === 'sfx' ? 'effects' : 'voice'}/${timer.audioSrc}`
+				)
+		  };
 
 export const soundOptions: { id: 'sfx' | 'voice'; label: string }[] = [
 	{ id: 'sfx', label: 'SFX' },
@@ -54,7 +54,7 @@ const initialTimers: TimerConfig[] = [
 		notifySecondsBefore: 15
 	},
 	{
-		enabled: false,
+		enabled: true,
 		soundEnabled: true,
 		title: 'Wisdom Rune',
 		interval: 7, // in minutes
@@ -65,7 +65,7 @@ const initialTimers: TimerConfig[] = [
 		notifySecondsBefore: 45
 	},
 	{
-		enabled: false,
+		enabled: true,
 		soundEnabled: true,
 		title: 'Lotus',
 		interval: 3, // in minutes
@@ -76,7 +76,7 @@ const initialTimers: TimerConfig[] = [
 		notifySecondsBefore: 15
 	},
 	{
-		enabled: false,
+		enabled: true,
 		soundEnabled: true,
 		title: 'Power Rune',
 		interval: 2, // in minutes
@@ -87,7 +87,7 @@ const initialTimers: TimerConfig[] = [
 		notifySecondsBefore: 15
 	},
 	{
-		enabled: false,
+		enabled: true,
 		soundEnabled: true,
 		title: 'Bounty Rune',
 		interval: 3, // in minutes
@@ -95,7 +95,7 @@ const initialTimers: TimerConfig[] = [
 		icon: 'Bountyrune.png',
 		preferredSound: 'sfx',
 		audioSrc: 'Bounty.mp3',
-		notifySecondsBefore: 15
+		notifySecondsBefore: 20
 	},
 	{
 		enabled: false,
