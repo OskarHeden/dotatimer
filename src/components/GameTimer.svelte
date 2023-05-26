@@ -72,7 +72,7 @@
 	class:idle={!$gameTimer.isRunning}
 >
 	{#if !$gameTimer.isRunning}
-		<img src="/icons/192.png" width={56} height={56} alt="Logo" />
+		<img class="logo" src="/icons/512.png" alt="Logo" />
 	{:else}
 		<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
 
@@ -121,6 +121,13 @@
 		flex-direction: row;
 		align-items: center;
 		font-size: 1.75rem;
+	}
+
+	.logo {
+		width: 100px;
+		height: 100px;
+		filter: drop-shadow(0px 0px 54px #853939);
+		animation: pulse alternate 3s infinite;
 	}
 	.gameTimer span {
 		font-family: 'Orbitron', sans-serif;
@@ -182,6 +189,14 @@
 	button:active {
 		color: black;
 	}
+	@keyframes pulse {
+		from {
+			filter: drop-shadow(0px 0px 54px #853939);
+		}
+		to {
+			filter: drop-shadow(0px 0px 0px #853939);
+		}
+	}
 
 	@media only screen and (max-width: 600px) {
 		.gameTimer {
@@ -199,6 +214,12 @@
 		}
 		.adjustTime:last-of-type {
 			padding-right: 3rem;
+		}
+
+		.logo {
+			width: 75px;
+			height: 75px;
+			filter: drop-shadow(0px 0px 54px #853939);
 		}
 	}
 </style>
