@@ -147,13 +147,9 @@
 		pointer-events: none;
 	}
 	.timerContainer {
-		background: rgb(133, 133, 133);
-		background: linear-gradient(
-			324deg,
-			rgba(133, 133, 133, 1) 0%,
-			rgba(71, 71, 71, 1) 34%,
-			rgba(110, 111, 110, 1) 100%
-		);
+		background: #1e1e1e;
+		color: rgb(255, 255, 255);
+		border: ridge 2px black;
 		box-shadow: 5px 5px 5px black;
 		border-radius: 5px;
 		position: relative;
@@ -162,8 +158,6 @@
 		height: 100%;
 		min-height: 25svh;
 		cursor: pointer;
-		border: none;
-		color: black;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -171,13 +165,13 @@
 	}
 
 	.timerContainer.flash {
-		animation: colorSwap 3s infinite;
+		animation: colorSwap 3s forwards;
 	}
 	.title {
 		color: white;
 	}
 	.title.flash {
-		animation: reverseColorSwap 3s infinite;
+		animation: reverseColorSwap 3s forwards;
 	}
 	.flash .roshanPic {
 		animation: blink 1s forwards;
@@ -187,12 +181,12 @@
 			background-color: white;
 		}
 		to {
-			background-color: grey;
+			background-color: #1e1e1e;
 		}
 	}
 	@keyframes reverseColorSwap {
 		from {
-			color: grey;
+			color: #1e1e1e;
 		}
 		to {
 			color: white;
