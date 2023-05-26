@@ -60,7 +60,7 @@
 		right: 0px;
 	}
 	.flash .iconImage {
-		animation: blink 3s infinite;
+		animation: blink 1s forwards;
 	}
 	.timerContainer {
 		background: rgb(133, 133, 133);

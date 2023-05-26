@@ -179,6 +179,9 @@
 	.title.flash {
 		animation: reverseColorSwap 3s infinite;
 	}
+	.flash .roshanPic {
+		animation: blink 1s forwards;
+	}
 	@keyframes colorSwap {
 		from {
 			background-color: white;
@@ -193,6 +196,14 @@
 		}
 		to {
 			color: white;
+		}
+	}
+	@keyframes blink {
+		from {
+			filter: brightness(0);
+		}
+		to {
+			filter: brightness(1);
 		}
 	}
 

@@ -21,20 +21,20 @@ const prepareRoshanAudio = (timer: RoshanConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-				...timer,
-				potentialSpawnAudio: new Audio(`/sound/effects/${timer.potentialSpawnAudioSrc}`),
-				definiteSpawnAudio: new Audio(`/sound/effects/${timer.definiteSpawnAudioSrc}`)
-		  };
+			...timer,
+			potentialSpawnAudio: new Audio(`/sound/effects/${timer.potentialSpawnAudioSrc}`),
+			definiteSpawnAudio: new Audio(`/sound/effects/${timer.definiteSpawnAudioSrc}`)
+		};
 
 const prepareAudio = (timer: TimerConfig) =>
 	typeof window === 'undefined'
 		? timer
 		: {
-				...timer,
-				audio: new Audio(
-					`/sound/${timer.preferredSound === 'sfx' ? 'effects' : 'voice'}/${timer.audioSrc}`
-				)
-		  };
+			...timer,
+			audio: new Audio(
+				`/sound/${timer.preferredSound === 'sfx' ? 'effects' : 'voice'}/${timer.audioSrc}`
+			)
+		};
 
 export const soundOptions: { id: 'sfx' | 'voice'; label: string }[] = [
 	{ id: 'sfx', label: 'SFX' },
@@ -177,7 +177,7 @@ const dynamicTimers: DynamicTimerConfig[] = [
 		title: 'Radiant Tormentor',
 		interval: 20, // in minutes
 		initialSkip: 0,
-		icon: 'Tormentor.webp',
+		icon: 'TormentorRadiant.webp',
 		preferredSound: 'sfx',
 		audioSrc: 'Tormentor.mp3',
 		notifySecondsBefore: 0,
@@ -190,7 +190,7 @@ const dynamicTimers: DynamicTimerConfig[] = [
 		title: 'Dire Tormentor',
 		interval: 20, // in minutes
 		initialSkip: 0,
-		icon: 'Tormentor.webp',
+		icon: 'TormentorDire.webp',
 		preferredSound: 'sfx',
 		audioSrc: 'Tormentor.mp3',
 		notifySecondsBefore: 0,
