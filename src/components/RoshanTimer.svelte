@@ -1,8 +1,10 @@
 <script lang="ts">
 	import '@fontsource/orbitron';
 	import { gameTimer } from '../stores/gameTimer';
-	import { roshanTimer } from '../stores/timerEngine';
+	import type { DynamicTimer } from '../stores/timerEngine';
 	import { roshan } from '../stores/timerConfig';
+
+	export let timer: DynamicTimer;
 
 	let editingTime: boolean;
 	let minutes: string;
@@ -40,30 +42,22 @@
 		}
 	};
 
-	$: subtitle = `Click to ${killTime ? 'Restart' : 'Start'}`;
+	$: subtitle = `Click to ${timer.activated ? 'Restart' : 'Start'}`;
+	$: flash = timer.flash;
 
-	$: killTime = $roshanTimer.killTimeFormatted;
-	$: location = $roshanTimer.location;
-	$: flash = $roshanTimer.flash;
-	$: definiteRemainingFormatted = $roshanTimer.definiteRemainingFormatted;
-	$: potentialRemainingFormatted = $roshanTimer.potentialRemainingFormatted;
-
-	const resetRoshanTimer = () => {
+	$: if (timer.shouldReset) {
 		roshan.reset();
-	};
-	$: if ($roshanTimer.shouldReset) {
-		resetRoshanTimer();
 	}
 </script>
 
 <button class="timerContainer" class:flash on:click={startCountDown}>
-	{#if location}
+	{#if !timer.activated && timer.location}
 		<div class="location">
 			<span>Location:</span>
-			<span class="pit">{location}</span>
+			<span class="pit">{timer.location}</span>
 		</div>
 	{/if}
-	{#if killTime}
+	{#if timer.activated}
 		<div class="startingTime">
 			<div>
 				<span>Start time:</span>
@@ -80,7 +74,7 @@
 						<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
 					</div>
 				{:else}
-					<span class="countDowns">{killTime}</span>
+					<span class="countDowns">{timer.killTimeFormatted}</span>
 				{/if}
 			</div>
 			{#if !editingTime}
@@ -89,23 +83,23 @@
 		</div>
 	{/if}
 	<div class="content">
-		{#if definiteRemainingFormatted}
+		{#if timer.definiteRemainingFormatted}
 			<div>
 				<p>Definitive spawn:</p>
-				<p class="countDowns">{definiteRemainingFormatted}</p>
+				<p class="countDowns">{timer.definiteRemainingFormatted}</p>
 			</div>
 		{/if}
-		{#if potentialRemainingFormatted}
+		{#if timer.potentialRemainingFormatted}
 			<div>
 				<p>Potential spawn:</p>
-				<p class="countDowns">{potentialRemainingFormatted}</p>
+				<p class="countDowns">{timer.potentialRemainingFormatted}</p>
 			</div>
 		{/if}
 	</div>
 	<img class="roshanPic" src="../roshan.webp" alt="roshan" />
 
 	<slot />
-	{#if !$roshanTimer.activated}
+	{#if !timer.activated}
 		<span class="title" class:flash>Roshan Timer</span>
 		<span class="subtitle" class:flash>{subtitle}</span>
 	{/if}

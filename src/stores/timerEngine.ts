@@ -1,10 +1,16 @@
 import { derived } from 'svelte/store';
 import type { Readable } from 'svelte/store';
-import { timerConfig, roshan, type TimerConfig, type RoshanConfig, aegis } from './timerConfig';
+import {
+	timerConfig,
+	roshan,
+	type TimerConfig,
+	aegis,
+	dynamicConfig,
+	type DynamicTimerConfig
+} from './timerConfig';
 import { gameTimer } from './gameTimer'; // Assuming this store already exists
 import { playSoundEffect } from '../helpers/sound';
 import { config } from './config';
-import type TimerState from '../components/GameTimer.svelte';
 import { audioQueue } from './audioQueue';
 
 export interface Timer extends TimerConfig {
@@ -127,75 +133,168 @@ export const timerEngine: Readable<Timer[]> = derived(
 	}
 );
 
-export interface RoshanTimer extends RoshanConfig {
+export interface DynamicTimer extends DynamicTimerConfig {
+	index?: number;
+	order?: number;
 	potentialRemainingFormatted?: string | null;
 	definiteRemainingFormatted?: string | null;
+	remainingFormatted?: string | null;
 	killTimeFormatted?: string;
 	location?: string | null;
 	flash?: boolean;
 	shouldReset?: boolean;
 }
 
-export const roshanTimer: Readable<RoshanTimer> = derived(
-	[gameTimer, config, roshan],
-	([$gameTimer, $config, $roshan]): RoshanTimer => {
-		if (!($roshan.activated && $roshan.killTime)) {
-			const gameTimeMinutes = Math.floor($gameTimer.time / 60);
-			const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
-			return { ...$roshan, location };
-		}
+export const dynamicTimers: Readable<DynamicTimer[]> = derived(
+	[gameTimer, config, dynamicConfig, roshan],
+	([$gameTimer, $config, $dynamicConfig, $roshan]): DynamicTimer[] => {
+		return [...$dynamicConfig, $roshan]
+			.map((timer, index) => {
+				if (timer.roshan) {
+					if (!(timer.activated && timer.killTime)) {
+						const gameTimeMinutes = Math.floor($gameTimer.time / 60);
+						const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
+						return { ...timer, location, flash: true };
+					} else {
+						const killTime = timer.killTime;
+						let definiteRemainingFormatted: string | null | undefined,
+							potentialRemainingFormatted: string | null | undefined,
+							flash = false,
+							killTimeFormatted: string | undefined,
+							shouldReset = false;
+						if (timer.killTime && timer.maxSpawn && timer.minSpawn) {
+							const killTimeMinutes = Math.floor(killTime / 60);
+							const killTimeSeconds = killTime % 60;
+							killTimeFormatted = `${formatTime(killTimeMinutes)}:${formatTime(killTimeSeconds)}`;
 
-		const killTime = $roshan.killTime;
-		const killTimeMinutes = Math.floor(killTime / 60);
-		const killTimeSeconds = killTime % 60;
-		const killTimeFormatted = `${formatTime(killTimeMinutes)}:${formatTime(killTimeSeconds)}`;
+							let definiteSpawnTime = timer.maxSpawn * 60 - ($gameTimer.time - killTime);
+							const definiteMinutes = Math.floor(definiteSpawnTime / 60);
+							const definiteSeconds = definiteSpawnTime % 60;
+							definiteRemainingFormatted = `${formatTime(definiteMinutes)}:${formatTime(
+								definiteSeconds
+							)}`;
 
-		let definiteSpawnTime = $roshan.maxSpawn * 60 - ($gameTimer.time - killTime);
-		const definiteMinutes = Math.floor(definiteSpawnTime / 60);
-		const definiteSeconds = definiteSpawnTime % 60;
-		let definiteRemainingFormatted: string | null = `${formatTime(definiteMinutes)}:${formatTime(
-			definiteSeconds
-		)}`;
+							let potentialSpawnTime = definiteSpawnTime - (timer.maxSpawn - timer.minSpawn) * 60;
+							const potentialMinutes = Math.floor(potentialSpawnTime / 60);
+							const potentialSeconds = potentialSpawnTime % 60;
+							potentialRemainingFormatted = `${formatTime(potentialMinutes)}:${formatTime(
+								potentialSeconds
+							)}`;
 
-		let potentialSpawnTime = definiteSpawnTime - ($roshan.maxSpawn - $roshan.minSpawn) * 60;
-		const potentialMinutes = Math.floor(potentialSpawnTime / 60);
-		const potentialSeconds = potentialSpawnTime % 60;
-		let potentialRemainingFormatted: string | null = `${formatTime(potentialMinutes)}:${formatTime(
-			potentialSeconds
-		)}`;
+							flash = definiteSeconds <= timer.notifySecondsBefore;
 
-		const flash = definiteSeconds <= $roshan.notifySecondsBefore;
+							if (timer.soundEnabled && $config.soundEnabled) {
+								if (
+									potentialSpawnTime === timer.notifySecondsBefore ||
+									definiteSpawnTime === timer.notifySecondsBefore
+								) {
+									playSoundEffect(timer.audio);
+								}
+							}
 
-		if ($roshan.soundEnabled && $config.soundEnabled) {
-			if (potentialSpawnTime === $roshan.notifySecondsBefore)
-				playSoundEffect($roshan.potentialSpawnAudio);
-			if (definiteSpawnTime === $roshan.notifySecondsBefore)
-				playSoundEffect($roshan.definiteSpawnAudio);
-		}
+							shouldReset = false;
+							if (definiteSpawnTime <= 0) {
+								shouldReset = true;
+								roshan.reset();
+							}
 
-		let shouldReset = false;
-		if (definiteSpawnTime <= 0) {
-			shouldReset = false;
-			roshan.reset();
-		}
+							if (definiteSpawnTime < 0) {
+								definiteRemainingFormatted = null;
+								definiteSpawnTime = 0;
+							}
+							if (potentialSpawnTime < 0) {
+								potentialRemainingFormatted = null;
+								potentialSpawnTime = 0;
+							}
+						}
 
-		if (definiteSpawnTime < 0) {
-			definiteRemainingFormatted = null;
-			definiteSpawnTime = 0;
-		}
-		if (potentialSpawnTime < 0) {
-			potentialRemainingFormatted = null;
-			potentialSpawnTime = 0;
-		}
+						return {
+							...timer,
+							index,
+							location: null,
+							definiteRemainingFormatted,
+							potentialRemainingFormatted,
+							killTimeFormatted,
+							flash,
+							shouldReset
+						};
+					}
+				} else {
+					let remainingSeconds: number;
 
-		return {
-			...$roshan,
-			location: null,
-			definiteRemainingFormatted,
-			potentialRemainingFormatted,
-			killTimeFormatted,
-			flash,
-			shouldReset
-		};
+					// Calculate the total elapsed rounds for the current game timer value
+					const elapsedRounds = Math.floor($gameTimer.time / (timer.interval * 60));
+
+					const negativeTime = $gameTimer.time < 0;
+
+					let flash = false;
+
+					// Play audio for initial spawn
+					if ($gameTimer.time === timer.interval * 60) {
+						audioQueue.addAudio(timer.audio as HTMLAudioElement);
+					}
+					if ($gameTimer.time >= timer.interval * 60) {
+						if (timer.startTime && timer.dynamicRespawn) {
+							if ($gameTimer.time - timer.startTime < timer.dynamicRespawn * 60) {
+								remainingSeconds = timer.dynamicRespawn * 60 - ($gameTimer.time - timer.startTime);
+							} else {
+								// Play audio for respawn
+								if ($gameTimer.time - timer.startTime === timer.dynamicRespawn * 60) {
+									audioQueue.addAudio(timer.audio as HTMLAudioElement);
+								}
+								remainingSeconds = 0;
+							}
+						} else {
+							remainingSeconds = 0;
+						}
+					} else {
+						const timeInCurrentRound = $gameTimer.time % (timer.interval * 60);
+						remainingSeconds = timer.interval * 60 - timeInCurrentRound;
+					}
+
+					const minutesLeft = Math.floor(remainingSeconds / 60);
+					const secondsLeft = remainingSeconds % 60;
+					let remainingFormatted: string | null = `${formatTime(minutesLeft)}:${formatTime(
+						secondsLeft
+					)}`;
+					if (remainingSeconds === 0) {
+						remainingFormatted = null;
+					}
+
+					flash = remainingSeconds <= timer.notifySecondsBefore;
+					if (timer.enabled && timer.soundEnabled && $config.soundEnabled) {
+						if (
+							$config.soundEnabled &&
+							remainingSeconds === timer.notifySecondsBefore &&
+							timer.audio
+						) {
+							audioQueue.addAudio(timer.audio as HTMLAudioElement);
+						}
+					}
+
+					console.log({ remainingFormatted, remainingSeconds, flash });
+
+					return {
+						...timer,
+						index,
+						remainingSeconds,
+						remainingFormatted,
+						flash
+					};
+				}
+			})
+			.sort((a, b) =>
+				a.enabled !== b.enabled
+					? b.enabled
+						? 1
+						: -1
+					: a.remainingSeconds > b.remainingSeconds
+					? 1
+					: -1
+			)
+			.map((timer, index) => ({
+				...timer,
+				order: index
+			}));
 	}
 );

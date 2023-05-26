@@ -8,7 +8,7 @@
 	import RoshanTimer from '../components/RoshanTimer.svelte';
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import { gameTimer } from '../stores/gameTimer';
-	import { timerEngine } from '../stores/timerEngine';
+	import { timerEngine, dynamicTimers } from '../stores/timerEngine';
 	import Menu from '../components/Menu.svelte';
 	import Mute from '../components/Mute.svelte';
 	import { enableAudio } from '../helpers/sound';
@@ -17,6 +17,7 @@
 	import { aegis, restoreTimers, roshan } from '../stores/timerConfig';
 
 	import '@fontsource-variable/merriweather-sans';
+	import DynamicTimer from '../components/DynamicTimer.svelte';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -59,14 +60,24 @@
 <main>
 	{#if started}
 		<div class="componentGrid">
-			{#each $timerEngine as timer (timer.index)}
-				<div animate:flip={{ duration: 300 }} class="timer" class:big={timer.order < 2}>
-					<CountdownTimer {timer} big={timer.order < 2} />
-				</div>
-			{/each}
+			<div class="dynamic-timers">
+				{#each $dynamicTimers as timer (timer.index)}
+					<div animate:flip={{ duration: 300 }} class="timer dynamic">
+						{#if timer.title === 'Roshan'}
+							<RoshanTimer {timer} />
+						{:else}
+							<DynamicTimer {timer} />
+						{/if}
+					</div>
+				{/each}
+			</div>
 
-			<div class="roshanContainer">
-				<RoshanTimer />
+			<div class="static-timers">
+				{#each $timerEngine as timer (timer.index)}
+					<div animate:flip={{ duration: 300 }} class="timer static">
+						<CountdownTimer {timer} />
+					</div>
+				{/each}
 			</div>
 		</div>
 	{:else}
@@ -82,24 +93,17 @@
 		justify-content: center;
 	}
 	.componentGrid {
-		flex: 1;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		margin: 1rem 10vw 0;
-		justify-content: center;
-		text-align: center;
-		grid-gap: 10px;
-		max-width: 1200px;
+		width: 1100px;
+		grid-column-gap: 2rem;
 	}
-	.roshanContainer {
-		grid-row: 3;
-		grid-column: 1/3;
-		width: 100%;
+	.dynamic-timers,
+	.static-timers {
+		display: flex;
+		flex-direction: column;
 	}
 	.timer {
-		max-height: 5rem;
-	}
-	.timer.big {
-		grid-column: 1/3;
+		margin: 0.5em 0;
 	}
 </style>

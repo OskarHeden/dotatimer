@@ -10,13 +10,11 @@ export interface TimerConfig {
 	initialSkip: number;
 	icon: string;
 	audioSrc: string;
-	preferredSound: 'sfx' | 'voice';
+	preferredSound: string;
 	audio?: HTMLAudioElement;
 	notifySecondsBefore: number;
 	static?: boolean;
-	dynamic?: boolean;
-	dynamicRespawn?: number;
-	startTime?: number;
+	startTime?: string;
 }
 
 const prepareRoshanAudio = (timer: RoshanConfig) =>
@@ -65,19 +63,6 @@ const initialTimers: TimerConfig[] = [
 		preferredSound: 'sfx',
 		audioSrc: 'Wisdom.mp3',
 		notifySecondsBefore: 45
-	},
-	{
-		enabled: false,
-		soundEnabled: true,
-		title: 'Tormentor',
-		interval: 20, // in minutes
-		initialSkip: 0,
-		icon: 'Tormentor.webp',
-		preferredSound: 'sfx',
-		audioSrc: 'Tormentor.mp3',
-		notifySecondsBefore: 0,
-		dynamic: true,
-		dynamicRespawn: 10
 	},
 	{
 		enabled: false,
@@ -175,23 +160,51 @@ export const restoreTimers = () => {
 
 export const timerConfig: Writable<TimerConfig[]> = writable(initialTimers);
 
-export interface RoshanConfig {
-	activated: boolean;
-	soundEnabled: boolean;
-	title: string;
-	maxSpawn: number;
-	minSpawn: number;
-	icon: string;
-	preferredSound: 'sfx' | 'voice';
-	potentialSpawnAudioSrc: string;
-	definiteSpawnAudioSrc: string;
-	potentialSpawnAudio?: HTMLAudioElement;
-	definiteSpawnAudio?: HTMLAudioElement;
-	notifySecondsBefore: number;
+export interface DynamicTimerConfig extends TimerConfig {
+	activated?: boolean;
+	dynamicRespawn?: number;
 	killTime?: number | null;
+	roshan?: boolean;
+	maxSpawn?: number;
+	minSpawn?: number;
 }
 
-const roshanConfig: RoshanConfig = {
+const dynamicTimers: DynamicTimerConfig[] = [
+	{
+		activated: false,
+		enabled: true,
+		soundEnabled: true,
+		title: 'Radiant Tormentor',
+		interval: 20, // in minutes
+		initialSkip: 0,
+		icon: 'Tormentor.webp',
+		preferredSound: 'sfx',
+		audioSrc: 'Tormentor.mp3',
+		notifySecondsBefore: 0,
+		dynamicRespawn: 10
+	},
+	{
+		activated: false,
+		enabled: true,
+		soundEnabled: true,
+		title: 'Dire Tormentor',
+		interval: 20, // in minutes
+		initialSkip: 0,
+		icon: 'Tormentor.webp',
+		preferredSound: 'sfx',
+		audioSrc: 'Tormentor.mp3',
+		notifySecondsBefore: 0,
+		dynamicRespawn: 10
+	}
+].map((timer) => prepareAudio(timer));
+
+export const dynamicConfig: Writable<DynamicTimerConfig[]> = writable(dynamicTimers);
+
+const roshanConfig: DynamicTimerConfig = {
+	enabled: true,
+	interval: 11,
+	initialSkip: 0,
+	audioSrc: 'Roshan.mp3',
 	activated: false,
 	soundEnabled: true,
 	title: 'Roshan',
@@ -199,11 +212,10 @@ const roshanConfig: RoshanConfig = {
 	minSpawn: 8,
 	icon: 'roshan.webp',
 	preferredSound: 'sfx',
-	potentialSpawnAudioSrc: 'Roshan.mp3',
-	definiteSpawnAudioSrc: 'Roshan.mp3',
-	notifySecondsBefore: 0
+	notifySecondsBefore: 0,
+	roshan: true
 };
-const roshanStore: Writable<RoshanConfig> = writable(prepareRoshanAudio(roshanConfig));
+const roshanStore: Writable<DynamicTimerConfig> = writable(prepareAudio(roshanConfig));
 
 export const roshan = {
 	set: roshanStore.set,
@@ -214,7 +226,7 @@ export const roshan = {
 		aegis.activate(startTime);
 	},
 	reset: () => {
-		roshanStore.set(prepareRoshanAudio(roshanConfig));
+		roshanStore.set(prepareAudio(roshanConfig));
 	}
 };
 

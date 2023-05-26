@@ -1,21 +1,24 @@
 <script lang="ts">
-	import type { Timer } from '../stores/timerEngine';
-	import { timerConfig, setLocalStorage } from '../stores/timerConfig';
+	import type { DynamicTimer } from '../stores/timerEngine';
+	import { setLocalStorage, dynamicConfig } from '../stores/timerConfig';
+	import { gameTimer } from '../stores/gameTimer';
 
-	export let timer: Timer;
+	export let timer: DynamicTimer;
 	export let big: boolean = false;
 
 	export const toggleTimer = () => {
-		if (!timer.static) {
-			$timerConfig[timer.index].enabled = !timer.enabled;
-			setLocalStorage();
+		if (!timer.remainingFormatted) {
+			$dynamicConfig[timer.index].startTime = $gameTimer.time;
+		} else {
+			$dynamicConfig[timer.index].enabled = !timer.enabled;
 		}
 	};
 
 	export const toggleTimerSound = () => {
-		$timerConfig[timer.index].soundEnabled = true;
+		$dynamicConfig[timer.index].soundEnabled = !timer.soundEnabled;
 		setLocalStorage();
 	};
+	$: console.log({ timer });
 </script>
 
 <button
