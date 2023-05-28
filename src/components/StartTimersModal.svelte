@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { gameTimer } from '../stores/gameTimer';
-	import { timerConfig, setTimerReminder, toggleTimer } from '../stores/timerConfig';
-	import Slider from './Slider.svelte';
 
 	export let onStartTimer = () => {};
 
