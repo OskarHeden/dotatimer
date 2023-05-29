@@ -98,6 +98,8 @@
 		grid-template-columns: 1fr 1fr;
 		width: 1100px;
 		grid-column-gap: 2rem;
+		margin-right: 1rem;
+		margin-left: 1rem;
 	}
 	.dynamic-timers,
 	.static-timers {

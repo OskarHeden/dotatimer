@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { gameTimer } from '../stores/gameTimer';
+	import '@fontsource/orbitron';
 
 	export let onStartTimer = () => {};
 
@@ -99,6 +100,7 @@
 		color: white;
 		border: 1px solid white;
 		border-radius: 5px;
+		font-family: 'Orbitron', sans-serif;
 	}
 
 	h1 {
