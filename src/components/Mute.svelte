@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { config } from '../stores/config';
-	$: console.log($config);
 	$: soundEnabled = $config.soundEnabled;
 </script>
 
