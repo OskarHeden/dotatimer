@@ -33,13 +33,9 @@
 </video>
 <div class="start-timers-modal">
 	<h1>Welcome to Dota Timer!</h1>
-	<span
-		>We help you fine-tune your senses to Bloodseeker levels!<br /> Dive into the Dota 2 universe
-		with our game-changing timer tool that keeps you connected with every critical event,<br
-		/>sharpening your gameplay and giving you the competitive edge.</span
-	>
+	<span>We help you fine-tune your senses to Bloodseeker levels!</span>
 	<br />
-	<span class="subHeading">Set the starting time of the timer:</span>
+	<span class="subHeading">Set the current game time:</span>
 	<div class="timeInput">
 		<input
 			type="text"
@@ -57,9 +53,10 @@
 			placeholder="00"
 		/>
 	</div>
-	<span>Tip: set the timer to -01:00 so you have time to fight for bountys</span>
+	<span class="tip">Tip:</span><span>
+		Set the timer to -01:00 so you have time to fight for bountys</span
+	>
 
-	<span>Use the settings menu in the lower right corner to edit settings for the timers</span>
 	<div>
 		<span />
 	</div>
@@ -102,6 +99,9 @@
 		border-radius: 5px;
 		font-family: 'Orbitron', sans-serif;
 	}
+	.tip {
+		font-weight: bold;
+	}
 
 	h1 {
 		margin-top: 0;
@@ -127,5 +127,11 @@
 	button:hover {
 		box-shadow: 0px 0px 5px 2px #ff6046;
 		border: 2px solid #ff6046;
+	}
+
+	@media only screen and (max-width: 400px) {
+		h1 {
+			font-size: 2rem;
+		}
 	}
 </style>
