@@ -67,17 +67,6 @@
 	$: hasStarted = $gameTimer.hasStarted;
 
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
-
-	const reset = () => {
-		gameTimer.reset();
-		gameTimer.start();
-	};
-	const pause = () => {
-		gameTimer.pause();
-	};
-	const play = () => {
-		gameTimer.play();
-	};
 </script>
 
 <div
@@ -85,15 +74,6 @@
 	use:clickOutside={{ callback: closeAndSave, enabled: editingTime }}
 	class:idle={!$gameTimer.isRunning}
 >
-	{#if hasStarted}
-		<button class="reset" on:click={reset}><img src="/icons/reset.svg" alt="reset" /></button>
-		<button class="pause play" on:click={isRunning ? pause : play}
-			><img
-				src={`/icons/${isRunning ? 'pause' : 'play'}.svg`}
-				alt={isRunning ? 'pause' : 'play'}
-			/></button
-		>
-	{/if}
 	{#if !hasStarted}
 		<img class="logo" src="/icons/512.png" alt="Logo" />
 	{:else}

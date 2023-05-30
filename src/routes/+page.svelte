@@ -19,6 +19,7 @@
 
 	import '@fontsource-variable/merriweather-sans';
 	import DynamicTimer from '../components/DynamicTimer.svelte';
+	import ButtonBar from '../components/ButtonBar/ButtonBar.svelte';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -52,10 +53,6 @@
 	};
 </script>
 
-{#if started}
-	<Menu />
-	<Mute />
-{/if}
 <Header />
 <svelte:head>
 	<title>Dotatimer - Dota 2 Event Tracker</title>
@@ -102,6 +99,7 @@
 				{/each}
 			</div>
 		</div>
+		<ButtonBar />
 	{:else}
 		<StartTimersModal onStartTimer={startTimer} />
 	{/if}
