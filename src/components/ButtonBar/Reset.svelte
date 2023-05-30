@@ -10,6 +10,10 @@
 <button class="reset" on:click={reset}><img src="/icons/reset.svg" alt="reset" /></button>
 
 <style>
+	button {
+		background-color: transparent;
+		border: none;
+	}
 	.reset {
 		color: white;
 	}

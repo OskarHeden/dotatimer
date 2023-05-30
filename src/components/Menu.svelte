@@ -120,6 +120,14 @@
 </button>
 
 <style>
+	button {
+		background-color: transparent;
+		border: none;
+	}
+
+	svg {
+		stroke: white;
+	}
 	.close svg {
 		position: absolute;
 		stroke: white;

@@ -18,7 +18,7 @@
 <style>
 	.button-bar {
 		position: fixed;
-		background-color: aliceblue;
+		background-color: #1e1e1e;
 		padding: 1rem;
 		bottom: 0;
 		border-top-left-radius: 10px;
@@ -26,8 +26,21 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: center;
+		border-top: white solid 1px;
+		border-left: white solid 1px;
+		border-right: white solid 1px;
 	}
 	.button-bar > :global(button) {
-		margin: 1rem 2rem;
+		margin: 0.5rem 2rem;
+	}
+	@media (max-width: 468px) {
+		.button-bar {
+			max-height: 20px;
+			max-width: 90vw;
+		}
+		.button-bar > :global(button) {
+			margin: 1rem 1.5rem;
+		}
 	}
 </style>

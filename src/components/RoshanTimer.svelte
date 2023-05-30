@@ -78,7 +78,21 @@
 				{/if}
 			</div>
 			{#if !editingTime}
-				<button on:click={editTime}>EDIT TIME</button>
+				<button class="editTimeRoshan" on:click={editTime}
+					><svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="feather feather-edit-2"
+						><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg
+					></button
+				>
 			{/if}
 		</div>
 	{/if}
@@ -117,7 +131,7 @@
 	}
 	.content {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 	}
@@ -127,7 +141,7 @@
 		align-items: center;
 		justify-content: center;
 		overflow: hidden;
-		margin: 1em;
+		margin: 0.5em;
 		font-size: 1.2em;
 	}
 
@@ -145,6 +159,15 @@
 		max-width: 160px;
 		filter: brightness(0);
 		pointer-events: none;
+	}
+	.editTimeRoshan {
+		background: transparent;
+		border: none;
+	}
+	.editTimeRoshan svg {
+		stroke: white;
+		width: 20px;
+		height: 20px;
 	}
 	.timerContainer {
 		background: #1e1e1e;
@@ -206,7 +229,7 @@
 			top: unset;
 			bottom: 0%;
 			right: 0%;
-			max-width: 80px;
+			max-width: 40px;
 		}
 	}
 

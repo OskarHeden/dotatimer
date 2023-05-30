@@ -49,5 +49,12 @@
 <style>
 	button {
 		border: none;
+		background-color: transparent;
+	}
+
+	svg {
+		color: white;
+		height: 30px;
+		width: 30px;
 	}
 </style>
