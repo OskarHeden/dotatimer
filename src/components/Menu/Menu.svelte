@@ -12,7 +12,6 @@
 
 	onMount(() => {
 		const menuButton = document.getElementById('menuButton');
-		console.log({ menuButton });
 		if (menuButton) {
 			buttonRef = menuButton;
 		}
@@ -53,12 +52,12 @@
 			exceptions
 		}}
 	>
+		<div class="tabs">
+			{#each tabs as tab}
+				<button class="tab" on:click={() => setActiveTab(tab)}>{tab.title}</button>
+			{/each}
+		</div>
 		<div class="content">
-			<div class="tabs">
-				{#each tabs as tab}
-					<button class="tab" on:click={() => setActiveTab(tab)}>{tab.title}</button>
-				{/each}
-			</div>
 			<div class="close" on:click={() => menuOpen.set(false)} on:keydown={handleKeyDown}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -103,20 +102,21 @@
 		z-index: 99;
 		background-color: rgba(0, 0, 0, 0.904);
 	}
-	.content {
-		display: grid;
-		grid-template-columns: 100%;
-		overflow: scroll;
-	}
-
 	.tabs {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		padding: 1rem;
+		height: 10vh;
 	}
 	.tab {
 		margin: 1rem;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		height: 90vh;
+		overflow: scroll;
 	}
 </style>

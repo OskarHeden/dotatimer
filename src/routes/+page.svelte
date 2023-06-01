@@ -51,8 +51,6 @@
 		gameTimer.start();
 		vercelTrack('StartTimers');
 	};
-
-	$: console.log($menuOpen);
 </script>
 
 <Header />

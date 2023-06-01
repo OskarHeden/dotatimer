@@ -4,19 +4,23 @@
 		timerConfig,
 		setTimerReminder,
 		setSoundOption,
-		soundOptions
+		soundOptions,
+		toggleTimer
 	} from '../../stores/timerConfig';
-
-	const handleReminderInput = (evt: Event, index: number) => {
-		setTimerReminder(parseInt(evt?.target?.value), index);
-	};
 
 	const handleSoundRadio = (option: 'sfx' | 'voice', index: number) => {
 		setSoundOption(option, index);
 	};
+
+	$: openTimers = $timerConfig.reduce((acc, val) => {
+		if (val.enabled) {
+			return [...acc, val.title];
+		}
+		return acc;
+	}, [] as string[]);
 </script>
 
-<h2 class="menuHeading">Timer settings</h2>
+<h2 class="menuHeading">Global settings</h2>
 <div class="menuItem">
 	<h3>Sound</h3>
 	<label class="switch">
@@ -24,48 +28,59 @@
 		<span class="slider round" />
 	</label>
 </div>
-<h2 class="menuHeading">Visable Timers</h2>
-<div class="menuItem">
-	<h3>Name:</h3>
-	<h3>Sound</h3>
-	<h3>Reminder</h3>
+<h2 class="menuHeading">Timers</h2>
+<div class="timers">
+	{#each $timerConfig as timer, index}
+		<div class="timer">
+			<div class="info">
+				<div style="display:flex;flex-direction:row;align-items:center;">
+					{#if timer.icon}
+						<img class="iconImage" src={timer.icon} alt="icon" />
+					{/if}
+					<h3>{timer.title}</h3>
+				</div>
+				<label class="switch">
+					<input type="checkbox" bind:checked={timer.enabled} />
+					<span class="slider round" />
+				</label>
+			</div>
+			{#if openTimers.includes(timer.title)}
+				<div class="divider" />
+				<div class="options">
+					<div class="sound-enabled">
+						Sound
+						<label class="switch">
+							<input type="checkbox" bind:checked={timer.soundEnabled} />
+							<span class="slider round" />
+						</label>
+					</div>
+
+					<div class="sound-effect-options">
+						{#each soundOptions as { id, label }}
+							<div class="option">
+								<label for={id}>{label}</label>
+								<input
+									type="radio"
+									name="sound-{index}"
+									checked={timer.preferredSound === id}
+									{id}
+									value={id}
+									on:change={() => handleSoundRadio(id, index)}
+								/>
+							</div>
+						{/each}
+					</div>
+					<input class="timerSetting" type="number" bind:value={timer.notifySecondsBefore} />
+				</div>
+			{/if}
+		</div>
+	{/each}
 </div>
 
-{#each $timerConfig as timer, index}
-	<div class="menuItem">
-		<h3>{timer.title}</h3>
-		<div class="sound-options">
-			{#each soundOptions as { id, label }}
-				<div class="option">
-					<label for={id}>{label}</label>
-					<input
-						type="radio"
-						name="sound-{index}"
-						checked={timer.preferredSound === id}
-						{id}
-						value={id}
-						on:change={() => handleSoundRadio(id, index)}
-					/>
-				</div>
-			{/each}
-		</div>
-		<input
-			class="timerSetting"
-			type="number"
-			value={timer.notifySecondsBefore.toString()}
-			on:input={(evt) => handleReminderInput(evt, index)}
-		/>
-	</div>
-{/each}
-
 <style>
-	h2 {
-		color: white;
-	}
+	h2,
 	h3 {
 		color: white;
-		width: 120px;
-		text-align: start;
 	}
 	.menuItem {
 		display: grid;
@@ -140,7 +155,12 @@
 		max-width: 3rem;
 	}
 
-	.sound-options {
+	.sound-enabled {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.sound-effect-options {
 		display: grid;
 		grid-template-columns: repeat(2, 35px); /* CHANGED */
 		align-items: center;
@@ -154,7 +174,7 @@
 		color: white;
 		position: relative;
 	}
-	.sound-options .option:after {
+	.sound-effect-options .option:after {
 		/* ADDED */
 		content: '';
 		position: absolute;
@@ -164,8 +184,51 @@
 		height: 120%; /* adjust this */
 	}
 
-	.sound-options .option:last-child:after {
+	.sound-effect-options .option:last-child:after {
 		/* ADDED */
 		display: none; /* Hide the divider for the last block */
+	}
+
+	.timers {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+	}
+
+	.timer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: start;
+		padding: 1rem;
+		margin: 1rem;
+
+		background: #1e1e1e;
+		color: rgb(255, 255, 255);
+		border: ridge 2px black;
+		box-shadow: 5px 5px 5px black;
+		border-radius: 5px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.timer .iconImage {
+		height: 50px;
+		width: 50px;
+		margin-right: 1em;
+	}
+	.timer .info,
+	.timer .options {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
+	.divider {
+		height: 0;
+		width: 100%;
+		border-top: 1px solid #3e3e3e;
+		padding-top: 1em;
 	}
 </style>

@@ -8,7 +8,6 @@ export function clickOutside(
 ): any {
 	function handleOutsideClick(ev: MouseEvent) {
 		const isInside = node.contains(ev.target as HTMLElement);
-		console.log({ exceptions });
 		const isInsideException = exceptions?.some((ele) => ele?.contains(ev.target as HTMLElement));
 
 		if (!isInside && !isInsideException) {
