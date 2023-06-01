@@ -228,6 +228,7 @@ export const roshan = {
 	},
 	reset: () => {
 		roshanStore.set(prepareAudio(roshanConfig));
+		aegis.reset();
 	}
 };
 

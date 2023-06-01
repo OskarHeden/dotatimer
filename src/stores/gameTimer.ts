@@ -1,5 +1,6 @@
 // src/lib/timerStore.js
 import { writable } from 'svelte/store';
+import { roshan } from './timerConfig';
 
 interface TimerState {
 	start: number;
@@ -84,6 +85,7 @@ const play = () => {
 const reset = () => {
 	clearInterval(interval);
 	timerStore.set(initialState);
+	roshan.reset();
 };
 
 const incrementOneSecond = () => {
