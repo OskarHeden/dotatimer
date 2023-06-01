@@ -12,7 +12,6 @@
 	data-coffee-color="#ffffff"
 ></script>
 
-<h2>About us</h2>
 <div class="aboutUs">
 	<p>Greetings, fellow feeders!</p>
 	<p>
@@ -56,17 +55,11 @@
 </div>
 
 <style>
-	h2 {
-		color: white;
-		margin-left: 5%;
-	}
 	p {
 		color: white;
 	}
 	.aboutUs {
 		max-height: 75svh;
 		overflow: scroll;
-		padding-left: 5%;
-		padding-right: 5%;
 	}
 </style>

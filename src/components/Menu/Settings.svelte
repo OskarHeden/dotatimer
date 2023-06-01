@@ -21,12 +21,14 @@
 </script>
 
 <h2 class="menuHeading">Global settings</h2>
-<div class="menuItem">
-	<h3>Sound</h3>
-	<label class="switch">
-		<input type="checkbox" bind:checked={$config.soundEnabled} />
-		<span class="slider round" />
-	</label>
+<div class="global-settings">
+	<div class="setting">
+		<h3>Sound</h3>
+		<label class="switch">
+			<input type="checkbox" bind:checked={$config.soundEnabled} />
+			<span class="slider round" />
+		</label>
+	</div>
 </div>
 <h2 class="menuHeading">Timers</h2>
 <div class="timers">
@@ -47,30 +49,37 @@
 			{#if openTimers.includes(timer.title)}
 				<div class="divider" />
 				<div class="options">
-					<div class="sound-enabled">
-						Sound
+					<div class="option-container">
+						<span>Sound</span>
 						<label class="switch">
 							<input type="checkbox" bind:checked={timer.soundEnabled} />
 							<span class="slider round" />
 						</label>
 					</div>
 
-					<div class="sound-effect-options">
-						{#each soundOptions as { id, label }}
-							<div class="option">
-								<label for={id}>{label}</label>
-								<input
-									type="radio"
-									name="sound-{index}"
-									checked={timer.preferredSound === id}
-									{id}
-									value={id}
-									on:change={() => handleSoundRadio(id, index)}
-								/>
-							</div>
-						{/each}
+					<div class="option-container">
+						<span>Sound effect</span>
+						<div class="sound-effect-options">
+							{#each soundOptions as { id, label }}
+								<div class="option">
+									<label for={id}>{label}</label>
+									<input
+										type="radio"
+										name="sound-{index}"
+										checked={timer.preferredSound === id}
+										{id}
+										value={id}
+										on:change={() => handleSoundRadio(id, index)}
+									/>
+								</div>
+							{/each}
+						</div>
 					</div>
-					<input class="timerSetting" type="number" bind:value={timer.notifySecondsBefore} />
+
+					<div class="option-container">
+						<span>Reminder time</span>
+						<input class="timerSetting" type="number" bind:value={timer.notifySecondsBefore} />
+					</div>
 				</div>
 			{/if}
 		</div>
@@ -130,11 +139,11 @@
 	}
 
 	input:checked + .slider {
-		background-color: #f32121;
+		background-color: var(--red);
 	}
 
 	input:focus + .slider {
-		box-shadow: 0 0 1px #f32121;
+		box-shadow: 0 0 1px var(--red);
 	}
 
 	input:checked + .slider:before {
@@ -155,9 +164,17 @@
 		max-width: 3rem;
 	}
 
-	.sound-enabled {
+	.option-container {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 0 0.5rem;
+	}
+	.option-container span {
+		text-align: center;
+		font-size: 0.9em;
+		padding-bottom: 0.5em;
 	}
 
 	.sound-effect-options {
@@ -192,7 +209,6 @@
 	.timers {
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
 	}
 
 	.timer {
@@ -201,7 +217,7 @@
 		align-items: center;
 		justify-content: start;
 		padding: 1rem;
-		margin: 1rem;
+		margin: 1rem 0;
 
 		background: #1e1e1e;
 		color: rgb(255, 255, 255);
@@ -222,8 +238,11 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
+		align-items: flex-start;
 		width: 100%;
+	}
+	.timer .info {
+		align-items: center;
 	}
 	.divider {
 		height: 0;
