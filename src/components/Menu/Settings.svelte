@@ -251,7 +251,8 @@
 	@media (max-width: 480px) {
 		.mobileFiller {
 			display: block;
-			height: 2rem;
+			height: 4rem;
+			width: 100%;
 		}
 	}
 </style>
