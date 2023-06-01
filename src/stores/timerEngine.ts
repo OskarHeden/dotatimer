@@ -275,24 +275,40 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 				}
 			})
 			.sort((a, b) => {
-				// If the objective is active (i.e. killed) it should appear later
-				if (a.activated !== b.activated) {
-					return a.activated ? 1 : -1;
+				if (a.activated && b.activated) {
+					if (a?.remainingSeconds === b?.remainingSeconds) {
+						// If time is the same - Roshan is tiebreaker, else don't swap
+
+						if (a.title === 'Roshan' || b.title === 'Roshan') {
+							console.log('ROSHARI');
+							return a.title === 'Roshan' ? -1 : 1;
+						}
+						console.log('Default  111');
+						return -1;
+					}
+					if (a?.remainingSeconds < b?.remainingSeconds) {
+						console.log('missing active');
+						return a.remainingSeconds < b.remainingSeconds ? 1 : -1;
+					}
 				} else {
-					//If both are activated use tie breakers
-					if (a.activated && b.activated) {
-						// First tie breaker
-						// Time left on timer
+					//If the first is activated and the second isn't - swap them
+					if (a.activated !== b.activated) {
+						if (a.activated) {
+							return 1;
+						}
 						if (a?.remainingSeconds !== b?.remainingSeconds) {
-							return a.remainingSeconds < b.remainingSeconds ? 1 : -1;
+							return a.remainingSeconds > b.remainingSeconds ? 1 : -1;
 						}
 					}
+
 					// Second tie breaker
 					// ROSHAN BOSHAN
 					if (a.title === 'Roshan' || b.title === 'Roshan') {
+						console.log('ROSHARI');
 						return a.title === 'Roshan' ? -1 : 1;
 					}
-					return -1;
+					console.log('Default', a.title, b.title);
+					return 1;
 				}
 			})
 			.map((timer, index) => ({
