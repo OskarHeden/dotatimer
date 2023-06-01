@@ -54,7 +54,11 @@
 	>
 		<div class="tabs">
 			{#each tabs as tab}
-				<button class="tab" on:click={() => setActiveTab(tab)}>{tab.title}</button>
+				<button
+					class:active={tab.id === activeTab.id}
+					class="tab"
+					on:click={() => setActiveTab(tab)}>{tab.title}</button
+				>
 			{/each}
 		</div>
 		<div class="content">
@@ -111,6 +115,14 @@
 	}
 	.tab {
 		margin: 1rem;
+		border: none;
+		font-size: 24px;
+		color: white;
+		background-color: transparent;
+		cursor: pointer;
+	}
+	.tab.active {
+		color: var(--red);
 	}
 
 	.content {
@@ -118,5 +130,6 @@
 		flex-direction: column;
 		height: 90vh;
 		overflow: scroll;
+		padding: 0 5%;
 	}
 </style>
