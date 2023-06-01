@@ -7,7 +7,7 @@
     --_s: calc(2*var(--s)) calc(2*var(--s));
     --_g: 35.36% 35.36% at;
     --_c: #0000 66%, #20222a 68% 70%, #0000 72%;
-    --red: #f32121;
+    --red: #8f4040;
 
     --zIndexBackground: -1;
     --zIndexComponents: 99;
