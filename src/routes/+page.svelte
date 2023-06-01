@@ -10,8 +10,7 @@
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import { gameTimer } from '../stores/gameTimer';
 	import { timerEngine, dynamicTimers } from '../stores/timerEngine';
-	import Menu from '../components/Menu.svelte';
-	import Mute from '../components/Mute.svelte';
+	import Menu from '../components/Menu/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 	import StartTimersModal from '../components/StartTimersModal.svelte';
@@ -19,6 +18,8 @@
 
 	import '@fontsource-variable/merriweather-sans';
 	import DynamicTimer from '../components/DynamicTimer.svelte';
+	import ButtonBar from '../components/ButtonBar/ButtonBar.svelte';
+	import { menuOpen } from '../stores/menu';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -52,10 +53,6 @@
 	};
 </script>
 
-{#if started}
-	<Menu />
-	<Mute />
-{/if}
 <Header />
 <svelte:head>
 	<title>Dotatimer - Dota 2 Event Tracker</title>
@@ -78,6 +75,10 @@
 	<link rel="icon" href="/favicon.png" />
 	<link rel="canonical" href="https://www.dotatimer.com" />
 </svelte:head>
+
+{#if $menuOpen}
+	<Menu />
+{/if}
 
 <main>
 	{#if started}
@@ -102,6 +103,7 @@
 				{/each}
 			</div>
 		</div>
+		<ButtonBar />
 	{:else}
 		<StartTimersModal onStartTimer={startTimer} />
 	{/if}
@@ -129,5 +131,12 @@
 	}
 	.timer {
 		margin: 0.5em 0;
+	}
+
+	@media (max-width: 468px) {
+		.static-timers {
+			overflow: scroll;
+			max-height: 80svh;
+		}
 	}
 </style>

@@ -63,21 +63,9 @@
 	});
 
 	$: time = $gameTimer.time;
-	$: isRunning = $gameTimer.isRunning;
 	$: hasStarted = $gameTimer.hasStarted;
 
 	$: formattedTime = gameTimer.formatTime($gameTimer.time);
-
-	const reset = () => {
-		gameTimer.reset();
-		gameTimer.start();
-	};
-	const pause = () => {
-		gameTimer.pause();
-	};
-	const play = () => {
-		gameTimer.play();
-	};
 </script>
 
 <div
@@ -85,15 +73,6 @@
 	use:clickOutside={{ callback: closeAndSave, enabled: editingTime }}
 	class:idle={!$gameTimer.isRunning}
 >
-	{#if hasStarted}
-		<button class="reset" on:click={reset}><img src="/icons/reset.svg" alt="reset" /></button>
-		<button class="pause play" on:click={isRunning ? pause : play}
-			><img
-				src={`/icons/${isRunning ? 'pause' : 'play'}.svg`}
-				alt={isRunning ? 'pause' : 'play'}
-			/></button
-		>
-	{/if}
 	{#if !hasStarted}
 		<img class="logo" src="/icons/512.png" alt="Logo" />
 	{:else}
@@ -129,7 +108,7 @@
 		justify-content: space-between;
 		color: white;
 		width: 100%;
-		z-index: 10;
+		z-index: var(--zIndexComponents);
 	}
 	.gameTimerContainer.idle {
 		justify-content: center;
@@ -150,28 +129,6 @@
 		height: 80px;
 		filter: drop-shadow(0px 0px 54px #853939);
 		animation: pulse alternate 3s infinite;
-	}
-
-	.reset {
-		position: absolute;
-		color: white;
-		bottom: -2.1rem;
-		right: 57%;
-	}
-	.pause,
-	.play {
-		position: absolute;
-		color: white;
-		bottom: -2.1rem;
-		right: 34%;
-	}
-
-	.reset img,
-	.pause img,
-	.play img {
-		height: 30px;
-		width: 30px;
-		fill: white;
 	}
 
 	.gameTimer span {
