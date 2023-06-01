@@ -71,8 +71,8 @@ export const timerEngine: Readable<Timer[]> = derived(
 					secondsLeft
 				)}`;
 
+				flash = remainingSeconds <= timer.notifySecondsBefore;
 				if (timer.enabled && timer.soundEnabled && $config.soundEnabled && !timer.static) {
-					flash = remainingSeconds <= timer.notifySecondsBefore;
 					if (
 						$config.soundEnabled &&
 						remainingSeconds === timer.notifySecondsBefore &&
