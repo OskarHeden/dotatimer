@@ -32,6 +32,11 @@
 		if (!minutes && !seconds) {
 			return closeEditTime();
 		}
+		if (!minutes) {
+			minutes = '0';
+		} else if (!seconds) {
+			seconds = '0';
+		}
 		const secondsFromMinutes: number = parseInt(minutes) * 60;
 		const totalSeconds =
 			secondsFromMinutes < 0
