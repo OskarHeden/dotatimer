@@ -11,7 +11,6 @@
 	import { gameTimer } from '../stores/gameTimer';
 	import { timerEngine, dynamicTimers } from '../stores/timerEngine';
 	import Menu from '../components/Menu.svelte';
-	import Mute from '../components/Mute.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 	import StartTimersModal from '../components/StartTimersModal.svelte';
@@ -20,6 +19,7 @@
 	import '@fontsource-variable/merriweather-sans';
 	import DynamicTimer from '../components/DynamicTimer.svelte';
 	import ButtonBar from '../components/ButtonBar/ButtonBar.svelte';
+	import { menuOpen } from '../stores/menu';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -75,6 +75,10 @@
 	<link rel="icon" href="/favicon.png" />
 	<link rel="canonical" href="https://www.dotatimer.com" />
 </svelte:head>
+
+{#if $menuOpen}
+	<Menu />
+{/if}
 
 <main>
 	{#if started}

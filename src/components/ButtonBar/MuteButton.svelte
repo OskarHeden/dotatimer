@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { config } from '../stores/config';
+	import { config } from '../../stores/config';
 	$: soundEnabled = $config.soundEnabled;
 
 	const updateSoundEnabled = () => {

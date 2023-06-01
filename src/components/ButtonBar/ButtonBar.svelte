@@ -1,9 +1,9 @@
 <script>
 	import { gameTimer } from '../../stores/gameTimer';
-	import Menu from '../Menu.svelte';
-	import Mute from '../Mute.svelte';
-	import Pause from './Pause.svelte';
-	import Reset from './Reset.svelte';
+	import Menu from './MenuButton.svelte';
+	import Mute from './MuteButton.svelte';
+	import Pause from './PauseButton.svelte';
+	import Reset from './ResetButton.svelte';
 </script>
 
 {#if $gameTimer.hasStarted}
