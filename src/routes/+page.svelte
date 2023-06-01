@@ -128,4 +128,11 @@
 	.timer {
 		margin: 0.5em 0;
 	}
+
+	@media (max-width: 468px) {
+		.static-timers {
+			overflow: scroll;
+			max-height: 80svh;
+		}
+	}
 </style>
