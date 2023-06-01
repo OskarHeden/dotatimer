@@ -20,6 +20,8 @@
 	import DynamicTimer from '../components/DynamicTimer.svelte';
 	import ButtonBar from '../components/ButtonBar/ButtonBar.svelte';
 	import { menuOpen } from '../stores/menu';
+	import { modalOpen } from '../stores/resetModal';
+	import ResetModal from '../components/ResetModal.svelte';
 
 	interface Window {
 		AudioContext: typeof AudioContext;
@@ -78,6 +80,10 @@
 
 {#if $menuOpen}
 	<Menu />
+{/if}
+
+{#if $modalOpen}
+	<ResetModal onStartTimer={startTimer} />
 {/if}
 
 <main>

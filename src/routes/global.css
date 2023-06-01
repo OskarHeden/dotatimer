@@ -12,6 +12,7 @@
     --zIndexBackground: -1;
     --zIndexComponents: 99;
     --zIndexMenu: 999;
+    --zIndexModal: 9999;
 
 }
 

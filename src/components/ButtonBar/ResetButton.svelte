@@ -1,13 +1,12 @@
 <script>
-	import { gameTimer } from '../../stores/gameTimer';
+	import { modalOpen } from '../../stores/resetModal';
 
-	const reset = () => {
-		gameTimer.reset();
-		gameTimer.start();
+	const openModal = () => {
+		modalOpen.set(true);
 	};
 </script>
 
-<button class="reset" on:click={reset}><img src="/icons/reset.svg" alt="reset" /></button>
+<button class="reset" on:click={openModal}><img src="/icons/reset.svg" alt="reset" /></button>
 
 <style>
 	button {
