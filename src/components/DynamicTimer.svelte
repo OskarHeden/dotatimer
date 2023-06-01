@@ -3,14 +3,16 @@
 	import { setLocalStorage, dynamicConfig } from '../stores/timerConfig';
 	import { gameTimer } from '../stores/gameTimer';
 
-	export let timer: DynamicTimer;
 	export let big: boolean = false;
+	export let timer: DynamicTimer;
 
 	export const toggleTimer = () => {
+		const dynamicIndex = $dynamicConfig.findIndex((dyna) => dyna.title === timer.title);
 		if (!timer.remainingFormatted) {
-			$dynamicConfig[timer.index].killTime = $gameTimer.time;
+			$dynamicConfig[dynamicIndex].killTime = $gameTimer.time;
+			$dynamicConfig[dynamicIndex].activated = true;
 		} else {
-			$dynamicConfig[timer.index].enabled = !timer.enabled;
+			$dynamicConfig[dynamicIndex].enabled = !timer.enabled;
 		}
 	};
 

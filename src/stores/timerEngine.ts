@@ -276,17 +276,17 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 			})
 			.sort((a, b) => {
 				// If the objective is active (i.e. killed) it should appear later
-
 				if (a.activated !== b.activated) {
-					console.log(a.title + ' WINS over', b.title);
-					return b.activated ? -1 : 1;
+					return a.activated ? 1 : -1;
 				} else {
-					// First tie breaker
-					// Time left on timer
-					if (a?.remainingSeconds !== b?.remainingSeconds) {
-						return a.remainingSeconds < b.remainingSeconds ? -1 : 1;
+					//If both are activated use tie breakers
+					if (a.activated && b.activated) {
+						// First tie breaker
+						// Time left on timer
+						if (a?.remainingSeconds !== b?.remainingSeconds) {
+							return a.remainingSeconds < b.remainingSeconds ? 1 : -1;
+						}
 					}
-
 					// Second tie breaker
 					// ROSHAN BOSHAN
 					if (a.title === 'Roshan' || b.title === 'Roshan') {
@@ -297,6 +297,7 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 			})
 			.map((timer, index) => ({
 				...timer,
+				index,
 				order: index
 			}));
 	}
