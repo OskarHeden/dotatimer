@@ -30,7 +30,8 @@ body {
 }
 
 p,
-span {
+span,
+label {
     font-family: 'Merriweather Sans Variable', sans-serif;
 }
 
