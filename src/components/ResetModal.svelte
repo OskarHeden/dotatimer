@@ -32,29 +32,51 @@
 		onStartTimer();
 		modalOpen.set(false);
 	};
+
+	const continueGame = () => {
+		gameTimer.play();
+		modalOpen.set(false);
+	};
 </script>
 
 <div class="reset-modal">
-	<h2>Ready to start another game?</h2>
-	<span class="subHeading">Set the desired starting game time:</span>
-	<div class="timeInput">
-		<input
-			type="text"
-			bind:value={startMinutes}
-			on:input={handleOnChange}
-			on:keydown={handleKeyDown}
-			placeholder="-1"
-		/>
-		<span class="semiColon">:</span>
-		<input
-			type="text"
-			bind:value={startSeconds}
-			on:input={handleOnChange}
-			on:keydown={handleKeyDown}
-			placeholder="00"
-		/>
-		<div>
-			<button on:click={resetGame}>Start timers</button>
+	<div class="content">
+		<div class="close" on:click={continueGame} on:keydown={handleKeyDown}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="feather feather-x"
+				><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg
+			>
+		</div>
+		<h2>Ready to start another game?</h2>
+		<span class="subHeading">Set the desired starting game time:</span>
+		<div class="timeInput">
+			<input
+				type="text"
+				bind:value={startMinutes}
+				on:input={handleOnChange}
+				on:keydown={handleKeyDown}
+				placeholder="-1"
+			/>
+			<span class="semiColon">:</span>
+			<input
+				type="text"
+				bind:value={startSeconds}
+				on:input={handleOnChange}
+				on:keydown={handleKeyDown}
+				placeholder="00"
+			/>
+			<div>
+				<button on:click={resetGame}>Start timers</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -69,16 +91,24 @@
 
 		margin: 0 auto;
 		width: 70vw;
-		padding: 2rem;
 		border-radius: 12px;
+	}
+	.content {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-
 		align-items: center;
 		text-align: center;
 		background: rgba(0, 0, 0, 0.85);
 		border: 2px solid #ffffff;
 		color: #ffffff;
+		padding: 2rem;
+	}
+	.close {
+		position: absolute;
+		cursor: pointer;
+		top: 1rem;
+		right: 1rem;
 	}
 	.subHeading {
 		margin-top: 10px;

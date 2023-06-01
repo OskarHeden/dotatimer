@@ -91,6 +91,7 @@
 		stroke: white;
 	}
 	.close svg {
+		cursor: pointer;
 		position: absolute;
 		stroke: white;
 		top: 2%;
