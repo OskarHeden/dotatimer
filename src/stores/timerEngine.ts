@@ -123,13 +123,14 @@ let tormentorInitialSpawn = false;
 export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 	[gameTimer, config, dynamicConfig, roshan],
 	([$gameTimer, $config, $dynamicConfig, $roshan]): DynamicTimer[] => {
-		return [...$dynamicConfig, $roshan]
+		return [$roshan, ...$dynamicConfig]
 			.map((timer, index) => {
 				if (timer.roshan) {
-					if (!(timer.activated && timer.killTime)) {
+					let remainingSeconds;
+					if (!(timer.activated && timer.killTime) && timer.maxSpawn) {
 						const gameTimeMinutes = Math.floor($gameTimer.time / 60);
 						const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
-						return { ...timer, location, flash: true };
+						return { ...timer, location, flash: true, remainingSeconds: timer.maxSpawn * 60 };
 					} else {
 						const killTime = timer.killTime;
 						let definiteRemainingFormatted: string | null | undefined,
@@ -166,6 +167,8 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 								potentialSeconds
 							)}`;
 
+							remainingSeconds = definiteSeconds;
+
 							flash = definiteSeconds <= timer.notifySecondsBefore;
 
 							if (timer.soundEnabled && $config.soundEnabled) {
@@ -192,11 +195,11 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 								potentialSpawnTime = 0;
 							}
 						}
-
 						return {
 							...timer,
 							index,
 							location: null,
+							remainingSeconds,
 							definiteRemainingFormatted,
 							potentialRemainingFormatted,
 							killTimeFormatted,
@@ -271,15 +274,27 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 					};
 				}
 			})
-			.sort((a, b) =>
-				a.enabled !== b.enabled
-					? b.enabled
-						? 1
-						: -1
-					: a.remainingSeconds > b.remainingSeconds
-					? 1
-					: -1
-			)
+			.sort((a, b) => {
+				// If the objective is active (i.e. killed) it should appear later
+
+				if (a.activated !== b.activated) {
+					console.log(a.title + ' WINS over', b.title);
+					return b.activated ? -1 : 1;
+				} else {
+					// First tie breaker
+					// Time left on timer
+					if (a?.remainingSeconds !== b?.remainingSeconds) {
+						return a.remainingSeconds < b.remainingSeconds ? -1 : 1;
+					}
+
+					// Second tie breaker
+					// ROSHAN BOSHAN
+					if (a.title === 'Roshan' || b.title === 'Roshan') {
+						return a.title === 'Roshan' ? -1 : 1;
+					}
+					return -1;
+				}
+			})
 			.map((timer, index) => ({
 				...timer,
 				order: index

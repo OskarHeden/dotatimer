@@ -167,6 +167,7 @@ export interface DynamicTimerConfig extends TimerConfig {
 	roshan?: boolean;
 	maxSpawn?: number;
 	minSpawn?: number;
+	remainingSeconds?: number;
 }
 
 const dynamicTimers: DynamicTimerConfig[] = [
