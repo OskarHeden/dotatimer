@@ -49,6 +49,7 @@
 		align-items: center;
 		background-color: transparent;
 		border: none;
+		cursor: pointer;
 	}
 	.pause,
 	.play {

@@ -13,6 +13,7 @@
 	button {
 		background-color: transparent;
 		border: none;
+		cursor: pointer;
 	}
 	.reset {
 		color: white;

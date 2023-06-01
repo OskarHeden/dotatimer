@@ -49,6 +49,7 @@
 <style>
 	button {
 		border: none;
+		cursor: pointer;
 		background-color: transparent;
 	}
 
