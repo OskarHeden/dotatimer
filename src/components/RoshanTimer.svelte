@@ -10,8 +10,18 @@
 	let minutes: string;
 	let seconds: string;
 
+	$: time = $gameTimer.time;
 	const editTime = () => {
 		editingTime = true;
+		const negativeTime = time < 0;
+		if (negativeTime) {
+			const negativeMinutes = time < -59;
+			minutes = `${negativeMinutes ? '-' : ''}${Math.floor(Math.abs(time) / 60)}`;
+			seconds = `${negativeMinutes ? '' : '-'}${Math.abs(time) % 60}`;
+		} else {
+			minutes = `${Math.floor(time / 60)}`;
+			seconds = `${time % 60}`;
+		}
 	};
 
 	const closeEditTime = () => {
@@ -74,26 +84,26 @@
 						<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
 					</div>
 				{:else}
-					<span class="countDowns">{timer.killTimeFormatted}</span>
+					<button on:click={editTime} class="countDowns">
+						{timer.killTimeFormatted}
+						{#if !editingTime}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="feather feather-edit-2"
+								><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg
+							>
+						{/if}
+					</button>
 				{/if}
 			</div>
-			{#if !editingTime}
-				<button class="editTimeRoshan" on:click={editTime}
-					><svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="feather feather-edit-2"
-						><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg
-					></button
-				>
-			{/if}
 		</div>
 	{/if}
 	<div class="content">
@@ -146,8 +156,23 @@
 	}
 
 	.countDowns {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 		font-family: 'Orbitron', sans-serif;
+		font-size: 1.1em;
+		color: white;
+		background-color: transparent;
+		border: none;
 		margin-top: 0px;
+		cursor: pointer;
+	}
+
+	.countDowns svg {
+		margin-left: 0.5em;
+		stroke: white;
+		width: 20px;
+		height: 20px;
 	}
 	p {
 		margin-bottom: 3px;
@@ -159,15 +184,6 @@
 		max-width: 160px;
 		filter: brightness(0);
 		pointer-events: none;
-	}
-	.editTimeRoshan {
-		background: transparent;
-		border: none;
-	}
-	.editTimeRoshan svg {
-		stroke: white;
-		width: 20px;
-		height: 20px;
 	}
 	.timerContainer {
 		background: #1e1e1e;

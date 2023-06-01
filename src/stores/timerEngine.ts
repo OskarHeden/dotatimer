@@ -137,9 +137,19 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 							flash = false,
 							killTimeFormatted: string | undefined,
 							shouldReset = false;
-						if (timer.killTime && timer.maxSpawn && timer.minSpawn) {
-							const killTimeMinutes = Math.floor(killTime / 60);
-							const killTimeSeconds = killTime % 60;
+						if (killTime && timer.maxSpawn && timer.minSpawn) {
+							const negativeTime = killTime < 0;
+							let killTimeMinutes, killTimeSeconds;
+							if (negativeTime) {
+								const negativeMinutes = killTime < -59;
+								killTimeMinutes = `${negativeMinutes ? '-' : ''}${Math.floor(
+									Math.abs(killTime) / 60
+								)}`;
+								killTimeSeconds = `${negativeMinutes ? '' : '-'}${Math.abs(killTime) % 60}`;
+							} else {
+								killTimeMinutes = `${Math.floor(killTime / 60)}`;
+								killTimeSeconds = `${killTime % 60}`;
+							}
 							killTimeFormatted = `${formatTime(killTimeMinutes)}:${formatTime(killTimeSeconds)}`;
 
 							let definiteSpawnTime = timer.maxSpawn * 60 - ($gameTimer.time - killTime);
