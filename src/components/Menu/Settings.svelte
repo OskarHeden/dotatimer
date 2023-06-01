@@ -84,18 +84,13 @@
 			{/if}
 		</div>
 	{/each}
+	<div class="mobileFiller" />
 </div>
 
 <style>
 	h2,
 	h3 {
 		color: white;
-	}
-	.menuItem {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		align-items: center;
-		justify-items: center;
 	}
 
 	/* The switch - the box around the slider */
@@ -249,5 +244,14 @@
 		width: 100%;
 		border-top: 1px solid #3e3e3e;
 		padding-top: 1em;
+	}
+	.mobileFiller {
+		display: none;
+	}
+	@media (max-width: 480px) {
+		.mobileFiller {
+			display: block;
+			height: 2rem;
+		}
 	}
 </style>
