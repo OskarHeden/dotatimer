@@ -29,6 +29,9 @@
 	};
 
 	const closeAndSave = () => {
+		if (!minutes && !seconds) {
+			return closeEditTime();
+		}
 		const secondsFromMinutes: number = parseInt(minutes) * 60;
 		const totalSeconds =
 			secondsFromMinutes < 0

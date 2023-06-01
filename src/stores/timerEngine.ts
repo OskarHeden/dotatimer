@@ -280,14 +280,11 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 						// If time is the same - Roshan is tiebreaker, else don't swap
 
 						if (a.title === 'Roshan' || b.title === 'Roshan') {
-							console.log('ROSHARI');
 							return a.title === 'Roshan' ? -1 : 1;
 						}
-						console.log('Default  111');
 						return -1;
 					}
 					if (a?.remainingSeconds < b?.remainingSeconds) {
-						console.log('missing active');
 						return a.remainingSeconds < b.remainingSeconds ? 1 : -1;
 					}
 				} else {
@@ -304,10 +301,8 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 					// Second tie breaker
 					// ROSHAN BOSHAN
 					if (a.title === 'Roshan' || b.title === 'Roshan') {
-						console.log('ROSHARI');
 						return a.title === 'Roshan' ? -1 : 1;
 					}
-					console.log('Default', a.title, b.title);
 					return 1;
 				}
 			})
