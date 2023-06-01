@@ -84,28 +84,29 @@
 	{#if !hasStarted}
 		<img class="logo" src="/icons/512.png" alt="Logo" />
 	{:else}
-		<button class="adjustTime" on:click={gameTimer.incrementOneSecond}>+</button>
-
-		{#if !editingTime}
-			<button class="gameTimer" class:editingTime on:click|stopPropagation={editTime}>
-				<span class="minutes">{formattedTime.minutes}</span>:<span class="seconds"
-					>{formattedTime.seconds}</span
-				>
-			</button>
-		{:else}
-			<div class="editTimeInputs">
-				<!-- svelte-ignore a11y-autofocus -->
-				<input
-					bind:value={minutes}
-					pattern="[0-9]*"
-					type="number"
-					on:keydown={handleKeyDown}
-					autofocus
-				/>
-				<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
-			</div>
-		{/if}
-		<button class="adjustTime" on:click={gameTimer.decrementOneSecond}>-</button>
+		<button class="adjustTime left" on:click={gameTimer.decrementOneSecond}>-</button>
+		<div class="timer-div">
+			{#if !editingTime}
+				<button class="gameTimer" class:editingTime on:click|stopPropagation={editTime}>
+					<span class="minutes">{formattedTime.minutes}</span>:<span class="seconds"
+						>{formattedTime.seconds}</span
+					>
+				</button>
+			{:else}
+				<div class="editTimeInputs">
+					<!-- svelte-ignore a11y-autofocus -->
+					<input
+						bind:value={minutes}
+						pattern="[0-9]*"
+						type="number"
+						on:keydown={handleKeyDown}
+						autofocus
+					/>
+					<input bind:value={seconds} pattern="[0-9]*" type="number" on:keydown={handleKeyDown} />
+				</div>
+			{/if}
+		</div>
+		<button class="adjustTime right" on:click={gameTimer.incrementOneSecond}>+</button>
 	{/if}
 </div>
 
@@ -183,13 +184,29 @@
 		-moz-appearance: textfield;
 	}
 
+	.timer-div {
+		height: 70px;
+		width: 130px;
+		display: flex;
+	}
+
 	.adjustTime {
+		height: 70px;
+		width: 170px;
 		font-size: 3rem;
-		width: 20vw;
 		max-width: 170px;
 		color: white;
 		margin-left: 0rem;
 		margin-right: 0rem;
+	}
+
+	.adjustTime.left {
+		padding-left: 3rem;
+		padding-bottom: 8px;
+	}
+	.adjustTime.right {
+		padding-right: 3rem;
+		padding-bottom: 4px;
 	}
 	button {
 		background-color: transparent;
@@ -208,7 +225,7 @@
 		}
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 480px) {
 		.gameTimer {
 			font-size: 1.25rem;
 		}
@@ -217,19 +234,30 @@
 			font-size: 1rem;
 		}
 		.adjustTime {
-			font-size: 2rem;
-		}
-		.adjustTime:first-of-type {
-			padding-left: 3rem;
-		}
-		.adjustTime:last-of-type {
-			padding-right: 3rem;
+			font-size: 2.5rem;
 		}
 
 		.logo {
 			width: 75px;
 			height: 75px;
 			filter: drop-shadow(0px 0px 54px #853939);
+		}
+	}
+
+	@media only screen and (max-width: 400px) {
+		.adjustTime {
+			font-size: 2rem;
+		}
+		.adjustTime.left {
+			padding-left: 2.5rem;
+			padding-bottom: 16px;
+		}
+		.adjustTime.right {
+			padding-right: 2rem;
+			padding-bottom: 12px;
+		}
+		.timer-div button {
+			padding-bottom: 12px;
 		}
 	}
 </style>
