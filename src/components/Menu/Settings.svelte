@@ -1,72 +1,64 @@
 <script lang="ts">
-	import { menuOpen, menuButton } from '../../stores/menu';
+	import { config } from '../../stores/config';
+	import {
+		timerConfig,
+		setTimerReminder,
+		setSoundOption,
+		soundOptions
+	} from '../../stores/timerConfig';
 
-	let buttonIconRef: SVGSVGElement;
-
-	const handleKeyDown = (event: KeyboardEvent) => {
-		if (event.key === 'Escape') {
-			menuOpen.set(false);
-		}
+	const handleReminderInput = (evt: Event, index: number) => {
+		setTimerReminder(parseInt(evt?.target?.value), index);
 	};
 
-	let buttonRef: HTMLElement;
-	$: menuButton.set(buttonRef);
+	const handleSoundRadio = (option: 'sfx' | 'voice', index: number) => {
+		setSoundOption(option, index);
+	};
 </script>
 
-<button
-	bind:this={buttonRef}
-	on:keydown={handleKeyDown}
-	id="menuButton"
-	on:click={() => menuOpen.set(!$menuOpen)}
->
-	<svg
-		bind:this={buttonIconRef}
-		xmlns="http://www.w3.org/2000/svg"
-		width="24"
-		height="24"
-		viewBox="0 0 24 24"
-		fill="none"
-		stroke="currentColor"
-		stroke-width="2"
-		stroke-linecap="round"
-		stroke-linejoin="round"
-		><circle cx="12" cy="12" r="3" /><path
-			d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
-		/></svg
-	>
-</button>
+<h2 class="menuHeading">Timer settings</h2>
+<div class="menuItem">
+	<h3>Sound</h3>
+	<label class="switch">
+		<input type="checkbox" bind:checked={$config.soundEnabled} />
+		<span class="slider round" />
+	</label>
+</div>
+<h2 class="menuHeading">Visable Timers</h2>
+<div class="menuItem">
+	<h3>Name:</h3>
+	<h3>Sound</h3>
+	<h3>Reminder</h3>
+</div>
+
+{#each $timerConfig as timer, index}
+	<div class="menuItem">
+		<h3>{timer.title}</h3>
+		<div class="sound-options">
+			{#each soundOptions as { id, label }}
+				<div class="option">
+					<label for={id}>{label}</label>
+					<input
+						type="radio"
+						name="sound-{index}"
+						checked={timer.preferredSound === id}
+						{id}
+						value={id}
+						on:change={() => handleSoundRadio(id, index)}
+					/>
+				</div>
+			{/each}
+		</div>
+		<input
+			class="timerSetting"
+			type="number"
+			value={timer.notifySecondsBefore.toString()}
+			on:input={(evt) => handleReminderInput(evt, index)}
+		/>
+	</div>
+{/each}
 
 <style>
-	button {
-		background-color: transparent;
-		border: none;
-	}
-
-	svg {
-		stroke: white;
-	}
-	.close svg {
-		position: absolute;
-		stroke: white;
-		top: 2%;
-		left: 90%;
-	}
-	.menuContainer {
-		width: 85vw;
-		max-width: 800px;
-		height: 100vh;
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 99;
-		background-color: rgba(0, 0, 0, 0.904);
-	}
-	.content {
-		display: grid;
-		grid-template-columns: 100%;
-		overflow: scroll;
-	}
-
 	h2 {
 		color: white;
 	}

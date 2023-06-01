@@ -10,7 +10,7 @@
 	import CountdownTimer from '../components/CountdownTimer.svelte';
 	import { gameTimer } from '../stores/gameTimer';
 	import { timerEngine, dynamicTimers } from '../stores/timerEngine';
-	import Menu from '../components/Menu.svelte';
+	import Menu from '../components/Menu/Menu.svelte';
 	import { enableAudio } from '../helpers/sound';
 	import { onMount } from 'svelte';
 	import StartTimersModal from '../components/StartTimersModal.svelte';
@@ -51,6 +51,8 @@
 		gameTimer.start();
 		vercelTrack('StartTimers');
 	};
+
+	$: console.log($menuOpen);
 </script>
 
 <Header />

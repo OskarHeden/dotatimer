@@ -4,11 +4,12 @@ export function clickOutside(
 		callback,
 		enabled,
 		exceptions
-	}: { callback: any; enabled: boolean; exceptions?: (HTMLElement | SVGSVGElement)[] }
+	}: { callback: any; enabled: boolean; exceptions?: (HTMLElement | SVGSVGElement | undefined)[] }
 ): any {
 	function handleOutsideClick(ev: MouseEvent) {
 		const isInside = node.contains(ev.target as HTMLElement);
-		const isInsideException = exceptions?.some((ele) => ele.contains(ev.target as HTMLElement));
+		console.log({ exceptions });
+		const isInsideException = exceptions?.some((ele) => ele?.contains(ev.target as HTMLElement));
 
 		if (!isInside && !isInsideException) {
 			callback();
