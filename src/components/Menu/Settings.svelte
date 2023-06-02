@@ -248,7 +248,7 @@
 	.mobileFiller {
 		display: none;
 	}
-	@media (max-width: 480px) {
+	@media (max-width: 600px) {
 		.mobileFiller {
 			display: block;
 			height: 4rem;
