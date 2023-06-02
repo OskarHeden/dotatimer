@@ -127,9 +127,9 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 			.map((timer, index) => {
 				if (timer.roshan) {
 					let remainingSeconds;
+					const gameTimeMinutes = Math.floor($gameTimer.time / 60);
+					const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
 					if (!(timer.activated && timer.killTime) && timer.maxSpawn) {
-						const gameTimeMinutes = Math.floor($gameTimer.time / 60);
-						const location = Math.floor(gameTimeMinutes / 5) % 2 === 1 ? 'Top' : 'Bot';
 						return { ...timer, location, flash: true, remainingSeconds: timer.maxSpawn * 60 };
 					} else {
 						const killTime = timer.killTime;
@@ -198,7 +198,7 @@ export const dynamicTimers: Readable<DynamicTimer[]> = derived(
 						return {
 							...timer,
 							index,
-							location: null,
+							location,
 							remainingSeconds,
 							definiteRemainingFormatted,
 							potentialRemainingFormatted,

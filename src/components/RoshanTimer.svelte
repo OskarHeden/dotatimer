@@ -41,6 +41,11 @@
 	const startCountDown = () => {
 		if (!$roshan.activated) {
 			roshan.activate($gameTimer.time);
+		} else {
+			// If the potentialSpawntime has been surpassed, allow a reset
+			if (!timer.potentialRemainingFormatted) {
+				roshan.activate($gameTimer.time);
+			}
 		}
 	};
 
@@ -58,10 +63,13 @@
 	$: if (timer.shouldReset) {
 		roshan.reset();
 	}
+
+	$: showLocation =
+		(!timer.activated || (timer.activated && !timer.potentialRemainingFormatted)) && timer.location;
 </script>
 
 <button class="timerContainer" class:flash on:click={startCountDown}>
-	{#if !timer.activated && timer.location}
+	{#if showLocation}
 		<div class="location">
 			<span>Location:</span>
 			<span class="pit">{timer.location}</span>
