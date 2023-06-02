@@ -146,6 +146,11 @@
 		box-shadow: 0px 0px 5px 2px #ff6046;
 		border: 2px solid #ff6046;
 	}
+	@media only screen and (max-width: 600px) {
+		.reset-modal {
+			width: 80vw;
+		}
+	}
 
 	@media only screen and (max-width: 400px) {
 		h1 {
