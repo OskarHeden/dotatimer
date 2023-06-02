@@ -156,7 +156,24 @@
 		border-radius: 50%;
 	}
 	.timerSetting {
-		max-width: 3rem;
+		max-width: 60px;
+		height: 40px;
+		font-size: 1.5rem;
+		text-align: center;
+		background-color: black;
+		color: white;
+		border: 1px solid white;
+		border-radius: 5px;
+		font-family: 'Orbitron', sans-serif;
+	}
+
+	.timerSetting::-webkit-outer-spin-button,
+	.timerSetting::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	input[type='number'] {
+		-moz-appearance: textfield;
 	}
 
 	.option-container {
