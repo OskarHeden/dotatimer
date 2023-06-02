@@ -29,6 +29,7 @@
 </script>
 
 <video autoplay muted loop playsinline>
+	<track kind="captions" />
 	<source src="Roshan.mp4" type="video/mp4" />
 </video>
 <div class="start-timers-modal">
