@@ -186,7 +186,7 @@
 
 	.timer-div {
 		height: 70px;
-		width: 130px;
+		min-width: 130px;
 		display: flex;
 	}
 
