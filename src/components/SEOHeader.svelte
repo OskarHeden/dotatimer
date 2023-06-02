@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Dotatimer - Dota 2 Event Tracker</title>
+	<title>Dotatimer - Dota 2 Objective Tracker</title>
 	<meta
 		name="description"
 		content="Dotatimer - The ultimate Dota 2 objective tracking application. Keep tabs on objectives such as roshan, lotus, power runes, wisdom runes, bounty runes, stacking, catapult waves and much more."
