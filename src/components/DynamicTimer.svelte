@@ -91,9 +91,10 @@
 		font-size: 1.2rem;
 	}
 
-	.timerContainer.flash {
+	/* .timerContainer.flash {
 		animation: colorSwap 3s infinite;
-	}
+	} */
+
 	.title {
 		color: #b1a6a6;
 	}
