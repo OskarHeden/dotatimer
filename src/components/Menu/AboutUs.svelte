@@ -38,6 +38,7 @@
 	<p>
 		We believe in the power of community, and we are committed to refining and upgrading Dotatimer
 		based on your sage advice. Your feedback is as valuable to us as a well-placed Observer Ward.
+		Send us your suggestions to: <a href="mailto:hello@dotatimer.com">hello@dotatimer.com</a>!
 	</p>
 	<p>
 		If Dotatimer assists you in clutch plays and you feel like showering some love, consider "Buying
@@ -62,6 +63,9 @@
 	p,
 	h2 {
 		color: white;
+	}
+	a {
+		color: var(--red);
 	}
 	.aboutUs {
 		max-height: 90vh;
