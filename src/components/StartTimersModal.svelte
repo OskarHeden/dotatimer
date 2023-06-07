@@ -4,7 +4,7 @@
 	import '@fontsource/orbitron';
 
 	export let onStartTimer = () => {};
-
+	let disclaimerModal = false;
 	const handleOnChange = () => {
 		const minutesInSeconds = +startMinutes * 60;
 		const totalSeconds =
@@ -62,9 +62,95 @@
 		<span />
 	</div>
 	<button on:click={onStartTimer}>Start timers</button>
+
+	<div class="disclaimerContainer" on:click={() => (disclaimerModal = !disclaimerModal)}>
+		<span class="disclaimer"
+			>We do not encourage this tool to be used in any competitive nature <svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="feather feather-info"
+				><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line
+					x1="12"
+					y1="8"
+					x2="12.01"
+					y2="8"
+				/></svg
+			></span
+		>
+	</div>
+	{#if disclaimerModal === true}
+		<div class="disclaimerModalOpen" on:click={() => (disclaimerModal = !disclaimerModal)}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="feather feather-x"
+				><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg
+			>
+			<span>
+				This tool is meant to be a help to mostly, but not exclusively, newer and / or returning
+				players. <br /> Over time, DotA has grown more complex in terms of macro gameplay and we
+				feel like there might be people out there who could benefit - ourselves included.
+				<br /> Along those lines, we do not encourage this tool to be used in any competitive nature,
+				as we do value & respect the integrity of the Dota scene and the skill the players put into getting
+				to their level of gameplay.
+			</span>
+		</div>
+	{/if}
 </div>
 
 <style>
+	.disclaimerModalOpen {
+		max-width: 400px;
+		min-width: 300px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, 0);
+		background-color: black;
+		padding: 20px;
+		border-radius: 10px;
+		border: solid 1px white;
+	}
+	.disclaimerModalOpen svg {
+		position: absolute;
+		right: 1px;
+		top: 1px;
+		stroke: white;
+		cursor: pointer;
+	}
+	.disclaimer {
+		color: #f7e47b;
+
+		padding: 15px;
+	}
+
+	.disclaimerContainer {
+		display: flex;
+		align-items: center;
+		background-color: #00000082;
+		border-radius: 10px;
+		padding: 10px;
+		cursor: pointer;
+	}
+	.disclaimerContainer svg {
+		width: 15px;
+		height: 15px;
+	}
+
 	video {
 		position: fixed;
 		right: 0;
@@ -124,6 +210,7 @@
 		background-color: black;
 		margin-top: 1rem;
 		border: 2px solid rgb(226, 218, 206);
+		margin-bottom: 2rem;
 	}
 	button:hover {
 		box-shadow: 0px 0px 5px 2px #ff6046;
